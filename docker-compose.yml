@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./src:/src"
+      - "./public:/public"
+      - "/node_modules"
+    environment:
+      CHODIKAR_USEPOLLING: true
+      WATCHPACK_POLLING: true
+    stdin_open: true
+    tty: true
