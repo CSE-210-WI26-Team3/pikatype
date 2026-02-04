@@ -29,6 +29,7 @@
     "@types/react-dom": "^19.2.3"
   },
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
