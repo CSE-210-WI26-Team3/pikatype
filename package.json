@@ -7,9 +7,7 @@
   },
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/material": "^7.3.7",
+    "@base-ui/react": "^1.1.0",
     "@react-spring/web": "^10.0.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
