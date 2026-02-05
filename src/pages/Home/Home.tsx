@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import Button from "../../components/Button";
 import "./Home.css";
 
 function Home() {
@@ -11,14 +12,18 @@ function Home() {
       </div>
 
       <div className="menu-buttons">
-        <button className="menu-button" onClick={() => navigate("/levels")}>
-          New Game
-        </button>
-        <button className="menu-button" onClick={() => navigate("/battle")}>
-          Continue
-        </button>
-        <button className="menu-button">Options</button>
-        <button className="menu-button">Save & Quit</button>
+        <Button
+          label="New Game"
+          className="menu-button"
+          onClick={() => navigate("/levels")}
+        />
+        <Button
+          label="Continue"
+          className="menu-button"
+          onClick={() => navigate("/battle")}
+        />
+        <Button label="Options" className="menu-button" />
+        <Button label="Save & Quit" className="menu-button" />
       </div>
     </div>
   );
