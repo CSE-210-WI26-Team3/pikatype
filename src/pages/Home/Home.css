@@ -1,0 +1,62 @@
+.home-container {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../static/Main Menu Background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Press Start 2P", monospace;
+  position: relative;
+  image-rendering: pixelated;
+}
+
+.title-box {
+  background-color: #2d3436;
+  border: 3px solid #636e72;
+  border-radius: 12px;
+  padding: 15px 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.title-text {
+  color: #ffeaa7;
+  font-size: 24px;
+  text-shadow: 2px 2px 0 #2d3436;
+  letter-spacing: 2px;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-button {
+  color: #ffeaa7;
+  background-color: #2d3436;
+  border: 3px solid #636e72;
+  border-radius: 8px;
+  padding: 12px 30px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+  cursor: pointer;
+  min-width: 180px;
+  text-align: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.menu-button:hover {
+  background-color: #636e72;
+  transform: scale(1.05);
+}
+
+.menu-button:active {
+  transform: scale(0.98);
+}
