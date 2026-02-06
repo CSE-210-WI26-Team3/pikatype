@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 
+const VALID_KEYS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+
 export enum TypingTrackerProgress {
   Valid = "Valid",
   Invalid = "Invalid",
@@ -104,6 +106,8 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
           updateState(TypingTrackerProgress.Complete);
         }
       } else {
+        if (!VALID_KEYS.includes(event.key)) return; // if key is invalid, don't do anything
+
         incrementCursor();
         updateState(TypingTrackerProgress.Invalid);
       }
