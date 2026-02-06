@@ -1,0 +1,19 @@
+.correct {
+  background-color: green;
+}
+
+.incorrect {
+  background-color: red;
+}
+
+.pending {
+  background-color: gray;
+}
+
+.complete {
+  background-color: blue;
+}
+
+.cursor {
+  text-decoration: underline;
+}
