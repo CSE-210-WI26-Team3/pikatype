@@ -1,29 +1,29 @@
 import { useNavigate } from "react-router";
 import Button from "../../components/Button";
-import "./Home.css";
+import styles from "./Home.module.css";
 
 function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="home-container">
-      <div className="title-box">
-        <h1 className="title-text">PikaType</h1>
+    <div className={styles.homeContainer}>
+      <div className={styles.titleBox}>
+        <h1 className={styles.titleText}>PikaType</h1>
       </div>
 
-      <div className="menu-buttons">
+      <div className={styles.menuButtons}>
         <Button
           label="New Game"
-          className="menu-button"
+          className={styles.menuButton}
           onClick={() => navigate("/levels")}
         />
         <Button
           label="Continue"
-          className="menu-button"
+          className={styles.menuButton}
           onClick={() => navigate("/battle")}
         />
-        <Button label="Options" className="menu-button" />
-        <Button label="Save & Quit" className="menu-button" />
+        <Button label="Options" className={styles.menuButton} />
+        <Button label="Save & Quit" className={styles.menuButton} />
       </div>
     </div>
   );

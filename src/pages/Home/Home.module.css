@@ -1,7 +1,13 @@
-.home-container {
+:root {
+  --box-color: #2d3436;
+  --border-color: #636e72;
+  --text-color: #ffeaa7;
+}
+
+.homeContainer {
   width: 100vw;
   height: 100vh;
-  background-image: url("../../images/Main Menu Background.png");
+  background-image: url("../../images/main-menu-background.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -14,33 +20,32 @@
   image-rendering: pixelated;
 }
 
-.title-box {
-  background-color: #2d3436;
-  border: 3px solid #636e72;
+.titleBox {
+  background-color: var(--box-color);
+  border: 3px solid var(--border-color);
   border-radius: 12px;
   padding: 15px 40px;
   margin-bottom: 40px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-.title-text {
-  color: #ffeaa7;
+.titleText {
+  color: var(--text-color);
   font-size: 24px;
-  text-shadow: 2px 2px 0 #2d3436;
   letter-spacing: 2px;
 }
 
-.menu-buttons {
+.menuButtons {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
 }
 
-.menu-button {
-  color: #ffeaa7;
-  background-color: #2d3436;
-  border: 3px solid #636e72;
+.menuButton {
+  color: var(--text-color);
+  background-color: var(--box-color);
+  border: 3px solid var(--border-color);
   border-radius: 8px;
   padding: 12px 30px;
   font-family: "Press Start 2P", monospace;
@@ -52,11 +57,11 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-.menu-button:hover {
-  background-color: #636e72;
+.menuButton:hover {
+  background-color: var(--border-color);
   transform: scale(1.05);
 }
 
-.menu-button:active {
+.menuButton:active {
   transform: scale(0.98);
 }
