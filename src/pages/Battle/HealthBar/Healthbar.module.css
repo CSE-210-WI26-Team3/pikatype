@@ -20,4 +20,5 @@
 
 .healthBarLabel {
   color: var(--yellow);
+  margin-right: 0.5rem;
 }
