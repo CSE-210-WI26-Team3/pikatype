@@ -12,7 +12,8 @@ interface TimerProps extends PropsWithChildren {
 
 function TimerProvider({ children, time }: TimerProps) {
   const initialTimerState: TimerState = {
-    time: time,
+    currentTime: time,
+    maxTime: time,
     state: "initialized",
   };
 

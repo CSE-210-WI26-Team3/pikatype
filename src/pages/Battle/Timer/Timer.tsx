@@ -7,21 +7,18 @@ function Timer() {
 
   useEffect(() => {
     if (timerState.state === "ongoing") {
-      if (timerState.time <= 0) dispatch("finish");
-      else {
-        const countdownInterval = setInterval(() => {
-          dispatch("decrement");
-        }, 1000);
+      const countdownInterval = setInterval(() => {
+        dispatch("decrement");
+      }, 1000);
 
-        return () => clearInterval(countdownInterval);
-      }
+      return () => clearInterval(countdownInterval);
     }
   }, [timerState, dispatch]);
 
-  const minutes = Math.floor(timerState.time / 60)
+  const minutes = Math.floor(timerState.currentTime / 60)
     .toString()
     .padStart(2, "0");
-  const seconds = (timerState.time % 60).toString().padStart(2, "0");
+  const seconds = (timerState.currentTime % 60).toString().padStart(2, "0");
 
   return (
     <div>
