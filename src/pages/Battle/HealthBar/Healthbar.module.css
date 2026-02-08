@@ -1,0 +1,23 @@
+.healthBarContainer {
+  width: 400px;
+  padding: 0.5rem;
+  height: 2rem;
+  background-color: var(--healthbarContainerBackground);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.healthBarTrack {
+  width: 380px;
+  height: 1rem;
+  background-color: var(--healthbarBackground);
+}
+
+.healthBarIndicator {
+  background-color: var(--currentHealthBackground);
+}
+
+.healthBarLabel {
+  color: var(--yellow);
+}
