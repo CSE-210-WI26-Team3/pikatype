@@ -8,8 +8,12 @@ function HealthBar() {
 
   return (
     <Progress.Root
-      value={Math.floor((timerModel.timerState.time / 60) * 100)}
+      value={Math.floor(
+        (timerModel.timerState.currentTime / timerModel.timerState.maxTime) *
+          100,
+      )}
       className={styles.healthBarContainer}
+      role="healthbar"
     >
       <Progress.Label className={styles.healthBarLabel}>HP</Progress.Label>
       <Progress.Track className={styles.healthBarTrack}>
