@@ -15,9 +15,14 @@ function HealthBar() {
       className={styles.healthBarContainer}
       role="healthbar"
     >
-      <Progress.Label className={styles.healthBarLabel}>HP</Progress.Label>
-      <Progress.Track className={styles.healthBarTrack}>
-        <Progress.Indicator className={styles.healthBarIndicator} />
+      <Progress.Label role="healthbar-label" className={styles.healthBarLabel}>
+        HP
+      </Progress.Label>
+      <Progress.Track role="healthbar-track" className={styles.healthBarTrack}>
+        <Progress.Indicator
+          role="healthbar-indicator"
+          className={styles.healthBarIndicator}
+        />
       </Progress.Track>
     </Progress.Root>
   );
