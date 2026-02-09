@@ -1,45 +1,105 @@
 import { render, screen } from "@testing-library/react";
-import TimerProvider from "../Timer/TimerProvider";
 import HealthBar from "./index";
+import {
+  TimerContext,
+  TimerModel,
+  TimerStateAction,
+} from "../Timer/timerContext";
 
-test("loads and displays healthbar at full health", async () => {
-  render(
-    <TimerProvider time={60}>
-      <HealthBar />
-    </TimerProvider>,
-  );
+describe("player health bar tests", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    global.innerWidth = 500;
+    global.innerHeight = 500;
+  });
 
-  const healthbar = screen.getByRole("healthbar");
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+  });
 
-  expect(healthbar).toBeVisible();
-  expect(healthbar.getAttribute("aria-valuenow")).toBe("100");
-});
+  test("loads and displays healthbar at full health", async () => {
+    const timerModel: TimerModel = {
+      timerState: {
+        currentTime: 60,
+        maxTime: 60,
+        state: "initialized",
+      },
+      dispatch: jest.fn<void, [TimerStateAction]>(),
+    };
 
-test("healthbar decreases upon time change", async () => {
-  const { rerender } = render(
-    <TimerProvider time={60}>
-      <HealthBar />
-    </TimerProvider>,
-  );
+    render(
+      <TimerContext.Provider value={timerModel}>
+        <HealthBar />
+      </TimerContext.Provider>,
+    );
 
-  const currentHealthBar = screen.getByRole("healthbar");
-  expect(currentHealthBar).toBeVisible();
-  const healthAriaAttribute = currentHealthBar.getAttribute("aria-valuenow");
-  expect(healthAriaAttribute).toBeTruthy();
-  const currentHealth = parseInt(healthAriaAttribute as string);
-  expect(currentHealth).toBe(100);
+    const healthbar = screen.getByRole("healthbar-indicator");
+    const healthbarWidth = getComputedStyle(healthbar).width;
 
-  rerender(
-    <TimerProvider time={59}>
-      <HealthBar />
-    </TimerProvider>,
-  );
+    expect(healthbar).toBeVisible();
+    expect(healthbarWidth).toMatch(/100%/);
+  });
 
-  const newHealthBar = screen.getByRole("healthbar");
-  expect(newHealthBar).toBeVisible();
-  const newHealthAriaAttribute = newHealthBar.getAttribute("aria-valuenow");
-  expect(newHealthAriaAttribute).toBeTruthy();
-  const newHealth = parseInt(newHealthAriaAttribute as string);
+  test("healthbar decreases upon time change", async () => {
+    const timerModel: TimerModel = {
+      timerState: {
+        currentTime: 47,
+        maxTime: 60,
+        state: "ongoing",
+      },
+      dispatch: jest.fn<void, [TimerStateAction]>(),
+    };
 
-  expect(newHealth).toBeLessThan(currentHealth);
+    const { rerender } = render(
+      <TimerContext.Provider value={timerModel}>
+        <HealthBar />
+      </TimerContext.Provider>,
+    );
+
+    const currentHealthBar = screen.getByRole("healthbar-indicator");
+    const currentHealthBarWidth = getComputedStyle(currentHealthBar).width;
+    expect(currentHealthBar).toBeVisible();
+    expect(currentHealthBarWidth).toBeTruthy();
+
+    // simulate time change by updating timer model state
+    timerModel.timerState = {
+      currentTime: 46,
+      maxTime: 60,
+      state: "ongoing",
+    };
+
+    rerender(
+      <TimerContext.Provider value={timerModel}>
+        <HealthBar />
+      </TimerContext.Provider>,
+    );
+
+    const newHealthBar = screen.getByRole("healthbar-indicator");
+    const newHealthBarWidth = getComputedStyle(newHealthBar).width;
+    expect(newHealthBar).toBeVisible();
+    expect(newHealthBarWidth).not.toMatch(currentHealthBarWidth);
+  });
+
+  test("empty health bar at 0 health", () => {
+    const timerModel: TimerModel = {
+      timerState: {
+        currentTime: 0,
+        maxTime: 60,
+        state: "done",
+      },
+      dispatch: jest.fn<void, [TimerStateAction]>(),
+    };
+
+    render(
+      <TimerContext.Provider value={timerModel}>
+        <HealthBar />
+      </TimerContext.Provider>,
+    );
+
+    const healthBar = screen.getByRole("healthbar-indicator");
+    const healthBarWidth = getComputedStyle(healthBar).width;
+    expect(healthBar).toBeVisible();
+    expect(healthBarWidth).toMatch(/0%/);
+  });
 });
