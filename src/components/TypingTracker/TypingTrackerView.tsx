@@ -5,12 +5,14 @@ import TypingTrackerViewBox from "./TypingTrackerViewBox";
 function TypingTrackerView() {
   const { content, cursor, state, completedWords, getNewContent } = useContext(TypingTrackerContext);
 
-  if (state == TypingTrackerProgress.Complete) {
-    // Celebrate
-    setTimeout(() => {
-      getNewContent();
-    }, 2000);
-  }
+  useEffect(() => {
+    if (state === TypingTrackerProgress.Complete) {
+      const timer = setTimeout(() => {
+        getNewContent();
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [state, getNewContent]);
 
   return (
     <TypingTrackerViewBox />

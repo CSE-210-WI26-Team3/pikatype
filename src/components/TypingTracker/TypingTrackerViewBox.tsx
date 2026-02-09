@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   TypingTrackerContext,
   TypingTrackerProgress,
@@ -6,8 +6,23 @@ import {
 import styles from "./TypingTracker.module.css";
 
 function TypingTrackerViewBox() {
-  const { content, cursor, state, completedWords, getNewContent } =
+  const { content, cursor, state } =
     useContext(TypingTrackerContext);
+  const [animationClass, setAnimationClass] = useState("");
+  const prevContentRef = useRef(content);
+
+  useEffect(() => {
+    if (state === TypingTrackerProgress.Complete) {
+      setAnimationClass(styles.completedAnimation);
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (prevContentRef.current !== content) {
+      prevContentRef.current = content;
+      setAnimationClass(styles.fadeIn);
+    }
+  }, [content]);
 
   const mapContentToSpans = (content: string, cursor: number) => {
     return content.split("").map((character, i) => {
@@ -40,10 +55,17 @@ function TypingTrackerViewBox() {
 
   const characterSpans = useMemo(
     () => mapContentToSpans(content, cursor),
-    [content, cursor],
+    [content, cursor, state],
   );
 
-  return <div>{characterSpans}</div>;
+  return (
+    <div
+      className={`${styles.wordContainer} ${animationClass}`}
+      onAnimationEnd={() => setAnimationClass("")}
+    >
+      {characterSpans}
+    </div>
+  );
 }
 
 export default TypingTrackerViewBox;
