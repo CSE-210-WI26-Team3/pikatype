@@ -1,9 +1,10 @@
 import { useContext, useEffect } from "react";
 import { TypingTrackerContext, TypingTrackerProgress } from "./TypingTrackerProvider";
 import TypingTrackerViewBox from "./TypingTrackerViewBox";
+import styles from "./TypingTracker.module.css";
 
 function TypingTrackerView() {
-  const { content, cursor, state, completedWords, getNewContent } = useContext(TypingTrackerContext);
+  const { state, getNewContent } = useContext(TypingTrackerContext);
 
   useEffect(() => {
     if (state === TypingTrackerProgress.Complete) {
@@ -15,7 +16,11 @@ function TypingTrackerView() {
   }, [state, getNewContent]);
 
   return (
-    <TypingTrackerViewBox />
+    <div className={styles.typingBoxWrapper}>
+      <div className={styles.typingBox}>
+        <TypingTrackerViewBox />
+      </div>
+    </div>
   );
 }
 
