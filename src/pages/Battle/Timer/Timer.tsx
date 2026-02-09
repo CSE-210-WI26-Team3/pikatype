@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import Button from "../../../components/Button";
 import { TimerContext } from "./timerContext";
+import styles from "./Timer.module.css";
 
 function Timer() {
   const { timerState, dispatch } = useContext(TimerContext);
@@ -22,16 +23,24 @@ function Timer() {
   const seconds = (timerState.currentTime % 60).toString().padStart(2, "0");
 
   return (
-    <div>
+    <div className={styles.timer}>
       <p>
-        {minutes}:{seconds}
+        Time Left: {minutes}:{seconds}
       </p>
       <p>{timerState.state}</p>
       {timerState.state !== "ongoing" && (
-        <Button label="start" onClick={() => dispatch("start")}></Button>
+        <Button
+          className={styles.timer}
+          label="start"
+          onClick={() => dispatch("start")}
+        ></Button>
       )}
       {timerState.state === "ongoing" && (
-        <Button label="pause" onClick={() => dispatch("pause")}></Button>
+        <Button
+          className={styles.timer}
+          label="pause"
+          onClick={() => dispatch("pause")}
+        ></Button>
       )}
     </div>
   );
