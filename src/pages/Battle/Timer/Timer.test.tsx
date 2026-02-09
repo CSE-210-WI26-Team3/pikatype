@@ -1,60 +1,165 @@
-import { timerReducer, TimerState, TimerStateAction } from "./timerContext";
+import { render, screen } from "@testing-library/react";
+import Timer from "./Timer";
+import {
+  TimerContext,
+  TimerModel,
+  timerReducer,
+  TimerState,
+  TimerStateAction,
+} from "./timerContext";
 
-test("timer state properly starts", () => {
-  const initialTimerState: TimerState = {
-    currentTime: 60,
-    maxTime: 60,
-    state: "initialized",
-  };
+describe("Battle timer event dispatcher", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
 
-  const action: TimerStateAction = "start";
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+  });
 
-  const newTimerState = timerReducer(initialTimerState, action);
+  test("timer start action dispatched when start button clicked", () => {
+    const timerModel: TimerModel = {
+      timerState: {
+        currentTime: 60,
+        maxTime: 60,
+        state: "initialized",
+      },
+      dispatch: jest.fn<void, [TimerStateAction]>(),
+    };
 
-  expect(newTimerState.state).toBe("ongoing");
-});
+    render(
+      <TimerContext.Provider value={timerModel}>
+        <Timer />
+      </TimerContext.Provider>,
+    );
 
-test("timer state properly counts down", () => {
-  const runningTimerState: TimerState = {
-    currentTime: 60,
-    maxTime: 60,
-    state: "ongoing",
-  };
+    screen.getByText("start").click();
 
-  const action: TimerStateAction = "decrement";
+    expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
+      "start",
+    );
+  });
 
-  const newTimerState = timerReducer(runningTimerState, action);
+  test("timer decrement action dispatched every second", () => {
+    const timerModel: TimerModel = {
+      timerState: {
+        currentTime: 49,
+        maxTime: 60,
+        state: "ongoing",
+      },
+      dispatch: jest.fn<void, [TimerStateAction]>(),
+    };
 
-  expect(newTimerState.currentTime).toBe(runningTimerState.currentTime - 1);
-  expect(newTimerState.state).toBe("ongoing");
-});
+    render(
+      <TimerContext.Provider value={timerModel}>
+        <Timer />
+      </TimerContext.Provider>,
+    );
 
-test("timer state should pause", () => {
-  const runningTimerState: TimerState = {
-    currentTime: 39,
-    maxTime: 60,
-    state: "ongoing",
-  };
+    jest.advanceTimersByTime(1000);
 
-  const action: TimerStateAction = "pause";
+    expect(timerModel.dispatch).toHaveBeenCalled();
+    expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
+      "decrement",
+    );
 
-  const newTimerState = timerReducer(runningTimerState, action);
+    jest.advanceTimersByTime(1000);
 
-  expect(newTimerState.currentTime).toBe(39);
-  expect(newTimerState.state).toBe("paused");
-});
+    expect(timerModel.dispatch).toHaveBeenCalledTimes(2);
+    expect(timerModel.dispatch).toHaveBeenNthCalledWith<[TimerStateAction]>(
+      2,
+      "decrement",
+    );
+  });
 
-test("timer should finish", () => {
-  const runningTimerState: TimerState = {
-    currentTime: 1,
-    maxTime: 60,
-    state: "ongoing",
-  };
+  test("timer pause action dispatched when pause button clicked", () => {
+    const timerModel: TimerModel = {
+      timerState: {
+        currentTime: 49,
+        maxTime: 60,
+        state: "ongoing",
+      },
+      dispatch: jest.fn<void, [TimerStateAction]>(),
+    };
 
-  const action: TimerStateAction = "decrement";
+    render(
+      <TimerContext.Provider value={timerModel}>
+        <Timer />
+      </TimerContext.Provider>,
+    );
 
-  const newTimerState = timerReducer(runningTimerState, action);
+    screen.getByText("pause").click();
 
-  expect(newTimerState.currentTime).toBe(0);
-  expect(newTimerState.state).toBe("done");
+    expect(timerModel.dispatch).toHaveBeenCalled();
+    expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
+      "pause",
+    );
+  });
+
+  test("timer decrement action should not be dispatched while paused", () => {
+    const timerModel: TimerModel = {
+      timerState: {
+        currentTime: 49,
+        maxTime: 60,
+        state: "paused",
+      },
+      dispatch: jest.fn<void, [TimerStateAction]>(),
+    };
+
+    render(
+      <TimerContext.Provider value={timerModel}>
+        <Timer />
+      </TimerContext.Provider>,
+    );
+
+    jest.advanceTimersByTime(5000);
+
+    expect(timerModel.dispatch).toHaveBeenCalledTimes(0);
+  });
+
+  test("timer finish action should be dispatched when timer runs out", () => {
+    const timerModel: TimerModel = {
+      timerState: {
+        currentTime: 1,
+        maxTime: 60,
+        state: "ongoing",
+      },
+      dispatch: jest.fn<void, [TimerStateAction]>(),
+    };
+
+    render(
+      <TimerContext.Provider value={timerModel}>
+        <Timer />
+      </TimerContext.Provider>,
+    );
+
+    jest.advanceTimersByTime(1000);
+
+    expect(timerModel.dispatch).toHaveBeenCalled();
+    expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
+      "finish",
+    );
+  });
+
+  test("timer actions should not be dispatched when done", () => {
+    const timerModel: TimerModel = {
+      timerState: {
+        currentTime: 0,
+        maxTime: 60,
+        state: "done",
+      },
+      dispatch: jest.fn<void, [TimerStateAction]>(),
+    };
+
+    render(
+      <TimerContext.Provider value={timerModel}>
+        <Timer />
+      </TimerContext.Provider>,
+    );
+
+    jest.advanceTimersByTime(5000);
+
+    expect(timerModel.dispatch).toHaveBeenCalledTimes(0);
+  });
 });
