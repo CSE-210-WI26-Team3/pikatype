@@ -8,7 +8,8 @@ function Timer() {
   useEffect(() => {
     if (timerState.state === "ongoing") {
       const countdownInterval = setInterval(() => {
-        dispatch("decrement");
+        if (timerState.currentTime <= 1) dispatch("finish");
+        else dispatch("decrement");
       }, 1000);
 
       return () => clearInterval(countdownInterval);

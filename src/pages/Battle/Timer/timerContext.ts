@@ -13,7 +13,7 @@ export type TimerState = {
   state: "initialized" | "ongoing" | "done" | "paused";
 };
 
-export type TimerStateAction = "decrement" | "start" | "pause";
+export type TimerStateAction = "decrement" | "start" | "pause" | "finish";
 
 export function timerReducer(
   state: TimerState,
@@ -25,10 +25,10 @@ export function timerReducer(
     case "decrement":
       const newTime = state.currentTime - 1;
 
-      if (newTime <= 0)
-        return { ...state, currentTime: newTime, state: "done" };
-      else return { ...state, currentTime: newTime };
+      return { ...state, currentTime: newTime };
     case "start":
       return { ...state, state: "ongoing" };
+    case "finish":
+      return { ...state, currentTime: 0, state: "done" };
   }
 }
