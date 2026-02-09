@@ -1,8 +1,10 @@
 :root {
-  --healthbarBackground: #b5b0b0;
-  --healthbarContainerBackground: #504949;
-  --currentHealthBackground: #1f9823;
   --yellow: #dce295;
+}
+
+@font-face {
+  font-family: monogram;
+  src: url("../public/fonts/monogram-extended.ttf");
 }
 
 *,
@@ -11,6 +13,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: monogram;
 }
 
 body {
@@ -19,4 +22,14 @@ body {
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+html {
+  height: 100%;
+}
+
+/* React apps wrap all HTML elements in a div with root id */
+#root {
+  height: 100%;
 }
