@@ -6,6 +6,11 @@
     "pnpm": ">=10"
   },
   "private": true,
+  "jest": {
+    "moduleNameMapper": {
+      "/^.+.module.(css|sass|scss)$/": "identity-obj-proxy"
+    }
+  },
   "dependencies": {
     "@base-ui/react": "^1.1.0",
     "@react-spring/web": "^10.0.3",
@@ -24,7 +29,8 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.126",
     "@types/react": "^19.2.10",
-    "@types/react-dom": "^19.2.3"
+    "@types/react-dom": "^19.2.3",
+    "identity-obj-proxy": "^3.0.0"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",

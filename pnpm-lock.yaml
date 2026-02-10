@@ -57,6 +57,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.10)
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
 
 packages:
 

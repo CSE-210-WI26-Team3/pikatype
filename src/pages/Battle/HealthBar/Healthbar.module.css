@@ -1,0 +1,32 @@
+:root {
+  --healthbarBackground: #b5b0b0;
+  --healthbarContainerBackground: #504949;
+  --currentHealthBackground: #1f9823;
+}
+
+.healthBarContainer {
+  width: 400px;
+  padding: 0.5rem;
+  height: 2rem;
+  background-color: var(--healthbarContainerBackground);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5rem;
+}
+
+.healthBarTrack {
+  width: 380px;
+  height: 1rem;
+  background-color: var(--healthbarBackground);
+}
+
+.healthBarIndicator {
+  background-color: var(--currentHealthBackground);
+}
+
+.healthBarLabel {
+  color: var(--yellow);
+  margin-right: 0.5rem;
+  font-size: 1.75rem;
+}
