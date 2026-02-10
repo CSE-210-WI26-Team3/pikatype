@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 
-const VALID_KEYS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+const VALID_KEYS_PATTERN = /^[a-zA-Z ]$/;
 
 export enum TypingTrackerProgress {
   Valid = "Valid",
@@ -93,7 +93,6 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (typingTrackerState.state === TypingTrackerProgress.Complete) return;
 
-      console.log(event.key);
       if (typingTrackerState.state === TypingTrackerProgress.Invalid) {
         if (event.key === "Backspace") {
           decrementCursor();
@@ -106,7 +105,7 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
           updateState(TypingTrackerProgress.Complete);
         }
       } else {
-        if (!VALID_KEYS.includes(event.key)) return; // if key is invalid, don't do anything
+        if (!VALID_KEYS_PATTERN.test(event.key)) return; // if key is invalid, don't do anything
 
         incrementCursor();
         updateState(TypingTrackerProgress.Invalid);
