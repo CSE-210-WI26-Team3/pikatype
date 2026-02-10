@@ -25,7 +25,7 @@ export function timerReducer(
     case "decrement":
       const newTime = state.currentTime - 1;
 
-      return { ...state, currentTime: newTime };
+      return { ...state, currentTime: newTime, state: "ongoing" };
     case "start":
       return { ...state, state: "ongoing" };
     case "finish":
