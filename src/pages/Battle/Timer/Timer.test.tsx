@@ -1,20 +1,15 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import Timer from "./Timer";
-import {
-  TimerContext,
-  TimerModel,
-  timerReducer,
-  TimerState,
-  TimerStateAction,
-} from "./timerContext";
+import { TimerContext, TimerModel, TimerStateAction } from "./timerContext";
+import TimerProvider from "./TimerProvider";
 
-describe("Battle timer event dispatcher", () => {
+describe("Battle timer reducer unit tests", () => {
   beforeEach(() => {
     jest.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
+    jest.clearAllTimers();
     jest.useRealTimers();
   });
 
@@ -34,7 +29,7 @@ describe("Battle timer event dispatcher", () => {
       </TimerContext.Provider>,
     );
 
-    screen.getByText("start").click();
+    screen.getByRole("start-button").click();
 
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
       "start",
@@ -89,7 +84,7 @@ describe("Battle timer event dispatcher", () => {
       </TimerContext.Provider>,
     );
 
-    screen.getByText("pause").click();
+    screen.getByRole("pause-button").click();
 
     expect(timerModel.dispatch).toHaveBeenCalled();
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
@@ -121,7 +116,7 @@ describe("Battle timer event dispatcher", () => {
   test("timer finish action should be dispatched when timer runs out", () => {
     const timerModel: TimerModel = {
       timerState: {
-        currentTime: 1,
+        currentTime: 0,
         maxTime: 60,
         state: "ongoing",
       },
@@ -161,5 +156,121 @@ describe("Battle timer event dispatcher", () => {
     jest.advanceTimersByTime(5000);
 
     expect(timerModel.dispatch).toHaveBeenCalledTimes(0);
+  });
+});
+
+/**
+ * In these tests, when working with fake timers, all actions must be in
+ * separate act() blocks because fake timers fire all callbacks at once,
+ * not sequentually like when using real timer functions.
+ */
+describe("battle timer component tests", () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  test("timer should display correct time", () => {
+    render(
+      <TimerProvider time={85}>
+        <Timer />
+      </TimerProvider>,
+    );
+
+    expect(screen.getByRole("timer-duration")).toHaveTextContent("01:25");
+  });
+
+  test("timer should start when start button clicked", () => {
+    render(
+      <TimerProvider time={60}>
+        <Timer />
+      </TimerProvider>,
+    );
+    act(() => {
+      screen.getByRole("start-button").click();
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:59");
+  });
+
+  test("timer decreases every second", () => {
+    render(
+      <TimerProvider time={60}>
+        <Timer />
+      </TimerProvider>,
+    );
+
+    act(() => {
+      screen.getByRole("start-button").click();
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:55");
+  });
+
+  test("timer pauses when pause button clicked", () => {
+    render(
+      <TimerProvider time={60}>
+        <Timer />
+      </TimerProvider>,
+    );
+
+    act(() => {
+      screen.getByRole("start-button").click();
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:55");
+
+    act(() => {
+      screen.getByRole("pause-button").click();
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:55");
+  });
+
+  test("timer should stop at 0", () => {
+    render(
+      <TimerProvider time={2}>
+        <Timer />
+      </TimerProvider>,
+    );
+
+    act(() => {
+      screen.getByRole("start-button").click();
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:00");
+
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:00");
   });
 });

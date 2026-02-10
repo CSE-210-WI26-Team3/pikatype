@@ -9,8 +9,8 @@ function Timer() {
   useEffect(() => {
     if (timerState.state === "ongoing") {
       const countdownInterval = setInterval(() => {
-        if (timerState.currentTime <= 1) dispatch("finish");
-        else dispatch("decrement");
+        if (timerState.currentTime > 0) dispatch("decrement");
+        else dispatch("finish");
       }, 1000);
 
       return () => clearInterval(countdownInterval);
@@ -24,23 +24,25 @@ function Timer() {
 
   return (
     <div className={styles.timer}>
-      <p>
+      <p role="timer-duration">
         Time Left: {minutes}:{seconds}
       </p>
       <p>{timerState.state}</p>
       {timerState.state !== "ongoing" && (
         <Button
+          role="start-button"
           className={styles.timer}
           label="start"
           onClick={() => dispatch("start")}
-        ></Button>
+        />
       )}
       {timerState.state === "ongoing" && (
         <Button
+          role="pause-button"
           className={styles.timer}
           label="pause"
           onClick={() => dispatch("pause")}
-        ></Button>
+        />
       )}
     </div>
   );
