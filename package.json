@@ -5,6 +5,7 @@
     "node": ">=24",
     "pnpm": ">=10"
   },
+  "homepage": "https://cse-210-wi26-team3.github.io/pikatype/",
   "private": true,
   "dependencies": {
     "@base-ui/react": "^1.1.0",
@@ -24,14 +25,17 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.126",
     "@types/react": "^19.2.10",
-    "@types/react-dom": "^19.2.3"
+    "@types/react-dom": "^19.2.3",
+    "gh-pages": "^6.3.0"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --passWithNoTests",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "pnpm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
