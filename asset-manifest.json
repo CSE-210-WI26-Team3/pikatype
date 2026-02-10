@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/pikatype/static/css/main.4a8972b2.css",
+    "main.js": "/pikatype/static/js/main.e2f47347.js",
+    "static/media/main-menu-background.png": "/pikatype/static/media/main-menu-background.f2129e6c1e462a195bd1.png",
+    "index.html": "/pikatype/index.html",
+    "main.4a8972b2.css.map": "/pikatype/static/css/main.4a8972b2.css.map",
+    "main.e2f47347.js.map": "/pikatype/static/js/main.e2f47347.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4a8972b2.css",
+    "static/js/main.e2f47347.js"
+  ]
+}
