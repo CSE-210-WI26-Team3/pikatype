@@ -5,7 +5,7 @@
     "node": ">=24",
     "pnpm": ">=10"
   },
-  "homepage": "https://cse-210-wi26-team3.github.io/pikatype/",
+  "homepage": "/pikatype/",
   "private": true,
   "dependencies": {
     "@base-ui/react": "^1.1.0",
