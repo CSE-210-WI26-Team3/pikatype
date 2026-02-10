@@ -6,9 +6,15 @@ import {
   TimerStateAction,
 } from "../Timer/timerContext";
 
+/**
+ * Mocking the timer component and only testing healthbar UI updates properly
+ * at various timer states
+ */
 describe("player health bar tests", () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    // making sure the health bar actually has space in the test window to
+    // render
     global.innerWidth = 500;
     global.innerHeight = 500;
   });
