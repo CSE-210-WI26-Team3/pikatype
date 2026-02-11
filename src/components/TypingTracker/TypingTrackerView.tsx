@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { TypingTrackerContext, TypingTrackerProgress } from "./TypingTrackerProvider";
 import TypingTrackerViewBox from "./TypingTrackerViewBox";
 import styles from "./TypingTracker.module.css";
@@ -12,6 +12,7 @@ function TypingTrackerView() {
       const timer = setTimeout(() => {
         getNewContent();
       }, fadeInTime);
+    
       return () => clearTimeout(timer);
     }
   }, [state, getNewContent]);
