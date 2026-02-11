@@ -5,6 +5,7 @@
     "node": ">=24",
     "pnpm": ">=10"
   },
+  "homepage": "/pikatype/",
   "private": true,
   "dependencies": {
     "@base-ui/react": "^1.1.0",
@@ -26,13 +27,16 @@
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
     "identity-obj-proxy": "^3.0.0"
+    "gh-pages": "^6.3.0"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --passWithNoTests",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "pnpm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
