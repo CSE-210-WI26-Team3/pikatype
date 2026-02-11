@@ -25,6 +25,14 @@
   background-color: var(--currentHealthBackground);
 }
 
+.player {
+  background-color: #1f9823;
+}
+
+.enemy {
+  background-color: #d64545;
+}
+
 .healthBarLabel {
   color: var(--yellow);
   margin-right: 0.5rem;
