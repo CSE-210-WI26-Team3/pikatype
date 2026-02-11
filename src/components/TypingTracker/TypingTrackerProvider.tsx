@@ -82,12 +82,12 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
       cursor: 0,
       state: TypingTrackerProgress.Valid,
     }))
-  }, []);
+  }, [updateContent]);
 
   // Set word on load
   useEffect(() => {
     getNewContent();
-  }, []);
+  }, [getNewContent]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -114,7 +114,7 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [typingTrackerState]);
+  }, [typingTrackerState, decrementCursor, incrementCompletedWords, incrementCursor, updateState]);
 
   return (
     <TypingTrackerContext.Provider value={{ ...typingTrackerState, getNewContent }}>
