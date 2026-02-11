@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { TypingTrackerContext, TypingTrackerProgress } from "./TypingTrackerProvider";
 import TypingTrackerViewBox from "./TypingTrackerViewBox";
 import styles from "./TypingTracker.module.css";
