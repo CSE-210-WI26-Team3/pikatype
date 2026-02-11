@@ -26,6 +26,7 @@
     "@types/node": "^16.18.126",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
+    "identity-obj-proxy": "^3.0.0",
     "gh-pages": "^6.3.0"
   },
   "scripts": {

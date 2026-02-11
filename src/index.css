@@ -6,6 +6,16 @@
   box-sizing: border-box;
 }
 
+:root {
+  --box-color: #2d3436;
+  --border-color: #636e72;
+  --text-color: #ffeaa7;
+  --correct-color: #00b894;
+  --incorrect-color: #d63031;
+  --pending-color: #636e72;
+  --complete-color: #0984e3;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
     "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
