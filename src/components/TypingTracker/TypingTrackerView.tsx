@@ -5,12 +5,13 @@ import styles from "./TypingTracker.module.css";
 
 function TypingTrackerView() {
   const { state, getNewContent } = useContext(TypingTrackerContext);
+  const fadeInTime = 600;
 
   useEffect(() => {
     if (state === TypingTrackerProgress.Complete) {
       const timer = setTimeout(() => {
         getNewContent();
-      }, 600);
+      }, fadeInTime);
       return () => clearTimeout(timer);
     }
   }, [state, getNewContent]);
