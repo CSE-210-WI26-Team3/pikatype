@@ -24,37 +24,34 @@ function TypingTrackerViewBox() {
     }
   }, [content]);
 
-  const mapContentToSpans = (content: string, cursor: number) => {
-    return content.split("").map((character, i) => {
-      const spanStyles = [];
-      if (state === TypingTrackerProgress.Complete) {
-        spanStyles.push(styles.complete);
-      } else if (i < cursor - 1) {
-        spanStyles.push(styles.correct);
-      } else if (i === cursor - 1) {
-        spanStyles.push(
-          state === TypingTrackerProgress.Valid
-            ? styles.correct
-            : styles.incorrect,
-        );
-      } else {
-        spanStyles.push(styles.pending);
-      }
-
-      if (i === cursor) {
-        spanStyles.push(styles.cursor);
-      }
-
-      return (
-        <span key={i} className={spanStyles.join(" ")}>
-          {character}
-        </span>
-      );
-    });
-  };
-
   const characterSpans = useMemo(
-    () => mapContentToSpans(content, cursor),
+    () =>
+      content.split("").map((character, i) => {
+        const spanStyles = [];
+        if (state === TypingTrackerProgress.Complete) {
+          spanStyles.push(styles.complete);
+        } else if (i < cursor - 1) {
+          spanStyles.push(styles.correct);
+        } else if (i === cursor - 1) {
+          spanStyles.push(
+            state === TypingTrackerProgress.Valid
+              ? styles.correct
+              : styles.incorrect,
+          );
+        } else {
+          spanStyles.push(styles.pending);
+        }
+
+        if (i === cursor) {
+          spanStyles.push(styles.cursor);
+        }
+
+        return (
+          <span key={i} className={spanStyles.join(" ")}>
+            {character}
+          </span>
+        );
+      }),
     [content, cursor, state],
   );
 
