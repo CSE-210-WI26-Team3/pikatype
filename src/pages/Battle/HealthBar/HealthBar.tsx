@@ -22,7 +22,10 @@ function HealthBar({ type, label = "HP", valuePercent }: HealthBarProps) {
         {label}
       </Progress.Label>
 
-      <Progress.Track role="healthbar-track" className={styles.healthBarTrack}>
+      <Progress.Track
+        role="healthbar-track"
+        className={`${styles.healthBarTrack} ${type === "enemy" ? styles.enemyTrack : ""}`}
+      >
         <Progress.Indicator
           role="healthbar-indicator"
           className={`${styles.healthBarIndicator} ${
@@ -30,6 +33,7 @@ function HealthBar({ type, label = "HP", valuePercent }: HealthBarProps) {
           }`}
         />
       </Progress.Track>
+
     </Progress.Root>
   );
 }

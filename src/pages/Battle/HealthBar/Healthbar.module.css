@@ -2,6 +2,7 @@
   --healthbarBackground: #b5b0b0;
   --healthbarContainerBackground: #504949;
   --currentHealthBackground: #1f9823;
+  --currentEnemyHealthBackground: #d64545;
 }
 
 .healthBarContainer {
@@ -21,16 +22,16 @@
   background-color: var(--healthbarBackground);
 }
 
-.healthBarIndicator {
-  background-color: var(--currentHealthBackground);
+.enemyTrack {
+  transform: scaleX(-1);
 }
 
 .player {
-  background-color: #1f9823;
+  background-color: var(--currentHealthBackground);
 }
 
 .enemy {
-  background-color: #d64545;
+  background-color: var(--currentEnemyHealthBackground);
 }
 
 .healthBarLabel {
