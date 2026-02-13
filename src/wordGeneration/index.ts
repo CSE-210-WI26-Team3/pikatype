@@ -1,6 +1,2 @@
-export {
-  getRandomEnglishWord,
-  getRandomEnglishWords,
-} from "./wordGenerator";
-
-export * from "./config";
+export { SingleWordGenerator } from "./generators/SingleWordGenerator";
+export { MultiWordGenerator } from "./generators/MultiWordGenerator";
