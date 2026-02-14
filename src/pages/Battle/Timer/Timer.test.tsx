@@ -3,6 +3,22 @@ import Timer from "./Timer";
 import { TimerContext, TimerModel, TimerStateAction } from "./timerContext";
 import TimerProvider from "./TimerProvider";
 
+function pressStartButton() {
+  const startButton = document.getElementById("start-button");
+  expect(startButton).toBeTruthy();
+  startButton!.click();
+}
+
+function pressPauseButton() {
+  const pauseButton = document.getElementById("pause-button");
+  expect(pauseButton).toBeTruthy();
+  pauseButton!.click();
+}
+
+function assertTimerText(timeText: string) {
+  expect(document.getElementById("timer-duration")).toHaveTextContent(timeText);
+}
+
 describe("Battle timer reducer unit tests", () => {
   beforeEach(() => {
     jest.useFakeTimers();
@@ -10,6 +26,9 @@ describe("Battle timer reducer unit tests", () => {
 
   afterEach(() => {
     jest.clearAllTimers();
+  });
+
+  afterAll(() => {
     jest.useRealTimers();
   });
 
@@ -29,7 +48,7 @@ describe("Battle timer reducer unit tests", () => {
       </TimerContext.Provider>,
     );
 
-    screen.getByRole("start-button").click();
+    pressStartButton();
 
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
       "start",
@@ -84,7 +103,7 @@ describe("Battle timer reducer unit tests", () => {
       </TimerContext.Provider>,
     );
 
-    screen.getByRole("pause-button").click();
+    pressPauseButton();
 
     expect(timerModel.dispatch).toHaveBeenCalled();
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
@@ -184,7 +203,7 @@ describe("battle timer component tests", () => {
       </TimerProvider>,
     );
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("01:25");
+    assertTimerText("01:25");
   });
 
   test("timer should start when start button clicked", () => {
@@ -194,14 +213,14 @@ describe("battle timer component tests", () => {
       </TimerProvider>,
     );
     act(() => {
-      screen.getByRole("start-button").click();
+      pressStartButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(1000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:59");
+    assertTimerText("00:59");
   });
 
   test("timer decreases every second", () => {
@@ -212,14 +231,14 @@ describe("battle timer component tests", () => {
     );
 
     act(() => {
-      screen.getByRole("start-button").click();
+      pressStartButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(5000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:55");
+    assertTimerText("00:55");
   });
 
   test("timer pauses when pause button clicked", () => {
@@ -230,24 +249,24 @@ describe("battle timer component tests", () => {
     );
 
     act(() => {
-      screen.getByRole("start-button").click();
+      pressStartButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(5000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:55");
+    assertTimerText("00:55");
 
     act(() => {
-      screen.getByRole("pause-button").click();
+      pressPauseButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(5000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:55");
+    assertTimerText("00:55");
   });
 
   test("timer should stop at 0", () => {
@@ -258,19 +277,19 @@ describe("battle timer component tests", () => {
     );
 
     act(() => {
-      screen.getByRole("start-button").click();
+      pressStartButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(2000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:00");
+    assertTimerText("00:00");
 
     act(() => {
       jest.advanceTimersByTime(5000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:00");
+    assertTimerText("00:00");
   });
 });

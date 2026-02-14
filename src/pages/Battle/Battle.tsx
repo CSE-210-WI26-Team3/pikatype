@@ -19,12 +19,13 @@ function Battle() {
               <div className={styles.imagesContainer}>
                 <img
                   className={styles.playerPokemon}
-                  src="/img/pokemon/piplup.png"
+                  src={process.env.PUBLIC_URL + "/img/pokemon/piplup.png"}
+                  alt="player pokemon sprite"
                 />
                 <img
                   className={styles.grassPatch}
-                  src="/img/grass_patch.png"
-                  alt=""
+                  src={process.env.PUBLIC_URL + "/img/grass_patch.png"}
+                  alt="grass patch"
                 />
               </div>
             </div>
@@ -33,13 +34,13 @@ function Battle() {
               <div className={styles.imagesContainer}>
                 <img
                   className={styles.wildPokemon}
-                  src="/img/pokemon/bidoof.png"
-                  alt=""
+                  src={process.env.PUBLIC_URL + "/img/pokemon/bidoof.png"}
+                  alt="wild pokemon sprite"
                 />
                 <img
                   className={styles.grassPatch}
-                  src="/img/grass_patch.png"
-                  alt=""
+                  src={process.env.PUBLIC_URL + "/img/grass_patch.png"}
+                  alt="grass patch"
                 />
               </div>
             </div>

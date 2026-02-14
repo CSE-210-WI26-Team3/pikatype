@@ -24,13 +24,13 @@ function Timer() {
 
   return (
     <div className={styles.timer}>
-      <p role="timer-duration">
+      <p id="timer-duration">
         Time Left: {minutes}:{seconds}
       </p>
       <p>{timerState.state}</p>
       {timerState.state !== "ongoing" && (
         <Button
-          role="start-button"
+          id="start-button"
           className={styles.timer}
           label="start"
           onClick={() => dispatch("start")}
@@ -38,7 +38,7 @@ function Timer() {
       )}
       {timerState.state === "ongoing" && (
         <Button
-          role="pause-button"
+          id="pause-button"
           className={styles.timer}
           label="pause"
           onClick={() => dispatch("pause")}

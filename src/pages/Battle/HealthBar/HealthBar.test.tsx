@@ -40,8 +40,9 @@ describe("player health bar tests", () => {
       </TimerContext.Provider>,
     );
 
-    const healthbar = screen.getByRole("healthbar-indicator");
-    const healthbarWidth = getComputedStyle(healthbar).width;
+    const healthbar = document.getElementById("healthbar-indicator");
+    expect(healthbar).toBeTruthy();
+    const healthbarWidth = getComputedStyle(healthbar!).width;
 
     expect(healthbar).toBeVisible();
     expect(healthbarWidth).toMatch(/100%/);
@@ -63,9 +64,10 @@ describe("player health bar tests", () => {
       </TimerContext.Provider>,
     );
 
-    const currentHealthBar = screen.getByRole("healthbar-indicator");
-    const currentHealthBarWidth = getComputedStyle(currentHealthBar).width;
+    const currentHealthBar = document.getElementById("healthbar-indicator");
+    expect(currentHealthBar).toBeTruthy();
     expect(currentHealthBar).toBeVisible();
+    const currentHealthBarWidth = getComputedStyle(currentHealthBar!).width;
     expect(currentHealthBarWidth).toBeTruthy();
 
     // simulate time change by updating timer model state
@@ -81,9 +83,10 @@ describe("player health bar tests", () => {
       </TimerContext.Provider>,
     );
 
-    const newHealthBar = screen.getByRole("healthbar-indicator");
-    const newHealthBarWidth = getComputedStyle(newHealthBar).width;
+    const newHealthBar = document.getElementById("healthbar-indicator");
+    expect(newHealthBar).toBeTruthy();
     expect(newHealthBar).toBeVisible();
+    const newHealthBarWidth = getComputedStyle(newHealthBar!).width;
     expect(newHealthBarWidth).not.toMatch(currentHealthBarWidth);
   });
 
@@ -103,9 +106,10 @@ describe("player health bar tests", () => {
       </TimerContext.Provider>,
     );
 
-    const healthBar = screen.getByRole("healthbar-indicator");
-    const healthBarWidth = getComputedStyle(healthBar).width;
+    const healthBar = document.getElementById("healthbar-indicator");
+    expect(healthBar).toBeTruthy();
     expect(healthBar).toBeVisible();
+    const healthBarWidth = getComputedStyle(healthBar!).width;
     expect(healthBarWidth).toMatch(/0%/);
   });
 });
