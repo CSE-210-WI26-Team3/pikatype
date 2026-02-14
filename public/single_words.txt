@@ -1,0 +1,15 @@
+pencil
+eraser
+marker
+folder
+backpack
+notebook
+science
+history
+english
+reading
+writing
+computer
+keyboard
+teacher
+student
