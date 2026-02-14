@@ -1,7 +1,11 @@
 import { act, render, screen } from "@testing-library/react";
 import Timer from "./Timer";
-import { TimerContext, TimerModel, TimerStateAction } from "./timerContext";
-import TimerProvider from "./TimerProvider";
+import TimerProvider, {
+  TimerContext,
+  TimerModel,
+  TimerStateAction,
+  TimerStatus,
+} from "./TimerProvider";
 
 function pressStartButton() {
   const startButton = document.getElementById("start-button");
@@ -37,7 +41,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 60,
         maxTime: 60,
-        state: "initialized",
+        status: TimerStatus.Initialized,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -51,7 +55,7 @@ describe("Battle timer reducer unit tests", () => {
     pressStartButton();
 
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
-      "start",
+      TimerStateAction.Start,
     );
   });
 
@@ -60,7 +64,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 49,
         maxTime: 60,
-        state: "ongoing",
+        status: TimerStatus.Ongoing,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -75,7 +79,7 @@ describe("Battle timer reducer unit tests", () => {
 
     expect(timerModel.dispatch).toHaveBeenCalled();
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
-      "decrement",
+      TimerStateAction.Decrement,
     );
 
     jest.advanceTimersByTime(1000);
@@ -83,7 +87,7 @@ describe("Battle timer reducer unit tests", () => {
     expect(timerModel.dispatch).toHaveBeenCalledTimes(2);
     expect(timerModel.dispatch).toHaveBeenNthCalledWith<[TimerStateAction]>(
       2,
-      "decrement",
+      TimerStateAction.Decrement,
     );
   });
 
@@ -92,7 +96,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 49,
         maxTime: 60,
-        state: "ongoing",
+        status: TimerStatus.Ongoing,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -107,7 +111,7 @@ describe("Battle timer reducer unit tests", () => {
 
     expect(timerModel.dispatch).toHaveBeenCalled();
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
-      "pause",
+      TimerStateAction.Pause,
     );
   });
 
@@ -116,7 +120,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 49,
         maxTime: 60,
-        state: "paused",
+        status: TimerStatus.Paused,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -137,7 +141,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 0,
         maxTime: 60,
-        state: "ongoing",
+        status: TimerStatus.Ongoing,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -152,7 +156,7 @@ describe("Battle timer reducer unit tests", () => {
 
     expect(timerModel.dispatch).toHaveBeenCalled();
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
-      "finish",
+      TimerStateAction.Finish,
     );
   });
 
@@ -161,7 +165,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 0,
         maxTime: 60,
-        state: "done",
+        status: TimerStatus.Done,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };

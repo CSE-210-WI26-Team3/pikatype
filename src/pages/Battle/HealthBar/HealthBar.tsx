@@ -1,17 +1,16 @@
 import React, { useContext } from "react";
 import { Progress } from "@base-ui/react";
-import styles from "./Healthbar.module.css";
-import { TimerContext } from "../Timer/timerContext";
+import styles from "./HealthBar.module.css";
+import { TimerContext } from "../Timer/TimerProvider";
 
-function HealthBar() {
-  const timerModel = useContext(TimerContext);
+interface HealthBarProps {
+  percentValue: number;
+}
 
+export function HealthBar({ percentValue }: HealthBarProps) {
   return (
     <Progress.Root
-      value={Math.floor(
-        (timerModel.timerState.currentTime / timerModel.timerState.maxTime) *
-          100,
-      )}
+      value={percentValue}
       className={styles.healthBarContainer}
       id="healthbar"
     >
@@ -28,4 +27,11 @@ function HealthBar() {
   );
 }
 
-export default HealthBar;
+export function PlayerHealthBar() {
+  const { timerState } = useContext(TimerContext);
+  const playerHealth = Math.floor(
+    (timerState.currentTime / timerState.maxTime) * 100,
+  );
+
+  return <HealthBar percentValue={playerHealth} />;
+}

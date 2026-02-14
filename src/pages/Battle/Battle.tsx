@@ -2,8 +2,9 @@ import TypingTrackerProvider from "../../components/TypingTracker/TypingTrackerP
 import TypingTrackerView from "../../components/TypingTracker/TypingTrackerView";
 import BattleTimer from "./Timer";
 import TimerProvider from "./Timer/TimerProvider";
-import HealthBar from "./HealthBar";
 import styles from "./Battle.module.css";
+import { PlayerHealthBar } from "./HealthBar/HealthBar";
+
 function Battle() {
   return (
     <div className={styles.battleContainer}>
@@ -15,7 +16,7 @@ function Battle() {
           <TypingTrackerView />
           <div className={styles.battleScene}>
             <div className={styles.playerPokemonContainer}>
-              <HealthBar />
+              <PlayerHealthBar />
               <div className={styles.imagesContainer}>
                 <img
                   className={styles.playerPokemon}
@@ -30,7 +31,6 @@ function Battle() {
               </div>
             </div>
             <div className={styles.wildPokemonContainer}>
-              <HealthBar />
               <div className={styles.imagesContainer}>
                 <img
                   className={styles.wildPokemon}
