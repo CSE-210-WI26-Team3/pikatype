@@ -138,7 +138,7 @@ describe('Testing gibberishGenerator Suite', () => {
                 throw new Error('fail is not defined')
             } catch (e){
                 if (e instanceof Error){
-                    expect(e.message).not.toBe('fail is not defined')
+                    expect(e.message).not.toBe('fail is not defined') 
                 }
                 
             }
