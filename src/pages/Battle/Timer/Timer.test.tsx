@@ -136,17 +136,18 @@ describe("Battle timer reducer unit tests", () => {
     expect(timerModel.dispatch).toHaveBeenCalledTimes(0);
   });
 
-  test("timer finish action should be dispatched when timer runs out", () => {
+  test("timer decrement action should not be dispatched when timer runs out", () => {
+    const mockDispatch = jest.fn<void, [TimerStateAction]>();
     const timerModel: TimerModel = {
       timerState: {
-        currentTime: 0,
+        currentTime: 1,
         maxTime: 60,
         status: TimerStatus.Ongoing,
       },
-      dispatch: jest.fn<void, [TimerStateAction]>(),
+      dispatch: mockDispatch,
     };
 
-    render(
+    const { rerender } = render(
       <TimerContext.Provider value={timerModel}>
         <Timer />
       </TimerContext.Provider>,
@@ -154,10 +155,30 @@ describe("Battle timer reducer unit tests", () => {
 
     jest.advanceTimersByTime(1000);
 
-    expect(timerModel.dispatch).toHaveBeenCalled();
-    expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
-      TimerStateAction.Finish,
+    expect(mockDispatch).toHaveBeenCalledWith<[TimerStateAction]>(
+      TimerStateAction.Decrement,
     );
+
+    const decrementCallCount = mockDispatch.mock.calls.length;
+
+    const updatedTimerModel: TimerModel = {
+      timerState: {
+        currentTime: 0,
+        maxTime: 60,
+        status: TimerStatus.Done,
+      },
+      dispatch: mockDispatch,
+    };
+
+    rerender(
+      <TimerContext.Provider value={updatedTimerModel}>
+        <Timer />
+      </TimerContext.Provider>,
+    );
+
+    jest.advanceTimersByTime(1000);
+
+    expect(mockDispatch).toHaveBeenCalledTimes(decrementCallCount);
   });
 
   test("timer actions should not be dispatched when done", () => {

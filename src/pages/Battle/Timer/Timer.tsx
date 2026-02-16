@@ -9,16 +9,12 @@ function Timer() {
   useEffect(() => {
     if (timerState.status === TimerStatus.Ongoing) {
       const countdownInterval = setInterval(() => {
-        if (timerState.currentTime > 0) {
-          dispatch(TimerStateAction.Decrement);
-        } else {
-          dispatch(TimerStateAction.Finish);
-        }
+        dispatch(TimerStateAction.Decrement);
       }, 1000);
 
       return () => clearInterval(countdownInterval);
     }
-  }, [timerState.status]);
+  }, [timerState.status, dispatch]);
 
   const minutes = Math.floor(timerState.currentTime / 60)
     .toString()

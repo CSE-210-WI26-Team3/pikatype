@@ -22,7 +22,6 @@ export enum TimerStateAction {
   Decrement,
   Start,
   Pause,
-  Finish,
 }
 
 const DEFAULT_TIMER_MODEL = {
@@ -44,13 +43,16 @@ export function timerReducer(
     case TimerStateAction.Pause:
       return { ...state, status: TimerStatus.Paused };
     case TimerStateAction.Decrement:
-      const newTime = Math.max(state.currentTime - 1, 0);
+      const newTime = state.currentTime - 1;
 
-      return { ...state, currentTime: newTime, status: TimerStatus.Ongoing };
+      if (newTime > 0) {
+        return { ...state, currentTime: newTime, status: TimerStatus.Ongoing };
+      } else {
+        return { ...state, currentTime: 0, status: TimerStatus.Done };
+      }
+
     case TimerStateAction.Start:
       return { ...state, status: TimerStatus.Ongoing };
-    case TimerStateAction.Finish:
-      return { ...state, currentTime: 0, status: TimerStatus.Done };
   }
 }
 
