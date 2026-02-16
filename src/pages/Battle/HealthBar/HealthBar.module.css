@@ -1,9 +1,3 @@
-:root {
-  --healthbarBackground: #b5b0b0;
-  --healthbarContainerBackground: #504949;
-  --currentHealthBackground: #1f9823;
-}
-
 .healthBarContainer {
   width: 400px;
   padding: 0.5rem;

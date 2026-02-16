@@ -8,6 +8,9 @@
   --pending-color: #636e72;
   --complete-color: #0984e3;
   --battle-background: #5e906a;
+  --healthbarBackground: #b5b0b0;
+  --healthbarContainerBackground: #504949;
+  --currentHealthBackground: #1f9823;
 }
 
 @font-face {
