@@ -57,12 +57,12 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.10)
-      identity-obj-proxy:
-        specifier: ^3.0.0
-        version: 3.0.0
       gh-pages:
         specifier: ^6.3.0
         version: 6.3.0
+      identity-obj-proxy:
+        specifier: ^3.0.0
+        version: 3.0.0
 
 packages:
 
@@ -4514,7 +4514,6 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
-
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   qs@6.14.1:

@@ -7,6 +7,11 @@
   },
   "homepage": "/pikatype/",
   "private": true,
+  "jest": {
+    "moduleNameMapper": {
+      "/^.+.module.(css|sass|scss)$/": "identity-obj-proxy"
+    }
+  },
   "dependencies": {
     "@base-ui/react": "^1.1.0",
     "@react-spring/web": "^10.0.3",
