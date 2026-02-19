@@ -41,12 +41,16 @@ export class Save {
             return;
         }
 
-        const parsed = JSON.parse(rawData) as Partial<SaveData>;
-        this.data = {
-            starter: parsed.starter !== null && parsed.starter !== undefined
-                ? parsed.starter : this.data.starter,
-            completedLevels: parsed.completedLevels ?? this.data.completedLevels,
-        };
+        try {
+            const parsed = JSON.parse(rawData) as Partial<SaveData>;
+            this.data = {
+                starter: parsed.starter !== null && parsed.starter !== undefined
+                    ? parsed.starter : this.data.starter,
+                completedLevels: parsed.completedLevels ?? this.data.completedLevels,
+            };
+        } catch {
+            this.data = this.createDefaults();
+        }
     }
 
     clear() {
