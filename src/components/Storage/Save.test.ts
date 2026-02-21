@@ -42,16 +42,15 @@ describe("Save", () => {
 
   it("sets and gets the starter", () => {
     const save = new Save(3);
-    save.setStarter("pikachu");
+    save.setStarter("charmander");
 
-    expect(save.getStarter()).toBe("pikachu");
+    expect(save.getStarter()).toBe("charmander");
   });
 
   it("persists data to localStorage on save", () => {
     const save = new Save(3);
     save.complete(1);
     save.setStarter("bulbasaur");
-    save.save();
 
     const stored = JSON.parse(store["pikatypeData"]);
     expect(stored.completedLevels).toEqual([true, false, false]);
@@ -88,30 +87,55 @@ describe("Save", () => {
     expect(save.getStarter()).toBeNull();
   });
 
+  it("invalid starter reset to default", () => {
+    store["pikatypeData"] = JSON.stringify({
+      completedLevels: [true, true, false],
+      starter: "pikachu",
+    });
+
+    const save = new Save(3);
+
+    expect(save.isCompleted(1)).toBe(true);
+    expect(save.isCompleted(2)).toBe(true);
+    expect(save.isCompleted(3)).toBe(false);
+    expect(save.getStarter()).toBeNull();
+  });
+
+  it("invalid completedLevels reset to default", () => {
+    store["pikatypeData"] = JSON.stringify({
+      completedLevels: [true, "test", false],
+      starter: "charmander",
+    });
+
+    const save = new Save(3);
+
+    expect(save.isCompleted(1)).toBe(false);
+    expect(save.isCompleted(2)).toBe(false);
+    expect(save.isCompleted(3)).toBe(false);
+    expect(save.getStarter()).toBe("charmander");
+  });
+
   it("persists data across multiple Save instances", () => {
     const first = new Save(3);
     first.complete(1);
     first.complete(3);
-    first.setStarter("pikachu");
-    first.save();
+    first.setStarter("charmander");
 
     const second = new Save(3);
 
     expect(second.isCompleted(1)).toBe(true);
     expect(second.isCompleted(2)).toBe(false);
     expect(second.isCompleted(3)).toBe(true);
-    expect(second.getStarter()).toBe("pikachu");
+    expect(second.getStarter()).toBe("charmander");
   });
 
   it("accumulates changes across multiple Save instances", () => {
     const first = new Save(3);
     first.complete(1);
-    first.save();
 
     const second = new Save(3);
     second.complete(2);
     second.setStarter("charmander");
-    second.save();
 
     const third = new Save(3);
 
@@ -130,4 +154,30 @@ describe("Save", () => {
     expect(save.isCompleted(1)).toBe(false);
     expect(save.getStarter()).toBeNull();
   });
+
+  it("throws when numLevels is invalid", () => {
+    expect(() => new Save(-1)).toThrow("numLevels must be a non-negative integer");
+    expect(() => new Save(5.3)).toThrow("numLevels must be a non-negative integer");
+  });
+
+  it("throws when complete is called with an out-of-bounds level", () => {
+    const save = new Save(3);
+
+    expect(() => save.complete(4)).toThrow("Level 4 does not exist");
+    expect(() => save.complete(0)).toThrow("Level 0 does not exist");
+    expect(() => save.isCompleted(1)).not.toThrow();
+  });
+
+  it("throws when isCompleted is called with an out-of-bounds level", () => {
+    const save = new Save(3);
+
+    expect(() => save.isCompleted(4)).toThrow("Level 4 does not exist");
+    expect(() => save.isCompleted(0)).toThrow("Level 0 does not exist");
+    expect(() => save.isCompleted(1)).not.toThrow();
+  });
+
+  it("throws when invalid starter pokemon is set", () => {
+    const save = new Save(3);
+    expect(() => save.setStarter("pikachu")).toThrow("pikachu is not a valid starter pokemon");
+  })
 });
