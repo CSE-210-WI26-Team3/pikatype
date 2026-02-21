@@ -1,9 +1,23 @@
+import { useMemo } from "react";
 import { useNavigate } from "react-router";
 import Button from "../../components/Button";
+import { Save } from "../../components/Storage/Save";
 import styles from "./Home.module.css";
+
+const NUM_LEVELS = 3;
 
 function Home() {
   const navigate = useNavigate();
+  const save = useMemo(() => new Save(NUM_LEVELS), []);
+
+  const handleNewGame = () => {
+    const hasStarter = save.getStarter() !== null;
+    if (hasStarter) {
+      navigate("/levels");
+    } else {
+      navigate("/starter");
+    }
+  };
 
   return (
     <div className={styles.homeContainer}>
@@ -15,7 +29,7 @@ function Home() {
         <Button
           label="New Game"
           className={styles.menuButton}
-          onClick={() => navigate("/levels")}
+          onClick={handleNewGame}
         />
         <Button
           label="Continue"
