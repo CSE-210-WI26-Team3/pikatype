@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { TypingPromptGenerator } from "../../wordGeneration";
 
 const VALID_KEYS_PATTERN = /^[a-zA-Z ]$/;
 
@@ -6,7 +13,7 @@ export enum TypingTrackerProgress {
   Valid = "Valid",
   Invalid = "Invalid",
   Complete = "Complete",
-};
+}
 
 type TypingTrackerState = {
   content: string;
@@ -28,7 +35,7 @@ const DEFAULT_TYPING_TRACKER_STATE = {
 
 const TypingTrackerContext = createContext<TypingTrackerContextType>({
   ...DEFAULT_TYPING_TRACKER_STATE,
-  getNewContent: () => { },
+  getNewContent: () => {},
 });
 
 // Mock function
@@ -37,51 +44,60 @@ function getNextWord() {
   return words[Math.floor(Math.random() * words.length)];
 }
 
-function TypingTrackerProvider({ children }: { children: ReactNode }) {
-  const [typingTrackerState, setTypingTrackerState] = useState<TypingTrackerState>(DEFAULT_TYPING_TRACKER_STATE);
+function TypingTrackerProvider({
+  promptGenerator,
+  children,
+}: {
+  children: ReactNode;
+  promptGenerator: TypingPromptGenerator;
+}) {
+  const [typingTrackerState, setTypingTrackerState] =
+    useState<TypingTrackerState>(DEFAULT_TYPING_TRACKER_STATE);
 
   const updateContent = useCallback((content: string) => {
-    setTypingTrackerState(prev => ({
+    setTypingTrackerState((prev) => ({
       ...prev,
       content,
     }));
   }, []);
 
   const updateState = useCallback((state: TypingTrackerProgress) => {
-    setTypingTrackerState(prev => ({
+    setTypingTrackerState((prev) => ({
       ...prev,
       state,
     }));
   }, []);
 
   const incrementCursor = useCallback(() => {
-    setTypingTrackerState(prev => ({
+    setTypingTrackerState((prev) => ({
       ...prev,
       cursor: prev.cursor + 1,
     }));
   }, []);
 
   const decrementCursor = useCallback(() => {
-    setTypingTrackerState(prev => ({
+    setTypingTrackerState((prev) => ({
       ...prev,
       cursor: prev.cursor - 1,
     }));
   }, []);
 
   const incrementCompletedWords = useCallback(() => {
-    setTypingTrackerState(prev => ({
+    setTypingTrackerState((prev) => ({
       ...prev,
       completedWords: prev.completedWords + 1,
     }));
   }, []);
 
   const getNewContent = useCallback(() => {
-    updateContent(getNextWord());
-    setTypingTrackerState(prev => ({
+    promptGenerator.getTypingPrompt().then((prompt) => {
+      updateContent(prompt);
+    });
+    setTypingTrackerState((prev) => ({
       ...prev,
       cursor: 0,
       state: TypingTrackerProgress.Valid,
-    }))
+    }));
   }, [updateContent]);
 
   // Set word on load
@@ -98,9 +114,14 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
           decrementCursor();
           updateState(TypingTrackerProgress.Valid);
         }
-      } else if (event.key === typingTrackerState.content[typingTrackerState.cursor]) {
+      } else if (
+        event.key === typingTrackerState.content[typingTrackerState.cursor]
+      ) {
         incrementCursor();
-        if (typingTrackerState.cursor === typingTrackerState.content.length - 1) {
+        if (
+          typingTrackerState.cursor ===
+          typingTrackerState.content.length - 1
+        ) {
           incrementCompletedWords();
           updateState(TypingTrackerProgress.Complete);
         }
@@ -110,14 +131,22 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
         incrementCursor();
         updateState(TypingTrackerProgress.Invalid);
       }
-    }
+    };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [typingTrackerState, decrementCursor, incrementCompletedWords, incrementCursor, updateState]);
+  }, [
+    typingTrackerState,
+    decrementCursor,
+    incrementCompletedWords,
+    incrementCursor,
+    updateState,
+  ]);
 
   return (
-    <TypingTrackerContext.Provider value={{ ...typingTrackerState, getNewContent }}>
+    <TypingTrackerContext.Provider
+      value={{ ...typingTrackerState, getNewContent }}
+    >
       {children}
     </TypingTrackerContext.Provider>
   );

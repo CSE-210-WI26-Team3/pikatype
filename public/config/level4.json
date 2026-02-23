@@ -1,0 +1,15 @@
+{
+  "generator": {
+    "type": "gibberish",
+    "minLength": 3,
+    "maxLength": 5,
+    "charSet": "qwertyuiop"
+  },
+  "level": {
+    "title": "Top Row",
+    "numPromptsToComplete": 20,
+    "enemySpriteImg": "",
+    "tutorial": "",
+    "tutorialText": ""
+  }
+}
