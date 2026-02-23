@@ -8,7 +8,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/levels" element={<Levels />} />
-      <Route path="/battle" element={<Battle />} />
+      <Route path="/battle/:levelId" element={<Battle />} />
     </Routes>
   );
 }
