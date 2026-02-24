@@ -1,18 +1,8 @@
-import { useNavigate } from "react-router";
-import Button from "../../components/Button";
 import styles from "./Levels.module.css";
-
-const LEVELS = [
-  "Home Row (Left Hand)",
-  "Home Row (Right Hand)",
-  "Home Row Both Hands",
-  "Top Row",
-  "Bottom Row",
-  "Single Words",
-  "Multiple Words",
-  "Punctuation",
-  "Short Sentences",
-];
+import LevelProvider from "./LevelProvider";
+import LevelsContainer from "./LevelsContainer";
+import Button from "../../components/Button";
+import { useNavigate } from "react-router";
 
 export type LevelConfiguration = {
   title: string;
@@ -35,28 +25,17 @@ function Levels() {
   const navigate = useNavigate();
 
   return (
-    <div id="level-screen" className={styles.levelScreen}>
-      <h1 className={styles.levelScreenTitle}>Levels</h1>
-      <div id="level-container" className={styles.levelContainer}>
-        {LEVELS.map((level, i) => {
-          let buttonStyle = styles.levelButton;
-
-          if (i > 2) {
-            buttonStyle = styles.disabledLevelButton;
-          }
-
-          return (
-            <Button
-              disabled={i > 2}
-              key={i + 1}
-              label={level}
-              className={buttonStyle}
-              onClick={() => navigate(`/battle/${i + 1}`)}
-            />
-          );
-        })}
+    <LevelProvider>
+      <div id="level-screen" className={styles.levelScreen}>
+        <h1 className={styles.levelScreenTitle}>Levels</h1>
+        <LevelsContainer />
+        <Button
+          className={styles.backButton}
+          label="Back to Menu"
+          onClick={() => navigate("/")}
+        />
       </div>
-    </div>
+    </LevelProvider>
   );
 }
 
