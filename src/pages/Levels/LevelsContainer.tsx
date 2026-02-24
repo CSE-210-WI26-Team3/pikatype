@@ -36,10 +36,7 @@ function LevelsContainer() {
             data-testid={`level-button-${levelIdx}`}
             label={levelConfig.battle.title}
             className={buttonStyle}
-            onClick={() => {
-              navigate(`/battle/${levelIdx}`);
-              save.complete(levelIdx);
-            }}
+            onClick={() => navigate(`/battle/${levelIdx}`)}
           />
         );
       })}
