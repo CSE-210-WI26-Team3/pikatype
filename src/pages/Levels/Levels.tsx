@@ -24,6 +24,8 @@ export function isValidLevelConfig(
 function Levels() {
   const navigate = useNavigate();
 
+  const navigate = useNavigate();
+
   return (
     <LevelProvider>
       <div id="level-screen" className={styles.levelScreen}>
