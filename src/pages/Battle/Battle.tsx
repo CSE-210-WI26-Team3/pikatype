@@ -4,12 +4,13 @@ import BattleTimer from "./Timer";
 import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
 import { PlayerHealthBar } from "./HealthBar/HealthBar";
+import { SingleWordGenerator } from "../../wordGeneration/index";
 
 function Battle() {
   return (
     <div className={styles.battleContainer}>
       <h1 className={styles.battleTitle}>Battle</h1>
-      <TypingTrackerProvider>
+      <TypingTrackerProvider promptGenerator={new SingleWordGenerator()}>
         <TimerProvider time={60}>
           <BattleTimer />
 
