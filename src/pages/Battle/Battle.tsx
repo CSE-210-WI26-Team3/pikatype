@@ -7,8 +7,9 @@ import styles from "./Battle.module.css";
 import { PlayerHealthBar } from "./HealthBar/HealthBar";
 import LevelCompleteModal from "./LevelCompleteModal/LevelCompleteModal";
 import TimeUpModal from "./TimeUpModal/TimeUpModal";
+import { SingleWordGenerator } from "../../wordGeneration/index";
 
-const BATTLE_DURATION = 6;
+const BATTLE_DURATION = 60;
 
 function Battle() {
   const totalCharsRef = useRef(0);
@@ -45,7 +46,12 @@ function Battle() {
   return (
     <div className={styles.battleContainer}>
       <h1 className={styles.battleTitle}>Battle</h1>
-      <TypingTrackerProvider key={battleKey} isActive={isTimerActive} onWordComplete={handleWordComplete}>
+      <TypingTrackerProvider
+        key={battleKey}
+        promptGenerator={new SingleWordGenerator()}
+        isActive={isTimerActive}
+        onWordComplete={handleWordComplete}
+      >
         <TimerProvider time={BATTLE_DURATION} onStart={handleTimerStart} onDone={handleTimerDone}>
           <BattleTimer />
           <TypingTrackerView />
