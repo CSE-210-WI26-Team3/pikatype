@@ -5,56 +5,56 @@ characters and output a random string up to 5 to 8 letters
 We can control the range of letters and the characters as well
 */
 
-type gibberishData = {
+type GibberishData = {
     characters: string[],
     minLen: number,
     maxLen: number, 
 }
 
 
-class gibberishGenerator {
+class GibberishGenerator {
     characters: string[]; 
     minLen: number; 
     maxLen: number; 
 
-    constructor(jsonData: gibberishData){
-        if (jsonData.minLen <= 0){
+    constructor(JsonData: GibberishData){
+        if (JsonData.minLen <= 0){
             throw new Error('Minimum word length isn\'t greater than 0')
         }
 
-        if (jsonData.maxLen <= jsonData.minLen){
+        if (JsonData.maxLen <= JsonData.minLen){
             throw new Error('Maximum word length is equal to or less than the minimum word length')
         }
 
-        if (jsonData.characters.length == 0){
+        if (JsonData.characters.length == 0){
             throw new Error('Number of characters passed is empty.')
         }
 
-        for(const element of jsonData.characters){
+        for(const element of JsonData.characters){
             // If the length of a word is not 
             if(element.length != 1){
                 throw new Error('Length of strings are not 1. Strings must be singular characters')
             }
         }
 
-        this.characters = jsonData.characters
-        this.minLen = jsonData.minLen
-        this.maxLen = jsonData.maxLen
+        this.characters = JsonData.characters
+        this.minLen = JsonData.minLen
+        this.maxLen = JsonData.maxLen
     }
 
     generate () {
         const wordLen = Math.floor(Math.random() * (this.maxLen - this.minLen + 1) + this.minLen) 
 
-        let generatedWord = ""
+        let GeneratedWord = ""
         for(let i = 0; i<wordLen; i++){
-            const chosenChar = this.characters[Math.floor(Math.random() * (this.characters.length))]
+            const ChosenChar = this.characters[Math.floor(Math.random() * (this.characters.length))]
 
-            generatedWord = generatedWord + chosenChar
+            GeneratedWord = GeneratedWord + ChosenChar
         }
 
-        return generatedWord
+        return GeneratedWord
     }
 }
 
-export {gibberishGenerator}
-export type {gibberishData}
+export {GibberishGenerator}
+export type {GibberishData}

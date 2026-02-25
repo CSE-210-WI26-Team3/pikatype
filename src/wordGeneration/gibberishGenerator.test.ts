@@ -5,7 +5,7 @@ a random string given a list of characters
  */
 
 //Imports
-import { gibberishGenerator, gibberishData} from "./gibberishGenerator";
+import { GibberishGenerator, GibberishData} from "./gibberishGenerator";
 import * as fs from 'fs' 
 
 describe('Testing gibberishGenerator Suite', () => {
@@ -17,7 +17,7 @@ describe('Testing gibberishGenerator Suite', () => {
             'characters': ["a", "s", "d", "f", "g"], 
             'type': 'gibberish'
         }
-        const testObj = new gibberishGenerator(testParams)
+        const testObj = new GibberishGenerator(testParams)
  
         expect(testObj.minLen).toBe(5)
         expect(testObj.maxLen).toBe(7)
@@ -31,7 +31,7 @@ describe('Testing gibberishGenerator Suite', () => {
             'characters': ["a", "s", "d", "f", "g"],
             'type': 'gibberish'
         }
-        const testObj = new gibberishGenerator(testParams)
+        const testObj = new GibberishGenerator(testParams)
 
         const mockRandom = jest.spyOn(Math, 'random');
 
@@ -102,7 +102,7 @@ describe('Testing gibberishGenerator Suite', () => {
         for(const obj of test_objs){
             try
             {
-                new gibberishGenerator(obj)
+                new GibberishGenerator(obj)
                 throw new Error('fail is not defined')
             } catch (e){
                 if (e instanceof Error){
