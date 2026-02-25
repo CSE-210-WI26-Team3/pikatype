@@ -1,21 +1,20 @@
 import { useContext, useEffect } from "react";
 import Button from "../../../components/Button";
-import { TimerContext } from "./timerContext";
+import { TimerContext, TimerStateAction, TimerStatus } from "./TimerProvider";
 import styles from "./Timer.module.css";
 
 function Timer() {
   const { timerState, dispatch } = useContext(TimerContext);
 
   useEffect(() => {
-    if (timerState.state === "ongoing") {
+    if (timerState.status === TimerStatus.Ongoing) {
       const countdownInterval = setInterval(() => {
-        if (timerState.currentTime > 0) dispatch("decrement");
-        else dispatch("finish");
+        dispatch(TimerStateAction.Decrement);
       }, 1000);
 
       return () => clearInterval(countdownInterval);
     }
-  }, [timerState, dispatch]);
+  }, [timerState.status, dispatch]);
 
   const minutes = Math.floor(timerState.currentTime / 60)
     .toString()
@@ -24,24 +23,23 @@ function Timer() {
 
   return (
     <div className={styles.timer}>
-      <p role="timer-duration">
+      <p id="timer-duration">
         Time Left: {minutes}:{seconds}
       </p>
-      <p>{timerState.state}</p>
-      {timerState.state !== "ongoing" && (
+      {timerState.status !== TimerStatus.Ongoing && (
         <Button
-          role="start-button"
+          id="start-button"
           className={styles.timer}
           label="start"
-          onClick={() => dispatch("start")}
+          onClick={() => dispatch(TimerStateAction.Start)}
         />
       )}
-      {timerState.state === "ongoing" && (
+      {timerState.status === TimerStatus.Ongoing && (
         <Button
-          role="pause-button"
+          id="pause-button"
           className={styles.timer}
           label="pause"
-          onClick={() => dispatch("pause")}
+          onClick={() => dispatch(TimerStateAction.Pause)}
         />
       )}
     </div>

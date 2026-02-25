@@ -1,41 +1,37 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Progress } from "@base-ui/react";
-import styles from "./Healthbar.module.css";
+import styles from "./HealthBar.module.css";
+import { TimerContext } from "../Timer/TimerProvider";
 
-export type HealthBarType = "player" | "enemy";
+interface HealthBarProps {
+  percentValue: number;
+}
 
-type HealthBarProps = {
-  type: HealthBarType;       
-  valuePercent: number;      
-  label?: string;            
-};
-
-function HealthBar({ type, label = "HP", valuePercent }: HealthBarProps) {
-
+export function HealthBar({ percentValue }: HealthBarProps) {
   return (
     <Progress.Root
-      value={valuePercent}
+      value={percentValue}
       className={styles.healthBarContainer}
-      role="healthbar"
+      id="healthbar"
     >
-      <Progress.Label role="healthbar-label" className={styles.healthBarLabel}>
-        {label}
+      <Progress.Label id="healthbar-label" className={styles.healthBarLabel}>
+        HP
       </Progress.Label>
-
-      <Progress.Track
-        role="healthbar-track"
-        className={`${styles.healthBarTrack} ${type === "enemy" ? styles.enemyTrack : ""}`}
-      >
+      <Progress.Track id="healthbar-track" className={styles.healthBarTrack}>
         <Progress.Indicator
-          role="healthbar-indicator"
-          className={`${styles.healthBarIndicator} ${
-            type === "enemy" ? styles.enemy : styles.player
-          }`}
+          id="healthbar-indicator"
+          className={styles.healthBarIndicator}
         />
       </Progress.Track>
-
     </Progress.Root>
   );
 }
 
-export default HealthBar;
+export function PlayerHealthBar() {
+  const { timerState } = useContext(TimerContext);
+  const playerHealth = Math.floor(
+    (timerState.currentTime / timerState.maxTime) * 100,
+  );
+
+  return <HealthBar percentValue={playerHealth} />;
+}

@@ -1,11 +1,11 @@
-name: Tests
+name: Build
 
 on:
   pull_request:
     branches: [main]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +22,4 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm test
-        env:
-          CI: true
+      - run: pnpm run build

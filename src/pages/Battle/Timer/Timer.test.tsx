@@ -1,7 +1,27 @@
 import { act, render, screen } from "@testing-library/react";
 import Timer from "./Timer";
-import { TimerContext, TimerModel, TimerStateAction } from "./timerContext";
-import TimerProvider from "./TimerProvider";
+import TimerProvider, {
+  TimerContext,
+  TimerModel,
+  TimerStateAction,
+  TimerStatus,
+} from "./TimerProvider";
+
+function pressStartButton() {
+  const startButton = document.getElementById("start-button");
+  expect(startButton).toBeTruthy();
+  startButton!.click();
+}
+
+function pressPauseButton() {
+  const pauseButton = document.getElementById("pause-button");
+  expect(pauseButton).toBeTruthy();
+  pauseButton!.click();
+}
+
+function assertTimerText(timeText: string) {
+  expect(document.getElementById("timer-duration")).toHaveTextContent(timeText);
+}
 
 describe("Battle timer reducer unit tests", () => {
   beforeEach(() => {
@@ -10,6 +30,9 @@ describe("Battle timer reducer unit tests", () => {
 
   afterEach(() => {
     jest.clearAllTimers();
+  });
+
+  afterAll(() => {
     jest.useRealTimers();
   });
 
@@ -18,7 +41,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 60,
         maxTime: 60,
-        state: "initialized",
+        status: TimerStatus.Initialized,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -29,10 +52,10 @@ describe("Battle timer reducer unit tests", () => {
       </TimerContext.Provider>,
     );
 
-    screen.getByRole("start-button").click();
+    pressStartButton();
 
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
-      "start",
+      TimerStateAction.Start,
     );
   });
 
@@ -41,7 +64,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 49,
         maxTime: 60,
-        state: "ongoing",
+        status: TimerStatus.Ongoing,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -56,7 +79,7 @@ describe("Battle timer reducer unit tests", () => {
 
     expect(timerModel.dispatch).toHaveBeenCalled();
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
-      "decrement",
+      TimerStateAction.Decrement,
     );
 
     jest.advanceTimersByTime(1000);
@@ -64,7 +87,7 @@ describe("Battle timer reducer unit tests", () => {
     expect(timerModel.dispatch).toHaveBeenCalledTimes(2);
     expect(timerModel.dispatch).toHaveBeenNthCalledWith<[TimerStateAction]>(
       2,
-      "decrement",
+      TimerStateAction.Decrement,
     );
   });
 
@@ -73,7 +96,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 49,
         maxTime: 60,
-        state: "ongoing",
+        status: TimerStatus.Ongoing,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -84,11 +107,11 @@ describe("Battle timer reducer unit tests", () => {
       </TimerContext.Provider>,
     );
 
-    screen.getByRole("pause-button").click();
+    pressPauseButton();
 
     expect(timerModel.dispatch).toHaveBeenCalled();
     expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
-      "pause",
+      TimerStateAction.Pause,
     );
   });
 
@@ -97,7 +120,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 49,
         maxTime: 60,
-        state: "paused",
+        status: TimerStatus.Paused,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -113,17 +136,18 @@ describe("Battle timer reducer unit tests", () => {
     expect(timerModel.dispatch).toHaveBeenCalledTimes(0);
   });
 
-  test("timer finish action should be dispatched when timer runs out", () => {
+  test("timer decrement action should not be dispatched when timer runs out", () => {
+    const mockDispatch = jest.fn<void, [TimerStateAction]>();
     const timerModel: TimerModel = {
       timerState: {
-        currentTime: 0,
+        currentTime: 1,
         maxTime: 60,
-        state: "ongoing",
+        status: TimerStatus.Ongoing,
       },
-      dispatch: jest.fn<void, [TimerStateAction]>(),
+      dispatch: mockDispatch,
     };
 
-    render(
+    const { rerender } = render(
       <TimerContext.Provider value={timerModel}>
         <Timer />
       </TimerContext.Provider>,
@@ -131,10 +155,30 @@ describe("Battle timer reducer unit tests", () => {
 
     jest.advanceTimersByTime(1000);
 
-    expect(timerModel.dispatch).toHaveBeenCalled();
-    expect(timerModel.dispatch).toHaveBeenCalledWith<[TimerStateAction]>(
-      "finish",
+    expect(mockDispatch).toHaveBeenCalledWith<[TimerStateAction]>(
+      TimerStateAction.Decrement,
     );
+
+    const decrementCallCount = mockDispatch.mock.calls.length;
+
+    const updatedTimerModel: TimerModel = {
+      timerState: {
+        currentTime: 0,
+        maxTime: 60,
+        status: TimerStatus.Done,
+      },
+      dispatch: mockDispatch,
+    };
+
+    rerender(
+      <TimerContext.Provider value={updatedTimerModel}>
+        <Timer />
+      </TimerContext.Provider>,
+    );
+
+    jest.advanceTimersByTime(1000);
+
+    expect(mockDispatch).toHaveBeenCalledTimes(decrementCallCount);
   });
 
   test("timer actions should not be dispatched when done", () => {
@@ -142,7 +186,7 @@ describe("Battle timer reducer unit tests", () => {
       timerState: {
         currentTime: 0,
         maxTime: 60,
-        state: "done",
+        status: TimerStatus.Done,
       },
       dispatch: jest.fn<void, [TimerStateAction]>(),
     };
@@ -184,7 +228,7 @@ describe("battle timer component tests", () => {
       </TimerProvider>,
     );
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("01:25");
+    assertTimerText("01:25");
   });
 
   test("timer should start when start button clicked", () => {
@@ -194,14 +238,14 @@ describe("battle timer component tests", () => {
       </TimerProvider>,
     );
     act(() => {
-      screen.getByRole("start-button").click();
+      pressStartButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(1000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:59");
+    assertTimerText("00:59");
   });
 
   test("timer decreases every second", () => {
@@ -212,14 +256,14 @@ describe("battle timer component tests", () => {
     );
 
     act(() => {
-      screen.getByRole("start-button").click();
+      pressStartButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(5000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:55");
+    assertTimerText("00:55");
   });
 
   test("timer pauses when pause button clicked", () => {
@@ -230,24 +274,24 @@ describe("battle timer component tests", () => {
     );
 
     act(() => {
-      screen.getByRole("start-button").click();
+      pressStartButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(5000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:55");
+    assertTimerText("00:55");
 
     act(() => {
-      screen.getByRole("pause-button").click();
+      pressPauseButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(5000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:55");
+    assertTimerText("00:55");
   });
 
   test("timer should stop at 0", () => {
@@ -258,19 +302,19 @@ describe("battle timer component tests", () => {
     );
 
     act(() => {
-      screen.getByRole("start-button").click();
+      pressStartButton();
     });
 
     act(() => {
       jest.advanceTimersByTime(2000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:00");
+    assertTimerText("00:00");
 
     act(() => {
       jest.advanceTimersByTime(5000);
     });
 
-    expect(screen.getByRole("timer-duration")).toHaveTextContent("00:00");
+    assertTimerText("00:00");
   });
 });

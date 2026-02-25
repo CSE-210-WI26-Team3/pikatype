@@ -1,10 +1,16 @@
 import { render, screen } from "@testing-library/react";
-import HealthBar from "./index";
+import { HealthBar } from "./HealthBar";
 import {
   TimerContext,
   TimerModel,
+  TimerState,
   TimerStateAction,
-} from "../Timer/timerContext";
+  TimerStatus,
+} from "../Timer/TimerProvider";
+
+function calculateHealth(timerState: TimerState) {
+  return Math.floor((timerState.currentTime / timerState.maxTime) * 100);
+}
 
 /**
  * Mocking the timer component and only testing healthbar UI updates properly
@@ -25,115 +31,74 @@ describe("player health bar tests", () => {
   });
 
   test("loads and displays healthbar at full health", async () => {
-    const timerModel: TimerModel = {
-      timerState: {
-        currentTime: 60,
-        maxTime: 60,
-        state: "initialized",
-      },
-      dispatch: jest.fn<void, [TimerStateAction]>(),
+    const timerState = {
+      currentTime: 60,
+      maxTime: 60,
+      status: TimerStatus.Initialized,
     };
 
-    render(
-      <TimerContext.Provider value={timerModel}>
-        <HealthBar
-          type={"player"}
-          valuePercent={
-            (timerModel.timerState.currentTime /
-              timerModel.timerState.maxTime) *
-            100
-          }
-        />
-      </TimerContext.Provider>,
-    );
+    const playerHealth = calculateHealth(timerState);
 
-    const healthbar = screen.getByRole("healthbar-indicator");
-    const healthbarWidth = getComputedStyle(healthbar).width;
+    render(<HealthBar percentValue={playerHealth} />);
+
+    const healthbar = document.getElementById("healthbar-indicator");
+    expect(healthbar).toBeTruthy();
+    const healthbarWidth = getComputedStyle(healthbar!).width;
 
     expect(healthbar).toBeVisible();
     expect(healthbarWidth).toMatch(/100%/);
   });
 
   test("healthbar decreases upon time change", async () => {
-    const timerModel: TimerModel = {
-      timerState: {
-        currentTime: 47,
-        maxTime: 60,
-        state: "ongoing",
-      },
-      dispatch: jest.fn<void, [TimerStateAction]>(),
+    const timerState: TimerState = {
+      currentTime: 47,
+      maxTime: 60,
+      status: TimerStatus.Ongoing,
     };
 
-    const { rerender } = render(
-      <TimerContext.Provider value={timerModel}>
-        <HealthBar
-          type={"player"}
-          valuePercent={
-            (timerModel.timerState.currentTime /
-              timerModel.timerState.maxTime) *
-            100
-          }
-        />
-      </TimerContext.Provider>,
-    );
+    const playerHealth = calculateHealth(timerState);
 
-    const currentHealthBar = screen.getByRole("healthbar-indicator");
-    const currentHealthBarWidth = getComputedStyle(currentHealthBar).width;
+    const { rerender } = render(<HealthBar percentValue={playerHealth} />);
+
+    const currentHealthBar = document.getElementById("healthbar-indicator");
+    expect(currentHealthBar).toBeTruthy();
     expect(currentHealthBar).toBeVisible();
+    const currentHealthBarWidth = getComputedStyle(currentHealthBar!).width;
     expect(currentHealthBarWidth).toBeTruthy();
 
     // simulate time change by updating timer model state
-    timerModel.timerState = {
+    const newTimerState: TimerState = {
       currentTime: 46,
       maxTime: 60,
-      state: "ongoing",
+      status: TimerStatus.Ongoing,
     };
 
-    rerender(
-      <TimerContext.Provider value={timerModel}>
-        <HealthBar
-          type={"player"}
-          valuePercent={
-            (timerModel.timerState.currentTime /
-              timerModel.timerState.maxTime) *
-            100
-          }
-        />
-      </TimerContext.Provider>,
-    );
+    const newPlayerHealth = calculateHealth(newTimerState);
 
-    const newHealthBar = screen.getByRole("healthbar-indicator");
-    const newHealthBarWidth = getComputedStyle(newHealthBar).width;
+    rerender(<HealthBar percentValue={newPlayerHealth} />);
+
+    const newHealthBar = document.getElementById("healthbar-indicator");
+    expect(newHealthBar).toBeTruthy();
     expect(newHealthBar).toBeVisible();
+    const newHealthBarWidth = getComputedStyle(newHealthBar!).width;
     expect(newHealthBarWidth).not.toMatch(currentHealthBarWidth);
   });
 
   test("empty health bar at 0 health", () => {
-    const timerModel: TimerModel = {
-      timerState: {
-        currentTime: 0,
-        maxTime: 60,
-        state: "done",
-      },
-      dispatch: jest.fn<void, [TimerStateAction]>(),
+    const timerState: TimerState = {
+      currentTime: 0,
+      maxTime: 60,
+      status: TimerStatus.Done,
     };
 
-    render(
-      <TimerContext.Provider value={timerModel}>
-        <HealthBar
-          type={"player"}
-          valuePercent={
-            (timerModel.timerState.currentTime /
-              timerModel.timerState.maxTime) *
-            100
-          }
-        />
-      </TimerContext.Provider>,
-    );
+    const playerHealth = calculateHealth(timerState);
 
-    const healthBar = screen.getByRole("healthbar-indicator");
-    const healthBarWidth = getComputedStyle(healthBar).width;
+    render(<HealthBar percentValue={playerHealth} />);
+
+    const healthBar = document.getElementById("healthbar-indicator");
+    expect(healthBar).toBeTruthy();
     expect(healthBar).toBeVisible();
+    const healthBarWidth = getComputedStyle(healthBar!).width;
     expect(healthBarWidth).toMatch(/0%/);
   });
 });
