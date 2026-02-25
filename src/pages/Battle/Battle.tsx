@@ -5,6 +5,7 @@ import BattleTimer from "./Timer";
 import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
 import { PlayerHealthBar } from "./HealthBar/HealthBar";
+import LevelCompleteModal from "./LevelCompleteModal/LevelCompleteModal";
 
 const BATTLE_DURATION = 6;
 
@@ -78,6 +79,7 @@ function Battle() {
           </div>
         </TimerProvider>
       </TypingTrackerProvider>
+      <LevelCompleteModal isVisible={isLevelComplete} wpm={wpm} onPlayAgain={handlePlayAgain} />
     </div>
   );
 }
