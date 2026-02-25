@@ -5,17 +5,27 @@ export type OpponentHealthState = {
   maxHp: number;
 };
 
+export enum OpponentHealthActionType {
+  Damage,
+  Reset,
+}
+
 export type OpponentHealthAction =
-  | { type: "damage"; amount: number }
-  | { type: "reset" };
+  | { type: OpponentHealthActionType.Damage; amount: number }
+  | { type: OpponentHealthActionType.Reset };
 
 export type OpponentHealthModel = {
   healthState: OpponentHealthState;
   dispatch: Dispatch<OpponentHealthAction>;
 };
 
+const DEFAULT_OPPONENT_HEALTH_MODEL: OpponentHealthModel = {
+  healthState: { currentHp: 100, maxHp: 100 },
+  dispatch: () => {},
+};
+
 export const OpponentHealthContext = createContext<OpponentHealthModel>(
-  {} as OpponentHealthModel,
+  DEFAULT_OPPONENT_HEALTH_MODEL,
 );
 
 export function opponentHealthReducer(
@@ -23,11 +33,11 @@ export function opponentHealthReducer(
   action: OpponentHealthAction,
 ): OpponentHealthState {
   switch (action.type) {
-    case "damage": {
+    case OpponentHealthActionType.Damage: {
       const next = Math.max(0, state.currentHp - action.amount);
       return { ...state, currentHp: next };
     }
-    case "reset":
+    case OpponentHealthActionType.Reset:
       return { ...state, currentHp: state.maxHp };
     default:
       return state;
