@@ -1,4 +1,4 @@
-import { PropsWithChildren, useReducer, createContext, Dispatch } from "react";
+import { PropsWithChildren, useReducer, useEffect, createContext, Dispatch } from "react";
 
 export type TimerModel = {
   timerState: TimerState;
@@ -58,9 +58,11 @@ export function timerReducer(
 
 interface TimerProps extends PropsWithChildren {
   time: number;
+  onStart?: () => void;
+  onDone?: () => void;
 }
 
-function TimerProvider({ children, time }: TimerProps) {
+function TimerProvider({ children, time, onStart, onDone }: TimerProps) {
   const initialTimerState: TimerState = {
     currentTime: time,
     maxTime: time,
@@ -68,6 +70,18 @@ function TimerProvider({ children, time }: TimerProps) {
   };
 
   const [timerState, dispatch] = useReducer(timerReducer, initialTimerState);
+
+  useEffect(() => {
+    if (timerState.status === TimerStatus.Ongoing) {
+      onStart?.();
+    }
+  }, [timerState.status, onStart]);
+
+  useEffect(() => {
+    if (timerState.status === TimerStatus.Done) {
+      onDone?.();
+    }
+  }, [timerState.status, onDone]);
 
   const timerModel: TimerModel = {
     timerState,

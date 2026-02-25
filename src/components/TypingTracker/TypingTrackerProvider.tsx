@@ -33,11 +33,17 @@ const TypingTrackerContext = createContext<TypingTrackerContextType>({
 
 // Mock function
 function getNextWord() {
-  const words = ["hello", "world", "typing", "practice", "random"];
+  const words = ["hello", "world", "react", "apple", "green"];
   return words[Math.floor(Math.random() * words.length)];
 }
 
-function TypingTrackerProvider({ children }: { children: ReactNode }) {
+interface TypingTrackerProviderProps {
+  children: ReactNode;
+  isActive?: boolean;
+  onWordComplete?: (wordLength: number) => void;
+}
+
+function TypingTrackerProvider({ children, isActive = false, onWordComplete }: TypingTrackerProviderProps) {
   const [typingTrackerState, setTypingTrackerState] = useState<TypingTrackerState>(DEFAULT_TYPING_TRACKER_STATE);
 
   const updateContent = useCallback((content: string) => {
@@ -91,6 +97,7 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isActive) return;
       if (typingTrackerState.state === TypingTrackerProgress.Complete) return;
 
       if (typingTrackerState.state === TypingTrackerProgress.Invalid) {
@@ -103,6 +110,7 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
         if (typingTrackerState.cursor === typingTrackerState.content.length - 1) {
           incrementCompletedWords();
           updateState(TypingTrackerProgress.Complete);
+          onWordComplete?.(typingTrackerState.content.length);
         }
       } else {
         if (!VALID_KEYS_PATTERN.test(event.key)) return; // if key is invalid, don't do anything
@@ -114,7 +122,7 @@ function TypingTrackerProvider({ children }: { children: ReactNode }) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [typingTrackerState, decrementCursor, incrementCompletedWords, incrementCursor, updateState]);
+  }, [typingTrackerState, isActive, decrementCursor, incrementCompletedWords, incrementCursor, updateState, onWordComplete]);
 
   return (
     <TypingTrackerContext.Provider value={{ ...typingTrackerState, getNewContent }}>
