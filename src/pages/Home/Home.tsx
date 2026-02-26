@@ -34,7 +34,11 @@ function Home() {
             onClick={() => navigate("/battle")}
           />
         )}
-        <Button label="Options" className={styles.menuButton} />
+        <Button
+          label="Options"
+          className={styles.menuButton}
+          onClick={() => navigate("/options")}
+        />
         <Button label="Save & Quit" className={styles.menuButton} />
       </div>
     </div>

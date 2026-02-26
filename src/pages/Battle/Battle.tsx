@@ -1,7 +1,7 @@
 import { BattleContent } from "./BattleContent";
 import { useParams } from "react-router";
-import { useMemo } from "react";
-import TypingTrackerProvider  from "../../components/TypingTracker/TypingTrackerProvider";
+import { useMemo, useState } from "react";
+import TypingTrackerProvider from "../../components/TypingTracker/TypingTrackerProvider";
 
 import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
@@ -9,8 +9,10 @@ import styles from "./Battle.module.css";
 import { Save } from "../../components/Storage/Save";
 import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
 import { getPokemonByLevel } from "../../data/pokemon";
+import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
 function Battle() {
+  const [audioPlaying, setAudioPlaying] = useState<boolean>(true);
   const save = useMemo(() => new Save(NUM_LEVELS), []);
   const params = useParams();
 
@@ -27,10 +29,18 @@ function Battle() {
 
   return (
     <div className={styles.battleContainer}>
+      <AudioPlayer
+        playing={audioPlaying}
+        src={process.env.PUBLIC_URL + "/audio/wild-battle-theme.mp3"}
+      />
       <h1 className={styles.battleTitle}>{currentLevel.battle.title}</h1>
       <TypingTrackerProvider promptGenerator={currentLevel.generator}>
         <TimerProvider time={60}>
-          <BattleContent starterPokemon={chosenPokemon} enemyPokemon={enemyPokemon} enemyMaxHp={enemyMaxHp} />
+          <BattleContent
+            starterPokemon={chosenPokemon}
+            enemyPokemon={enemyPokemon}
+            enemyMaxHp={enemyMaxHp}
+          />
         </TimerProvider>
       </TypingTrackerProvider>
     </div>
