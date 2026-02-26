@@ -38,18 +38,12 @@ const TypingTrackerContext = createContext<TypingTrackerContextType>({
   getNewContent: () => {},
 });
 
-// Mock function
-function getNextWord() {
-  const words = ["hello", "world", "typing", "practice", "random"];
-  return words[Math.floor(Math.random() * words.length)];
-}
-
 function TypingTrackerProvider({
   promptGenerator,
   children,
 }: {
-  children: ReactNode;
   promptGenerator: TypingPromptGenerator;
+  children: ReactNode;
 }) {
   const [typingTrackerState, setTypingTrackerState] =
     useState<TypingTrackerState>(DEFAULT_TYPING_TRACKER_STATE);
@@ -92,13 +86,13 @@ function TypingTrackerProvider({
   const getNewContent = useCallback(() => {
     promptGenerator.getTypingPrompt().then((prompt) => {
       updateContent(prompt);
+      setTypingTrackerState((prev) => ({
+        ...prev,
+        cursor: 0,
+        state: TypingTrackerProgress.Valid,
+      }));
     });
-    setTypingTrackerState((prev) => ({
-      ...prev,
-      cursor: 0,
-      state: TypingTrackerProgress.Valid,
-    }));
-  }, [updateContent]);
+  }, [updateContent, promptGenerator]);
 
   // Set word on load
   useEffect(() => {

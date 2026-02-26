@@ -1,4 +1,4 @@
-import { TypingPromptGenerator } from "..";
+import { TypingPromptGenerator } from "../index";
 
 const MULTI_WORD_FILE = "/multi_words.txt";
 

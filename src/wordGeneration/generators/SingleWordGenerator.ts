@@ -1,4 +1,4 @@
-import { TypingPromptGenerator } from "..";
+import { TypingPromptGenerator } from "../index";
 
 const SINGLE_WORD_FILE = process.env.PUBLIC_URL + "/single_words.txt";
 
