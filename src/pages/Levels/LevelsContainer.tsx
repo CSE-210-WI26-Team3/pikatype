@@ -1,18 +1,17 @@
 import { useContext, useMemo } from "react";
 import styles from "./LevelsContainer.module.css";
-import { LevelContext, NUM_LEVELS } from "./LevelProvider";
+import { LEVEL_CONFIGS, NUM_LEVELS } from "./LevelConfigs";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router";
 import { Save } from "../../components/Storage/Save";
 
 function LevelsContainer() {
-  const levelConfigs = useContext(LevelContext);
   const navigate = useNavigate();
   const save = useMemo(() => new Save(NUM_LEVELS), []);
 
   return (
     <div id="level-container" className={styles.levelContainer}>
-      {levelConfigs.map((levelConfig, i) => {
+      {LEVEL_CONFIGS.map((levelConfig, i) => {
         const levelIdx = i + 1;
         let buttonStyle = styles.levelButton;
 

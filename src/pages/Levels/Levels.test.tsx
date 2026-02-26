@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Levels from "./Levels";
-import { NUM_LEVELS } from "./LevelProvider";
+import { NUM_LEVELS } from "./LevelConfigs";
 import { Save } from "../../components/Storage/Save";
 
 const mockNavigate = jest.fn();

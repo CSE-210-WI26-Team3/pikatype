@@ -1,17 +1,16 @@
-import { createContext, PropsWithChildren } from "react";
 import {
   MultiWordGenerator,
   SingleWordGenerator,
   TypingPromptGenerator,
-} from "../../wordGeneration";
-import { BattleConfig } from "../Battle";
+} from "../../wordGeneration/index";
+import { BattleConfig } from "../Battle/index";
 
 export type LevelConfig = {
   battle: BattleConfig;
   generator: TypingPromptGenerator;
 };
 
-const LEVEL_CONFIGS: LevelConfig[] = [
+export const LEVEL_CONFIGS: LevelConfig[] = [
   {
     battle: {
       title: "Home Row (Left Hand)",
@@ -136,15 +135,3 @@ const LEVEL_CONFIGS: LevelConfig[] = [
 ];
 
 export const NUM_LEVELS = LEVEL_CONFIGS.length;
-
-export const LevelContext = createContext<LevelConfig[]>(LEVEL_CONFIGS);
-
-function LevelProvider({ children }: PropsWithChildren) {
-  return (
-    <LevelContext.Provider value={LEVEL_CONFIGS}>
-      {children}
-    </LevelContext.Provider>
-  );
-}
-
-export default LevelProvider;
