@@ -6,6 +6,7 @@ import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
 import { PlayerHealthBar } from "./HealthBar/HealthBar";
 import LevelCompleteModal from "./LevelCompleteModal/LevelCompleteModal";
+import TimeUpModal from "./TimeUpModal/TimeUpModal";
 
 const BATTLE_DURATION = 6;
 
@@ -14,6 +15,7 @@ function Battle() {
   const [battleKey, setBattleKey] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [wpm, setWpm] = useState(0);
+  const [isTimeUp, setIsTimeUp] = useState(false);
   const [isLevelComplete, setIsLevelComplete] = useState(false);
 
   const handleWordComplete = useCallback((wordLength: number) => {
@@ -28,13 +30,14 @@ function Battle() {
     const minutes = BATTLE_DURATION / 60;
     const finalWpm = Math.round((totalCharsRef.current / 5) / minutes);
     setWpm(finalWpm);
-    setIsLevelComplete(true);
+    setIsTimeUp(true);
   }, []);
 
   const handlePlayAgain = useCallback(() => {
     totalCharsRef.current = 0;
     setIsTimerActive(false);
     setWpm(0);
+    setIsTimeUp(false);
     setIsLevelComplete(false);
     setBattleKey(prev => prev + 1);
   }, []);
@@ -79,7 +82,8 @@ function Battle() {
           </div>
         </TimerProvider>
       </TypingTrackerProvider>
-      <LevelCompleteModal isVisible={isLevelComplete} wpm={wpm} onPlayAgain={handlePlayAgain} />
+      <TimeUpModal isVisible={isTimeUp} wpm={wpm} onPlayAgain={handlePlayAgain} />
+      <LevelCompleteModal isVisible={isLevelComplete} wpm={wpm} />
     </div>
   );
 }
