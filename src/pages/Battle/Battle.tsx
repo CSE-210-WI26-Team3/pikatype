@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import TypingTrackerProvider from "../../components/TypingTracker/TypingTrackerProvider";
 import TypingTrackerView from "../../components/TypingTracker/TypingTrackerView";
 import BattleTimer from "./Timer";
@@ -7,9 +7,11 @@ import styles from "./Battle.module.css";
 import { PlayerHealthBar } from "./HealthBar/HealthBar";
 import LevelCompleteModal from "./LevelCompleteModal/LevelCompleteModal";
 import TimeUpModal from "./TimeUpModal/TimeUpModal";
+import { Save } from "../../components/Storage/Save";
 import { SingleWordGenerator } from "../../wordGeneration/index";
 
 const BATTLE_DURATION = 60;
+const NUM_LEVELS = 3;
 
 function Battle() {
   const totalCharsRef = useRef(0);
@@ -18,6 +20,9 @@ function Battle() {
   const [wpm, setWpm] = useState(0);
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [isLevelComplete, setIsLevelComplete] = useState(false);
+
+  const save = useMemo(() => new Save(NUM_LEVELS), []);
+  const starterPokemon = save.getStarter() || "bulbasaur";
 
   const handleWordComplete = useCallback((wordLength: number) => {
     totalCharsRef.current += wordLength;
@@ -61,7 +66,7 @@ function Battle() {
               <div className={styles.imagesContainer}>
                 <img
                   className={styles.playerPokemon}
-                  src={process.env.PUBLIC_URL + "/img/pokemon/piplup.png"}
+                  src={process.env.PUBLIC_URL + `/img/pokemon/${starterPokemon}.png`}
                   alt="player pokemon sprite"
                 />
                 <img
