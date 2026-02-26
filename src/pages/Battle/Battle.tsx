@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import TypingTrackerProvider from "../../components/TypingTracker/TypingTrackerProvider";
 import TypingTrackerView from "../../components/TypingTracker/TypingTrackerView";
 import BattleTimer from "./Timer";
@@ -7,14 +7,20 @@ import styles from "./Battle.module.css";
 import { PlayerHealthBar } from "./HealthBar/HealthBar";
 import { Save } from "../../components/Storage/Save";
 import { SingleWordGenerator } from "../../wordGeneration/index";
+import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
 const NUM_LEVELS = 3;
 
 function Battle() {
+  const [audioPlaying, setAudioPlaying] = useState<boolean>(true);
   const save = useMemo(() => new Save(NUM_LEVELS), []);
   const starterPokemon = save.getStarter() || "bulbasaur";
   return (
     <div className={styles.battleContainer}>
+      <AudioPlayer
+        playing={audioPlaying}
+        src={process.env.PUBLIC_URL + "/audio/wild-battle-theme.mp3"}
+      />
       <h1 className={styles.battleTitle}>Battle</h1>
       <TypingTrackerProvider promptGenerator={new SingleWordGenerator()}>
         <TimerProvider time={60}>
@@ -27,7 +33,10 @@ function Battle() {
               <div className={styles.imagesContainer}>
                 <img
                   className={styles.playerPokemon}
-                  src={process.env.PUBLIC_URL + `/img/pokemon/${starterPokemon}.png`}
+                  src={
+                    process.env.PUBLIC_URL +
+                    `/img/pokemon/${starterPokemon}.png`
+                  }
                   alt="player pokemon sprite"
                 />
                 <img
