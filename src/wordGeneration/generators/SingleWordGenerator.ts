@@ -1,7 +1,8 @@
-const SINGLE_WORD_FILE =
-  "/single_words.txt";
+import { TypingPromptGenerator } from "../index";
 
-export class SingleWordGenerator {
+const SINGLE_WORD_FILE = process.env.PUBLIC_URL + "/single_words.txt";
+
+export class SingleWordGenerator implements TypingPromptGenerator {
   private words: string[] = [];
 
   private async loadWords(): Promise<void> {
@@ -9,9 +10,7 @@ export class SingleWordGenerator {
 
     const response = await fetch(SINGLE_WORD_FILE);
     if (!response.ok) {
-      throw new Error(
-        `Failed to load word file: ${SINGLE_WORD_FILE}`
-      );
+      throw new Error(`Failed to load word file: ${SINGLE_WORD_FILE}`);
     }
 
     const text = await response.text();
@@ -28,9 +27,7 @@ export class SingleWordGenerator {
   async getTypingPrompt(): Promise<string> {
     await this.loadWords();
 
-    const index = Math.floor(
-      Math.random() * this.words.length
-    );
+    const index = Math.floor(Math.random() * this.words.length);
     return this.words[index];
   }
 }
