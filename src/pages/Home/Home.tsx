@@ -11,12 +11,8 @@ function Home() {
   const save = useMemo(() => new Save(NUM_LEVELS), []);
 
   const handleNewGame = () => {
-    const hasStarter = save.getStarter() !== null;
-    if (hasStarter) {
-      navigate("/levels");
-    } else {
-      navigate("/starter");
-    }
+    save.clear();
+    navigate("/starter");
   };
 
   return (
@@ -31,11 +27,13 @@ function Home() {
           className={styles.menuButton}
           onClick={handleNewGame}
         />
-        <Button
-          label="Continue"
-          className={styles.menuButton}
-          onClick={() => navigate("/battle")}
-        />
+        {save.getStarter() !== null && (
+          <Button
+            label="Continue"
+            className={styles.menuButton}
+            onClick={() => navigate("/battle")}
+          />
+        )}
         <Button label="Options" className={styles.menuButton} />
         <Button label="Save & Quit" className={styles.menuButton} />
       </div>

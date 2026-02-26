@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import styles from "./LevelsContainer.module.css";
 import { LEVEL_CONFIGS, NUM_LEVELS } from "./LevelConfigs";
 import Button from "../../components/Button";
