@@ -43,7 +43,7 @@ function TestConsumer() {
 
 function renderProvider() {
   return render(
-    <TypingTrackerProvider promptGenerator={new SingleWordGenerator()}>
+    <TypingTrackerProvider promptGenerator={new SingleWordGenerator()} isActive={true}>
       <TestConsumer />
     </TypingTrackerProvider>,
   );

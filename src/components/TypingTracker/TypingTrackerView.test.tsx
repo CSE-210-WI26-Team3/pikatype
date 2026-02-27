@@ -11,7 +11,7 @@ import TypingTrackerView from "./TypingTrackerView";
 
 function renderTypingTracker() {
   return render(
-    <TypingTrackerProvider promptGenerator={new SingleWordGenerator()}>
+    <TypingTrackerProvider promptGenerator={new SingleWordGenerator()} isActive={true}>
       <TypingTrackerView />
     </TypingTrackerProvider>,
   );
