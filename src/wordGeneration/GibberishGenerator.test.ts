@@ -8,6 +8,10 @@ a random string given a list of characters
 import { GibberishGenerator, GibberishData } from "./GibberishGenerator";
 import * as fs from "fs";
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 describe("Testing gibberishGenerator Suite", () => {
   it("Testing Constructor", () => {
     // Create object
@@ -112,6 +116,5 @@ describe("Testing gibberishGenerator Suite", () => {
     expect(() => {
       new GibberishGenerator(JsonData7);
     }).toThrow();
-    
   });
 });
