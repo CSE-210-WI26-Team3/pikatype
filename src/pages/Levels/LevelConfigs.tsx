@@ -8,6 +8,7 @@ import { BattleConfig } from "../Battle/index";
 export type LevelConfig = {
   battle: BattleConfig;
   generator: TypingPromptGenerator;
+  evolution: number;
 };
 
 export const LEVEL_CONFIGS: LevelConfig[] = [
@@ -23,6 +24,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     //   maxLength: 5,
     //   charSet: "asdfg",
     // },
+    evolution: 0,
   },
   {
     battle: {
@@ -36,6 +38,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     //   maxLength: 5,
     //   charSet: "hjkl",
     // },
+    evolution: 0,
   },
   {
     battle: {
@@ -50,6 +53,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     //   maxLength: 5,
     //   charSet: "asdfghjkl",
     // },
+    evolution: 0,
   },
   {
     battle: {
@@ -64,6 +68,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     //   maxLength: 5,
     //   charSet: "qwertyuiop",
     // },
+    evolution: 1,
   },
   {
     battle: {
@@ -78,6 +83,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     //   maxLength: 5,
     //   charSet: "zxcvbnm",
     // },
+    evolution: 1,
   },
   {
     battle: {
@@ -85,6 +91,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 20,
     },
     generator: new SingleWordGenerator(),
+    evolution: 1,
   },
   {
     battle: {
@@ -92,6 +99,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 20,
     },
     generator: new MultiWordGenerator(3, 5),
+    evolution: 2,
   },
   {
     battle: {
@@ -106,6 +114,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     //   maxLength: 5,
     //   charSet: "!@#$%&*()-=_+",
     // },
+    evolution: 2,
   },
   {
     battle: {
@@ -120,6 +129,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     //   maxLength: 5,
     //   charSet: "[]{};':\",./<>?",
     // },
+    evolution: 2,
   },
   {
     battle: {
@@ -131,6 +141,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     // generator: {
     //   type: "sentence",
     // },
+    evolution: 2,
   },
 ];
 

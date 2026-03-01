@@ -8,14 +8,15 @@ import { PlayerHealthBar } from "./HealthBar/HealthBar";
 import { Save } from "../../components/Storage/Save";
 import { useParams } from "react-router";
 import { LEVEL_CONFIGS } from "../Levels/LevelConfigs";
+import { getPokemonByLevel } from "../../data/pokemon";
 
 const NUM_LEVELS = 3;
 
 function Battle() {
   const save = useMemo(() => new Save(NUM_LEVELS), []);
-  const starterPokemon = save.getStarter() || "bulbasaur";
   const params = useParams();
   const currentLevel = LEVEL_CONFIGS[parseInt(params.levelId!) - 1];
+  const chosenPokemon = getPokemonByLevel(save, currentLevel);
 
   return (
     <div className={styles.battleContainer}>
@@ -33,7 +34,7 @@ function Battle() {
                   className={styles.playerPokemon}
                   src={
                     process.env.PUBLIC_URL +
-                    `/img/pokemon/${starterPokemon}.png`
+                    `/img/pokemon/${chosenPokemon}.png`
                   }
                   alt="player pokemon sprite"
                 />
