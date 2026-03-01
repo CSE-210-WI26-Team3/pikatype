@@ -29,13 +29,13 @@ class GibberishGenerator implements TypingPromptGenerator {
       );
     }
 
-    if (characters.length == 0) {
+    if (characters.length === 0) {
       throw new Error("Number of Characters passed is empty.");
     }
 
     for (const element of characters) {
       // If the length of a word is not
-      if (element.length != 1) {
+      if (element.length !== 1) {
         throw new Error(
           "Length of strings are not 1. Strings must be singular Characters",
         );
