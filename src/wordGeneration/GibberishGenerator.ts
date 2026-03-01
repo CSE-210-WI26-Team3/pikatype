@@ -5,33 +5,35 @@ Characters and output a random string up to 5 to 8 letters
 We can control the range of letters and the Characters as well
 */
 
+import { TypingPromptGenerator } from ".";
+
 type GibberishData = {
   Characters: string[];
   MinLen: number;
   MaxLen: number;
 };
 
-class GibberishGenerator {
+class GibberishGenerator implements TypingPromptGenerator {
   Characters: string[];
   MinLen: number;
   MaxLen: number;
 
-  constructor(JsonData: GibberishData) {
-    if (JsonData.MinLen <= 0) {
+  constructor(minLen: number, maxLen: number, characters: string[]) {
+    if (minLen <= 0) {
       throw new Error("Minimum word length isn't greater than 0");
     }
 
-    if (JsonData.MaxLen <= JsonData.MinLen) {
+    if (maxLen <= minLen) {
       throw new Error(
         "Maximum word length is equal to or less than the minimum word length",
       );
     }
 
-    if (JsonData.Characters.length == 0) {
+    if (characters.length == 0) {
       throw new Error("Number of Characters passed is empty.");
     }
 
-    for (const element of JsonData.Characters) {
+    for (const element of characters) {
       // If the length of a word is not
       if (element.length != 1) {
         throw new Error(
@@ -40,12 +42,12 @@ class GibberishGenerator {
       }
     }
 
-    this.Characters = JsonData.Characters;
-    this.MinLen = JsonData.MinLen;
-    this.MaxLen = JsonData.MaxLen;
+    this.Characters = characters;
+    this.MinLen = minLen;
+    this.MaxLen = maxLen;
   }
 
-  generate() {
+  async getTypingPrompt(): Promise<string> {
     const WordLen = Math.floor(
       Math.random() * (this.MaxLen - this.MinLen + 1) + this.MinLen,
     );

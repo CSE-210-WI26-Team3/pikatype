@@ -1,6 +1,6 @@
 import { TypingPromptGenerator } from "../index";
 
-const MULTI_WORD_FILE = "/multi_words.txt";
+const MULTI_WORD_FILE = process.env.PUBLIC_URL + "/multi_words.txt";
 
 export class MultiWordGenerator implements TypingPromptGenerator {
   private words: string[] = [];

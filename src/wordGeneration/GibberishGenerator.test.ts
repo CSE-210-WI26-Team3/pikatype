@@ -21,21 +21,29 @@ describe("Testing gibberishGenerator Suite", () => {
       Characters: ["a", "s", "d", "f", "g"],
       Type: "gibberish",
     };
-    const TestObj = new GibberishGenerator(TestParams);
+    const TestObj = new GibberishGenerator(
+      TestParams.MinLen,
+      TestParams.MaxLen,
+      TestParams.Characters,
+    );
 
     expect(TestObj.MinLen).toBe(5);
     expect(TestObj.MaxLen).toBe(7);
     expect(TestObj.Characters).toEqual(["a", "s", "d", "f", "g"]);
   });
 
-  it("Testing Word Generation", () => {
+  it("Testing Word Generation", async () => {
     const TestParams = {
       MinLen: 5,
       MaxLen: 7,
       Characters: ["a", "s", "d", "f", "g"],
       Type: "gibberish",
     };
-    const TestObj = new GibberishGenerator(TestParams);
+    const TestObj = new GibberishGenerator(
+      TestParams.MinLen,
+      TestParams.MaxLen,
+      TestParams.Characters,
+    );
 
     const MockRandom = jest.spyOn(Math, "random");
 
@@ -46,7 +54,7 @@ describe("Testing gibberishGenerator Suite", () => {
     MockRandom.mockReturnValueOnce(0.6);
     MockRandom.mockReturnValueOnce(0.8);
 
-    const MinWord = TestObj.generate();
+    const MinWord = await TestObj.getTypingPrompt();
     expect(MinWord).toBe("asdfg");
 
     MockRandom.mockReturnValueOnce(0.99); // Generate word of Length of 7
@@ -58,7 +66,7 @@ describe("Testing gibberishGenerator Suite", () => {
     MockRandom.mockReturnValueOnce(0);
     MockRandom.mockReturnValueOnce(0.2);
 
-    const MaxWord = TestObj.generate();
+    const MaxWord = await TestObj.getTypingPrompt();
     expect(MaxWord).toBe("asdfgas");
 
     MockRandom.mockReturnValueOnce(0.5); // Generate word of  Length of 6
@@ -68,7 +76,7 @@ describe("Testing gibberishGenerator Suite", () => {
     MockRandom.mockReturnValueOnce(0.6);
     MockRandom.mockReturnValueOnce(0.8);
     MockRandom.mockReturnValueOnce(0);
-    const InBetweenWord = TestObj.generate();
+    const InBetweenWord = await TestObj.getTypingPrompt();
     expect(InBetweenWord).toBe("asdfga");
   });
 
@@ -102,19 +110,35 @@ describe("Testing gibberishGenerator Suite", () => {
     };
 
     expect(() => {
-      new GibberishGenerator(JsonData4);
+      new GibberishGenerator(
+        JsonData4.MinLen,
+        JsonData4.MaxLen,
+        JsonData4.Characters,
+      );
     }).toThrow();
 
     expect(() => {
-      new GibberishGenerator(JsonData5);
+      new GibberishGenerator(
+        JsonData5.MinLen,
+        JsonData5.MaxLen,
+        JsonData5.Characters,
+      );
     }).toThrow();
 
     expect(() => {
-      new GibberishGenerator(JsonData6);
+      new GibberishGenerator(
+        JsonData6.MinLen,
+        JsonData6.MaxLen,
+        JsonData6.Characters,
+      );
     }).toThrow();
 
     expect(() => {
-      new GibberishGenerator(JsonData7);
+      new GibberishGenerator(
+        JsonData7.MinLen,
+        JsonData7.MaxLen,
+        JsonData7.Characters,
+      );
     }).toThrow();
   });
 });

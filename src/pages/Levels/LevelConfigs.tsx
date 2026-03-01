@@ -1,3 +1,4 @@
+import { GibberishGenerator } from "../../wordGeneration/GibberishGenerator";
 import {
   MultiWordGenerator,
   SingleWordGenerator,
@@ -16,26 +17,14 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       title: "Home Row (Left Hand)",
       numPromptsToComplete: 20,
     },
-    generator: new SingleWordGenerator(),
-    // generator: {
-    //   type: "gibberish",
-    //   minLength: 3,
-    //   maxLength: 5,
-    //   charSet: "asdfg",
-    // },
+    generator: new GibberishGenerator(3, 5, "asdfg".split("")),
   },
   {
     battle: {
       title: "Home Row (Right Hand)",
       numPromptsToComplete: 20,
     },
-    generator: new SingleWordGenerator(),
-    // generator: {
-    //   type: "gibberish",
-    //   minLength: 3,
-    //   maxLength: 5,
-    //   charSet: "hjkl",
-    // },
+    generator: new GibberishGenerator(3, 5, "hjkl".split("")),
   },
   {
     battle: {
@@ -43,13 +32,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 20,
     },
 
-    generator: new SingleWordGenerator(),
-    // generator: {
-    //   type: "gibberish",
-    //   minLength: 3,
-    //   maxLength: 5,
-    //   charSet: "asdfghjkl",
-    // },
+    generator: new GibberishGenerator(3, 5, "asdfghjkl".split("")),
   },
   {
     battle: {
@@ -57,13 +40,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 20,
     },
 
-    generator: new SingleWordGenerator(),
-    // generator: {
-    //   type: "gibberish",
-    //   minLength: 3,
-    //   maxLength: 5,
-    //   charSet: "qwertyuiop",
-    // },
+    generator: new GibberishGenerator(3, 5, "qwertyuiop".split("")),
   },
   {
     battle: {
@@ -71,13 +48,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 20,
     },
 
-    generator: new SingleWordGenerator(),
-    // generator: {
-    //   type: "gibberish",
-    //   minLength: 3,
-    //   maxLength: 5,
-    //   charSet: "zxcvbnm",
-    // },
+    generator: new GibberishGenerator(3, 5, "zxcvbnm".split("")),
   },
   {
     battle: {
@@ -99,13 +70,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 20,
     },
 
-    generator: new SingleWordGenerator(),
-    // generator: {
-    //   type: "gibberish",
-    //   minLength: 3,
-    //   maxLength: 5,
-    //   charSet: "!@#$%&*()-=_+",
-    // },
+    generator: new GibberishGenerator(3, 5, "!@#$%&*()-=_+".split("")),
   },
   {
     battle: {
@@ -113,13 +78,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 20,
     },
 
-    generator: new SingleWordGenerator(),
-    // generator: {
-    //   type: "gibberish",
-    //   minLength: 3,
-    //   maxLength: 5,
-    //   charSet: "[]{};':\",./<>?",
-    // },
+    generator: new GibberishGenerator(3, 5, "[]{};':\",./<>?".split("")),
   },
   {
     battle: {
