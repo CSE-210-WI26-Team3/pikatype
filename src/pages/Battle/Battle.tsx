@@ -10,14 +10,14 @@ import styles from "./Battle.module.css";
 
 import { PlayerHealthBar, OpponentHealthBar } from "./HealthBar/HealthBar";
 
-import { SingleWordGenerator, MultiWordGenerator } from "../../wordGeneration";
+import { SingleWordGenerator } from "../../wordGeneration";
 import type { TypingPromptGenerator } from "../../wordGeneration";
 
 // TODO(level-config): Move tunables (time limit, enemy HP, damage per word, sprites) into a level config.
 const BATTLE_TIME_SECONDS = 60;
 const ENEMY_MAX_HP = 100;
 const DAMAGE_PER_WORD = 10;
-const promptGenerator: TypingPromptGenerator = new SingleWordGenerator;
+const promptGenerator: TypingPromptGenerator = new SingleWordGenerator();
 
 export function BattleContent() {
   const { completedWords } = useContext(TypingTrackerContext);
