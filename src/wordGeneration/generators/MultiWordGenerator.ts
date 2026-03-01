@@ -1,7 +1,9 @@
+import { TypingPromptGenerator } from "../index";
+
 const MULTI_WORD_FILE =
   "/multi_words.txt";
 
-export class MultiWordGenerator {
+export class MultiWordGenerator implements TypingPromptGenerator {
   private words: string[] = [];
 
   constructor(
