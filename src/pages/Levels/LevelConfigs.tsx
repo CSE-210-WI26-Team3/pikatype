@@ -53,21 +53,21 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
   {
     battle: {
       title: "Single Words",
-      numPromptsToComplete: 20,
+      numPromptsToComplete: 15,
     },
     generator: new SingleWordGenerator(),
   },
   {
     battle: {
       title: "Multiple Words",
-      numPromptsToComplete: 20,
+      numPromptsToComplete: 10,
     },
     generator: new MultiWordGenerator(3, 5),
   },
   {
     battle: {
       title: "Punctuation (Top Row)",
-      numPromptsToComplete: 20,
+      numPromptsToComplete: 10,
     },
 
     generator: new GibberishGenerator(3, 5, "!@#$%&*()-=_+".split("")),
@@ -75,7 +75,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
   {
     battle: {
       title: "Punctuation (Right Side)",
-      numPromptsToComplete: 20,
+      numPromptsToComplete: 10,
     },
 
     generator: new GibberishGenerator(3, 5, "[]{};':\",./<>?".split("")),
@@ -83,13 +83,11 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
   {
     battle: {
       title: "Short Sentences",
-      numPromptsToComplete: 20,
+      numPromptsToComplete: 5,
     },
 
+    // TODO: replace with sentence generator once that PR gets merged
     generator: new SingleWordGenerator(),
-    // generator: {
-    //   type: "sentence",
-    // },
   },
 ];
 

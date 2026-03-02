@@ -31,13 +31,3 @@ export class SingleWordGenerator implements TypingPromptGenerator {
     return this.words[index];
   }
 }
-
-export type SingleWordGeneratorConfig = {
-  type: "single-word";
-};
-
-export function isSingleWordGeneratorConfig(
-  config: SingleWordGeneratorConfig,
-): config is SingleWordGeneratorConfig {
-  return config.type === "single-word";
-}

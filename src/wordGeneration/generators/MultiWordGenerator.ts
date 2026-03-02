@@ -66,22 +66,3 @@ export class MultiWordGenerator implements TypingPromptGenerator {
     return result.join(" ");
   }
 }
-
-export type MultiWordGeneratorConfig = {
-  type: "multiple-word";
-  minLength: number;
-  maxLength: number;
-};
-
-export function isMultiWordGeneratorConfig(
-  config: MultiWordGeneratorConfig,
-): config is MultiWordGeneratorConfig {
-  return (
-    config.type !== undefined &&
-    config.type === "multiple-word" &&
-    config.minLength !== undefined &&
-    config.minLength > 0 &&
-    config.maxLength !== undefined &&
-    config.maxLength > config.minLength
-  );
-}

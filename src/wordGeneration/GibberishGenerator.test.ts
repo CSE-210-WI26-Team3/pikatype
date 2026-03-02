@@ -15,129 +15,129 @@ afterEach(() => {
 describe("Testing gibberishGenerator Suite", () => {
   it("Testing Constructor", () => {
     // Create object
-    const TestParams = {
-      MinLen: 5,
-      MaxLen: 7,
-      Characters: ["a", "s", "d", "f", "g"],
-      Type: "gibberish",
+    const testParams = {
+      minLen: 5,
+      maxLen: 7,
+      characters: ["a", "s", "d", "f", "g"],
+      type: "gibberish",
     };
-    const TestObj = new GibberishGenerator(
-      TestParams.MinLen,
-      TestParams.MaxLen,
-      TestParams.Characters,
+    const testObj = new GibberishGenerator(
+      testParams.minLen,
+      testParams.maxLen,
+      testParams.characters,
     );
 
-    expect(TestObj.MinLen).toBe(5);
-    expect(TestObj.MaxLen).toBe(7);
-    expect(TestObj.Characters).toEqual(["a", "s", "d", "f", "g"]);
+    expect(testObj.minLen).toBe(5);
+    expect(testObj.maxLen).toBe(7);
+    expect(testObj.characters).toEqual(["a", "s", "d", "f", "g"]);
   });
 
   it("Testing Word Generation", async () => {
-    const TestParams = {
-      MinLen: 5,
-      MaxLen: 7,
-      Characters: ["a", "s", "d", "f", "g"],
+    const testParams = {
+      minLen: 5,
+      maxLen: 7,
+      characters: ["a", "s", "d", "f", "g"],
       Type: "gibberish",
     };
-    const TestObj = new GibberishGenerator(
-      TestParams.MinLen,
-      TestParams.MaxLen,
-      TestParams.Characters,
+    const testObj = new GibberishGenerator(
+      testParams.minLen,
+      testParams.maxLen,
+      testParams.characters,
     );
 
-    const MockRandom = jest.spyOn(Math, "random");
+    const mockRandom = jest.spyOn(Math, "random");
 
-    MockRandom.mockReturnValueOnce(0); // Generate word of Length of 5
-    MockRandom.mockReturnValueOnce(0);
-    MockRandom.mockReturnValueOnce(0.2);
-    MockRandom.mockReturnValueOnce(0.4);
-    MockRandom.mockReturnValueOnce(0.6);
-    MockRandom.mockReturnValueOnce(0.8);
+    mockRandom.mockReturnValueOnce(0); // Generate word of Length of 5
+    mockRandom.mockReturnValueOnce(0);
+    mockRandom.mockReturnValueOnce(0.2);
+    mockRandom.mockReturnValueOnce(0.4);
+    mockRandom.mockReturnValueOnce(0.6);
+    mockRandom.mockReturnValueOnce(0.8);
 
-    const MinWord = await TestObj.getTypingPrompt();
-    expect(MinWord).toBe("asdfg");
+    const minWord = await testObj.getTypingPrompt();
+    expect(minWord).toBe("asdfg");
 
-    MockRandom.mockReturnValueOnce(0.99); // Generate word of Length of 7
-    MockRandom.mockReturnValueOnce(0);
-    MockRandom.mockReturnValueOnce(0.2);
-    MockRandom.mockReturnValueOnce(0.4);
-    MockRandom.mockReturnValueOnce(0.6);
-    MockRandom.mockReturnValueOnce(0.8);
-    MockRandom.mockReturnValueOnce(0);
-    MockRandom.mockReturnValueOnce(0.2);
+    mockRandom.mockReturnValueOnce(0.99); // Generate word of Length of 7
+    mockRandom.mockReturnValueOnce(0);
+    mockRandom.mockReturnValueOnce(0.2);
+    mockRandom.mockReturnValueOnce(0.4);
+    mockRandom.mockReturnValueOnce(0.6);
+    mockRandom.mockReturnValueOnce(0.8);
+    mockRandom.mockReturnValueOnce(0);
+    mockRandom.mockReturnValueOnce(0.2);
 
-    const MaxWord = await TestObj.getTypingPrompt();
-    expect(MaxWord).toBe("asdfgas");
+    const maxWord = await testObj.getTypingPrompt();
+    expect(maxWord).toBe("asdfgas");
 
-    MockRandom.mockReturnValueOnce(0.5); // Generate word of  Length of 6
-    MockRandom.mockReturnValueOnce(0);
-    MockRandom.mockReturnValueOnce(0.2);
-    MockRandom.mockReturnValueOnce(0.4);
-    MockRandom.mockReturnValueOnce(0.6);
-    MockRandom.mockReturnValueOnce(0.8);
-    MockRandom.mockReturnValueOnce(0);
-    const InBetweenWord = await TestObj.getTypingPrompt();
-    expect(InBetweenWord).toBe("asdfga");
+    mockRandom.mockReturnValueOnce(0.5); // Generate word of  Length of 6
+    mockRandom.mockReturnValueOnce(0);
+    mockRandom.mockReturnValueOnce(0.2);
+    mockRandom.mockReturnValueOnce(0.4);
+    mockRandom.mockReturnValueOnce(0.6);
+    mockRandom.mockReturnValueOnce(0.8);
+    mockRandom.mockReturnValueOnce(0);
+    const inBetweenWord = await testObj.getTypingPrompt();
+    expect(inBetweenWord).toBe("asdfga");
   });
 
   it("Testing if constructor checks if json object passed is correct", () => {
     //Test 1: minLen is 0
-    const JsonData4 = {
-      MinLen: 0,
-      MaxLen: 8,
-      Characters: ["a", "b", "c"],
+    const jsonData4 = {
+      minLen: 0,
+      maxLen: 8,
+      characters: ["a", "b", "c"],
     };
 
     //Test 2: maxLen is greater than minLen
-    const JsonData5 = {
-      MinLen: 9,
-      MaxLen: 7,
-      Characters: ["a", "b", "c"],
+    const jsonData5 = {
+      minLen: 9,
+      maxLen: 7,
+      characters: ["a", "b", "c"],
     };
 
     //Test 3: characters param is empty
-    const JsonData6 = {
-      MinLen: 5,
-      MaxLen: 8,
-      Characters: [],
+    const jsonData6 = {
+      minLen: 5,
+      maxLen: 8,
+      characters: [],
     };
 
     //Test 4: One character in characters has length of 2
-    const JsonData7 = {
-      MinLen: 5,
-      MaxLen: 8,
-      Characters: ["a", "b", "ac"],
+    const jsonData7 = {
+      minLen: 5,
+      maxLen: 8,
+      characters: ["a", "b", "ac"],
     };
 
     expect(() => {
       new GibberishGenerator(
-        JsonData4.MinLen,
-        JsonData4.MaxLen,
-        JsonData4.Characters,
+        jsonData4.minLen,
+        jsonData4.maxLen,
+        jsonData4.characters,
       );
     }).toThrow();
 
     expect(() => {
       new GibberishGenerator(
-        JsonData5.MinLen,
-        JsonData5.MaxLen,
-        JsonData5.Characters,
+        jsonData5.minLen,
+        jsonData5.maxLen,
+        jsonData5.characters,
       );
     }).toThrow();
 
     expect(() => {
       new GibberishGenerator(
-        JsonData6.MinLen,
-        JsonData6.MaxLen,
-        JsonData6.Characters,
+        jsonData6.minLen,
+        jsonData6.maxLen,
+        jsonData6.characters,
       );
     }).toThrow();
 
     expect(() => {
       new GibberishGenerator(
-        JsonData7.MinLen,
-        JsonData7.MaxLen,
-        JsonData7.Characters,
+        jsonData7.minLen,
+        jsonData7.maxLen,
+        jsonData7.characters,
       );
     }).toThrow();
   });
