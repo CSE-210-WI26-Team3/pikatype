@@ -8,10 +8,10 @@ import { PlayerHealthBar } from "./HealthBar/HealthBar";
 import LevelCompleteModal from "./LevelCompleteModal/LevelCompleteModal";
 import LevelFailedModal from "./LevelFailedModal/LevelFailedModal";
 import { Save } from "../../components/Storage/Save";
-import { SingleWordGenerator } from "../../wordGeneration/index";
+import { useParams } from "react-router";
+import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
 
 const BATTLE_DURATION = 60;
-const NUM_LEVELS = 3;
 
 function Battle() {
   const totalCharsRef = useRef(0);
@@ -51,13 +51,22 @@ function Battle() {
     setIsLevelComplete(false);
     setBattleKey(prev => prev + 1);
   }, []);
+  const params = useParams();
+
+  const levelId = parseInt(params.levelId!);
+
+  if (Number.isNaN(levelId) || levelId < 1 || levelId > NUM_LEVELS) {
+    throw new Error(`Level ID must be between 1 and ${NUM_LEVELS}`);
+  }
+
+  const currentLevel = LEVEL_CONFIGS[parseInt(params.levelId!) - 1];
 
   return (
     <div className={styles.battleContainer}>
       <h1 className={styles.battleTitle}>Battle</h1>
       <TypingTrackerProvider
         key={battleKey}
-        promptGenerator={new SingleWordGenerator()}
+        promptGenerator={currentLevel.generator}
         isActive={isTimerActive}
         onWordComplete={handleWordComplete}
       >
@@ -70,7 +79,10 @@ function Battle() {
               <div className={styles.imagesContainer}>
                 <img
                   className={styles.playerPokemon}
-                  src={process.env.PUBLIC_URL + `/img/pokemon/${starterPokemon}.png`}
+                  src={
+                    process.env.PUBLIC_URL +
+                    `/img/pokemon/${starterPokemon}.png`
+                  }
                   alt="player pokemon sprite"
                 />
                 <img
