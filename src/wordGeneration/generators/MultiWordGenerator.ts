@@ -1,6 +1,6 @@
 import { TypingPromptGenerator } from "../index";
 
-const MULTI_WORD_FILE = "/multi_words.txt";
+const MULTI_WORD_FILE = process.env.PUBLIC_URL + "/multi_words.txt";
 
 export class MultiWordGenerator implements TypingPromptGenerator {
   private words: string[] = [];
@@ -65,23 +65,4 @@ export class MultiWordGenerator implements TypingPromptGenerator {
 
     return result.join(" ");
   }
-}
-
-export type MultiWordGeneratorConfig = {
-  type: "multiple-word";
-  minLength: number;
-  maxLength: number;
-};
-
-export function isMultiWordGeneratorConfig(
-  config: MultiWordGeneratorConfig,
-): config is MultiWordGeneratorConfig {
-  return (
-    config.type !== undefined &&
-    config.type === "multiple-word" &&
-    config.minLength !== undefined &&
-    config.minLength > 0 &&
-    config.maxLength !== undefined &&
-    config.maxLength > config.minLength
-  );
 }
