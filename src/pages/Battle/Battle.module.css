@@ -12,6 +12,19 @@
   background-color: var(--battle-background);
 }
 
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  color: var(--text-color);
+  background-color: var(--box-color);
+  border: 4px solid var(--border-color);
+  border-radius: 2rem;
+  padding: 2rem;
+}
+
 .grassPatch {
   image-rendering: pixelated;
   width: 20rem;

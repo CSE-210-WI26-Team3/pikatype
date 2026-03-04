@@ -1,23 +1,20 @@
 import { TypingPromptGenerator } from "../index";
 
-const MULTI_WORD_FILE =
-  "/multi_words.txt";
+const MULTI_WORD_FILE = process.env.PUBLIC_URL + "/multi_words.txt";
 
 export class MultiWordGenerator implements TypingPromptGenerator {
   private words: string[] = [];
 
   constructor(
     private minWords: number,
-    private maxWords: number
+    private maxWords: number,
   ) {
     if (minWords < 0 || maxWords < 0) {
       throw new Error("Word count bounds must be non-negative.");
     }
 
     if (minWords > maxWords) {
-      throw new Error(
-        "Minimum word count cannot exceed maximum word count."
-      );
+      throw new Error("Minimum word count cannot exceed maximum word count.");
     }
   }
 
@@ -26,9 +23,7 @@ export class MultiWordGenerator implements TypingPromptGenerator {
 
     const response = await fetch(MULTI_WORD_FILE);
     if (!response.ok) {
-      throw new Error(
-        `Failed to load word file: ${MULTI_WORD_FILE}`
-      );
+      throw new Error(`Failed to load word file: ${MULTI_WORD_FILE}`);
     }
 
     const text = await response.text();
@@ -47,22 +42,19 @@ export class MultiWordGenerator implements TypingPromptGenerator {
 
     if (this.maxWords > this.words.length) {
       throw new Error(
-        `Cannot generate more than ${this.words.length} unique words.`
+        `Cannot generate more than ${this.words.length} unique words.`,
       );
     }
 
     const count =
-      Math.floor(
-        Math.random() * (this.maxWords - this.minWords + 1)
-      ) + this.minWords;
+      Math.floor(Math.random() * (this.maxWords - this.minWords + 1)) +
+      this.minWords;
 
     const result: string[] = [];
     const used = new Set<string>();
 
     while (result.length < count) {
-      const index = Math.floor(
-        Math.random() * this.words.length
-      );
+      const index = Math.floor(Math.random() * this.words.length);
       const word = this.words[index];
 
       if (!used.has(word)) {
