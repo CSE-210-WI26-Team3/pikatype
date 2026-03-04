@@ -1,16 +1,13 @@
 import Button from "../../../components/Button";
 import WPM from "../../../components/WPM/WPM";
-import styles from "./TimeUpModal.module.css";
+import styles from "./LevelFailedModal.module.css";
 
-interface TimeUpModalProps {
-  isVisible: boolean;
+interface LevelFailedModalProps {
   wpm: number;
   onPlayAgain: () => void;
 }
 
-function TimeUpModal({ isVisible, wpm, onPlayAgain }: TimeUpModalProps) {
-  if (!isVisible) return null;
-
+function LevelFailedModal({ wpm, onPlayAgain }: LevelFailedModalProps) {
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
@@ -22,4 +19,4 @@ function TimeUpModal({ isVisible, wpm, onPlayAgain }: TimeUpModalProps) {
   );
 }
 
-export default TimeUpModal;
+export default LevelFailedModal;
