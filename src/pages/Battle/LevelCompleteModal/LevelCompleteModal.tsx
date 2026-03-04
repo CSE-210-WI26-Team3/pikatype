@@ -3,14 +3,11 @@ import WPM from "../../../components/WPM/WPM";
 import styles from "./LevelCompleteModal.module.css";
 
 interface LevelCompleteModalProps {
-  isVisible: boolean;
   wpm: number;
   onNextLevel?: () => void;
 }
 
-function LevelCompleteModal({ isVisible, wpm, onNextLevel }: LevelCompleteModalProps) {
-  if (!isVisible) return null;
-
+function LevelCompleteModal({ wpm, onNextLevel }: LevelCompleteModalProps) {
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>

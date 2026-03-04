@@ -20,6 +20,7 @@ type TypingTrackerState = {
   cursor: number;
   state: TypingTrackerProgress;
   completedWords: number;
+  totalCharsTyped: number;
 };
 
 type TypingTrackerContextType = TypingTrackerState & {
@@ -31,6 +32,7 @@ const DEFAULT_TYPING_TRACKER_STATE = {
   cursor: 0,
   state: TypingTrackerProgress.Valid,
   completedWords: 0,
+  totalCharsTyped: 0,
 };
 
 const TypingTrackerContext = createContext<TypingTrackerContextType>({
@@ -42,7 +44,7 @@ interface TypingTrackerProviderProps {
   promptGenerator: TypingPromptGenerator;
   children: ReactNode;
   isActive?: boolean;
-  onWordComplete?: (wordLength: number) => void;
+  onWordComplete?: (totalCharsTyped: number) => void;
 }
 
 function TypingTrackerProvider({
@@ -82,10 +84,11 @@ function TypingTrackerProvider({
     }));
   }, []);
 
-  const incrementCompletedWords = useCallback(() => {
+  const incrementCompletedWords = useCallback((wordLength: number) => {
     setTypingTrackerState((prev) => ({
       ...prev,
       completedWords: prev.completedWords + 1,
+      totalCharsTyped: prev.totalCharsTyped + wordLength,
     }));
   }, []);
 
@@ -123,9 +126,11 @@ function TypingTrackerProvider({
           typingTrackerState.cursor ===
           typingTrackerState.content.length - 1
         ) {
-          incrementCompletedWords();
+          const wordLength = typingTrackerState.content.length;
+          const newTotalChars = typingTrackerState.totalCharsTyped + wordLength;
+          incrementCompletedWords(wordLength);
           updateState(TypingTrackerProgress.Complete);
-          onWordComplete?.(typingTrackerState.content.length);
+          onWordComplete?.(newTotalChars);
         }
       } else {
         if (!VALID_KEYS_PATTERN.test(event.key)) return; // if key is invalid, don't do anything

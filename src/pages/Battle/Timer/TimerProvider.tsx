@@ -59,10 +59,11 @@ export function timerReducer(
 interface TimerProps extends PropsWithChildren {
   time: number;
   onStart?: () => void;
+  onPause?: () => void;
   onDone?: () => void;
 }
 
-function TimerProvider({ children, time, onStart, onDone }: TimerProps) {
+function TimerProvider({ children, time, onStart, onPause, onDone }: TimerProps) {
   const initialTimerState: TimerState = {
     currentTime: time,
     maxTime: time,
@@ -76,6 +77,12 @@ function TimerProvider({ children, time, onStart, onDone }: TimerProps) {
       onStart?.();
     }
   }, [timerState.status, onStart]);
+
+  useEffect(() => {
+    if (timerState.status === TimerStatus.Paused) {
+      onPause?.();
+    }
+  }, [timerState.status, onPause]);
 
   useEffect(() => {
     if (timerState.status === TimerStatus.Done) {

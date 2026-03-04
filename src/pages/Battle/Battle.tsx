@@ -6,7 +6,7 @@ import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
 import { PlayerHealthBar } from "./HealthBar/HealthBar";
 import LevelCompleteModal from "./LevelCompleteModal/LevelCompleteModal";
-import TimeUpModal from "./TimeUpModal/TimeUpModal";
+import LevelFailedModal from "./LevelFailedModal/LevelFailedModal";
 import { Save } from "../../components/Storage/Save";
 import { SingleWordGenerator } from "../../wordGeneration/index";
 
@@ -24,12 +24,16 @@ function Battle() {
   const save = useMemo(() => new Save(NUM_LEVELS), []);
   const starterPokemon = save.getStarter() || "bulbasaur";
 
-  const handleWordComplete = useCallback((wordLength: number) => {
-    totalCharsRef.current += wordLength;
+  const handleWordComplete = useCallback((totalChars: number) => {
+    totalCharsRef.current = totalChars;
   }, []);
 
   const handleTimerStart = useCallback(() => {
     setIsTimerActive(true);
+  }, []);
+
+  const handleTimerPause = useCallback(() => {
+    setIsTimerActive(false);
   }, []);
 
   const handleTimerDone = useCallback(() => {
@@ -57,7 +61,7 @@ function Battle() {
         isActive={isTimerActive}
         onWordComplete={handleWordComplete}
       >
-        <TimerProvider time={BATTLE_DURATION} onStart={handleTimerStart} onDone={handleTimerDone}>
+        <TimerProvider time={BATTLE_DURATION} onStart={handleTimerStart} onPause={handleTimerPause} onDone={handleTimerDone}>
           <BattleTimer />
           <TypingTrackerView />
           <div className={styles.battleScene}>
@@ -93,8 +97,8 @@ function Battle() {
           </div>
         </TimerProvider>
       </TypingTrackerProvider>
-      <TimeUpModal isVisible={isTimeUp} wpm={wpm} onPlayAgain={handlePlayAgain} />
-      <LevelCompleteModal isVisible={isLevelComplete} wpm={wpm} />
+      {isTimeUp && <LevelFailedModal wpm={wpm} onPlayAgain={handlePlayAgain} />}
+      {isLevelComplete && <LevelCompleteModal wpm={wpm} />}
     </div>
   );
 }
