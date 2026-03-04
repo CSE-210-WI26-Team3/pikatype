@@ -20,6 +20,7 @@ type TypingTrackerState = {
   cursor: number;
   state: TypingTrackerProgress;
   completedWords: number;
+  totalCharsTyped: number;
 };
 
 type TypingTrackerContextType = TypingTrackerState & {
@@ -31,6 +32,7 @@ const DEFAULT_TYPING_TRACKER_STATE = {
   cursor: 0,
   state: TypingTrackerProgress.Valid,
   completedWords: 0,
+  totalCharsTyped: 0,
 };
 
 const TypingTrackerContext = createContext<TypingTrackerContextType>({
@@ -38,13 +40,19 @@ const TypingTrackerContext = createContext<TypingTrackerContextType>({
   getNewContent: () => {},
 });
 
+interface TypingTrackerProviderProps {
+  promptGenerator: TypingPromptGenerator;
+  children: ReactNode;
+  isActive?: boolean;
+  onWordComplete?: (totalCharsTyped: number) => void;
+}
+
 function TypingTrackerProvider({
   promptGenerator,
   children,
-}: {
-  promptGenerator: TypingPromptGenerator;
-  children: ReactNode;
-}) {
+  isActive = false,
+  onWordComplete,
+}: TypingTrackerProviderProps) {
   const [typingTrackerState, setTypingTrackerState] =
     useState<TypingTrackerState>(DEFAULT_TYPING_TRACKER_STATE);
 
@@ -76,10 +84,11 @@ function TypingTrackerProvider({
     }));
   }, []);
 
-  const incrementCompletedWords = useCallback(() => {
+  const incrementCompletedWords = useCallback((wordLength: number) => {
     setTypingTrackerState((prev) => ({
       ...prev,
       completedWords: prev.completedWords + 1,
+      totalCharsTyped: prev.totalCharsTyped + wordLength,
     }));
   }, []);
 
@@ -101,6 +110,7 @@ function TypingTrackerProvider({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isActive) return;
       if (typingTrackerState.state === TypingTrackerProgress.Complete) return;
 
       if (typingTrackerState.state === TypingTrackerProgress.Invalid) {
@@ -116,8 +126,11 @@ function TypingTrackerProvider({
           typingTrackerState.cursor ===
           typingTrackerState.content.length - 1
         ) {
-          incrementCompletedWords();
+          const wordLength = typingTrackerState.content.length;
+          const newTotalChars = typingTrackerState.totalCharsTyped + wordLength;
+          incrementCompletedWords(wordLength);
           updateState(TypingTrackerProgress.Complete);
+          onWordComplete?.(newTotalChars);
         }
       } else {
         if (!VALID_KEYS_PATTERN.test(event.key)) return; // if key is invalid, don't do anything
@@ -131,10 +144,12 @@ function TypingTrackerProvider({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [
     typingTrackerState,
+    isActive,
     decrementCursor,
     incrementCompletedWords,
     incrementCursor,
     updateState,
+    onWordComplete,
   ]);
 
   return (
