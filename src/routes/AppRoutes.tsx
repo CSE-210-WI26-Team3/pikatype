@@ -10,7 +10,7 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/levels" element={<Levels />} />
       <Route path="/starter" element={<StarterSelect />} />
-      <Route path="/battle" element={<Battle />} />
+      <Route path="/battle/:levelId" element={<Battle />} />
     </Routes>
   );
 }

@@ -1,86 +1,37 @@
-import { useContext } from "react";
+import { BattleContent } from "./BattleContent";
+import { useParams } from "react-router";
+import { useContext, useMemo } from "react";
 import TypingTrackerProvider, {
   TypingTrackerContext,
 } from "../../components/TypingTracker/TypingTrackerProvider";
-import TypingTrackerView from "../../components/TypingTracker/TypingTrackerView";
 
-import BattleTimer from "./Timer";
 import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
 
-import { PlayerHealthBar, OpponentHealthBar } from "./HealthBar/HealthBar";
-
-import { SingleWordGenerator } from "../../wordGeneration";
-import type { TypingPromptGenerator } from "../../wordGeneration";
-
-// TODO(level-config): Move tunables (time limit, enemy HP, damage per word, sprites) into a level config.
-const BATTLE_TIME_SECONDS = 60;
-const ENEMY_MAX_HP = 100;
-const DAMAGE_PER_WORD = 10;
-const promptGenerator: TypingPromptGenerator = new SingleWordGenerator();
-
-export function BattleContent() {
-  const { completedWords } = useContext(TypingTrackerContext);
-
-  const enemyCurrentHp = Math.max(
-    0,
-    ENEMY_MAX_HP - completedWords * DAMAGE_PER_WORD,
-  );
-
-  return (
-    <>
-      <BattleTimer />
-      <TypingTrackerView />
-
-      <div className={styles.battleScene}>
-        <div className={styles.playerPokemonContainer}>
-          <PlayerHealthBar />
-
-          <div className={styles.imagesContainer}>
-            <img
-              className={styles.playerPokemon}
-              src={process.env.PUBLIC_URL + "/img/pokemon/piplup.png"}
-              alt="player pokemon sprite"
-            />
-            <img
-              className={styles.grassPatch}
-              src={process.env.PUBLIC_URL + "/img/grass_patch.png"}
-              alt="grass patch"
-            />
-          </div>
-        </div>
-
-        <div className={styles.wildPokemonContainer}>
-          <div className={styles.enemyHud}>
-            <OpponentHealthBar currentHp={enemyCurrentHp} maxHp={ENEMY_MAX_HP} />
-          </div>
-
-          <div className={styles.imagesContainer}>
-            <img
-              className={styles.wildPokemon}
-              src={process.env.PUBLIC_URL + "/img/pokemon/bidoof.png"}
-              alt="wild pokemon sprite"
-            />
-            <img
-              className={styles.grassPatch}
-              src={process.env.PUBLIC_URL + "/img/grass_patch.png"}
-              alt="grass patch"
-            />
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
+import { Save } from "../../components/Storage/Save";
+import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
 
 function Battle() {
+  const save = useMemo(() => new Save(NUM_LEVELS), []);
+  const starterPokemon = save.getStarter() || "bulbasaur";
+  const params = useParams();
+
+  const levelId = parseInt(params.levelId!);
+
+  if (Number.isNaN(levelId) || levelId < 1 || levelId > NUM_LEVELS) {
+    throw new Error(`Level ID must be between 1 and ${NUM_LEVELS}`);
+  }
+
+  const currentLevel = LEVEL_CONFIGS[parseInt(params.levelId!) - 1];
+  const enemyMaxHp = currentLevel.battle.numPromptsToComplete;
+  
   return (
     <div className={styles.battleContainer}>
-      <h1 className={styles.battleTitle}>Battle</h1>
+      <h1 className={styles.battleTitle}>{currentLevel.battle.title}</h1>
 
-      <TypingTrackerProvider promptGenerator={promptGenerator}>
-        <TimerProvider time={BATTLE_TIME_SECONDS}>
-          <BattleContent />
+      <TypingTrackerProvider promptGenerator={currentLevel.generator}>
+        <TimerProvider time={60}>
+          <BattleContent starterPokemon={starterPokemon} enemyMaxHp={enemyMaxHp} />
         </TimerProvider>
       </TypingTrackerProvider>
     </div>

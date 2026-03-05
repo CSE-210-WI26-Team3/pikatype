@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { TypingPromptGenerator } from "../../wordGeneration/index";
+import { TypingPromptGenerator } from "../../wordGeneration";
 
 const VALID_KEYS_PATTERN = /^[a-zA-Z ]$/;
 
