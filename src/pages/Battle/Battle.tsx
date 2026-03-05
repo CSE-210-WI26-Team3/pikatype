@@ -1,9 +1,7 @@
 import { BattleContent } from "./BattleContent";
 import { useParams } from "react-router";
-import { useContext, useMemo } from "react";
-import TypingTrackerProvider, {
-  TypingTrackerContext,
-} from "../../components/TypingTracker/TypingTrackerProvider";
+import { useMemo } from "react";
+import TypingTrackerProvider  from "../../components/TypingTracker/TypingTrackerProvider";
 
 import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
