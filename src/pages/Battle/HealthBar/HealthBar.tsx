@@ -8,6 +8,15 @@ interface HealthBarProps {
 }
 
 export function HealthBar({ percentValue }: HealthBarProps) {
+  
+  let healthColorClass = styles.healthGreen;
+
+  if (percentValue <= 20) {
+    healthColorClass = styles.healthRed;
+  } else if (percentValue <= 50) {
+    healthColorClass = styles.healthYellow;
+  }
+  
   return (
     <Progress.Root
       value={percentValue}
@@ -20,7 +29,7 @@ export function HealthBar({ percentValue }: HealthBarProps) {
       <Progress.Track id="healthbar-track" className={styles.healthBarTrack}>
         <Progress.Indicator
           id="healthbar-indicator"
-          className={styles.healthBarIndicator}
+          className={`${styles.healthBarIndicator} ${healthColorClass}`}
         />
       </Progress.Track>
     </Progress.Root>

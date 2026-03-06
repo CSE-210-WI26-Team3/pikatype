@@ -16,8 +16,20 @@
 }
 
 .healthBarIndicator {
-  background-color: var(--currentHealthBackground);
+  background-color: var(--health-green);
+  transition: 
+    width 0.1s linear,
+    background-color 0.1s ease;
 }
+
+.healthYellow {
+  background-color: var(--health-yellow);
+}
+
+.healthRed {
+  background-color: var(--health-red);
+}
+
 
 .healthBarLabel {
   color: var(--yellow);

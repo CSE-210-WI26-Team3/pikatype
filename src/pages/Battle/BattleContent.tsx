@@ -9,25 +9,39 @@ import BattleTimer from "./Timer";
 export function BattleContent({starterPokemon, enemyMaxHp,}: {starterPokemon: string;enemyMaxHp: number;}) {
   const { completedWords } = useContext(TypingTrackerContext);
 
-  const enemyCurrentHp = Math.max(0, enemyMaxHp - completedWords);
+  const HEALTH_UPDATE_DELAY_MS = 300;
+  const ANIMATION_DURATION_MS = 600;
 
-  const prevCompletedWords = useRef(completedWords);
+  const [displayedCompletedWords, setDisplayedCompletedWords] =
+    useState(completedWords);
   const [isEnemyHit, setIsEnemyHit] = useState(false);
   const [isPlayerAttack, setIsPlayerAttack] = useState(false);
+
+  const prevCompletedWords = useRef(completedWords);
+
+  // Delay updating enemy health bar until the hit visually "lands"
+  useEffect(() => {
+
+    const timeout = setTimeout(() => {
+      setDisplayedCompletedWords(completedWords);
+    }, HEALTH_UPDATE_DELAY_MS);
+
+    return () => clearTimeout(timeout);
+  }, [completedWords]);
 
   useEffect(() => {
     if (completedWords > prevCompletedWords.current) {
       // Trigger battle animations for player attack and enemy hit reaction
-      setIsEnemyHit(true);
       setIsPlayerAttack(true);
+      setIsEnemyHit(true);
 
       // Reset animation state after animation duration
       const timeout = setTimeout(() => {
-        setIsEnemyHit(false);
         setIsPlayerAttack(false);
-      }, 600);
+        setIsEnemyHit(false);
+      }, ANIMATION_DURATION_MS);
 
-      // Update previous word count so we only trigger on new completions
+      // Update previous word count so animations only trigger on new completions
       prevCompletedWords.current = completedWords;
 
       return () => clearTimeout(timeout);
@@ -35,6 +49,8 @@ export function BattleContent({starterPokemon, enemyMaxHp,}: {starterPokemon: st
 
     prevCompletedWords.current = completedWords;
   }, [completedWords]);
+
+  const enemyCurrentHp = Math.max(0, enemyMaxHp - displayedCompletedWords);
 
   return (
     <>
