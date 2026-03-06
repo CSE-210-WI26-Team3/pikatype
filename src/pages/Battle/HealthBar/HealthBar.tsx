@@ -38,9 +38,7 @@ export function HealthBar({ percentValue }: HealthBarProps) {
 
 export function PlayerHealthBar() {
   const { timerState } = useContext(TimerContext);
-  const playerHealth = Math.floor(
-    (timerState.currentTime / timerState.maxTime) * 100,
-  );
+  const playerHealth = (timerState.currentTime / timerState.maxTime) * 100
 
   return <HealthBar percentValue={playerHealth} />;
 }
