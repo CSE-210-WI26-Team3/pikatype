@@ -58,12 +58,11 @@
   width: 200px;
   image-rendering: pixelated;
   position: absolute;
-  top: -35%;
+  top: -45%;
   left: 20%;
   z-index: 1;
 }
 
 .playerPokemon {
   transform: scaleX(-1);
-  top: -45%;
 }
