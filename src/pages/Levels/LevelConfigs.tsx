@@ -1,6 +1,7 @@
 import { GibberishGenerator } from "../../wordGeneration/GibberishGenerator";
 import {
   MultiWordGenerator,
+  SentenceGenerator,
   SingleWordGenerator,
   TypingPromptGenerator,
 } from "../../wordGeneration/index";
@@ -91,9 +92,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       title: "Short Sentences",
       numPromptsToComplete: 5,
     },
-
-    // TODO: replace with sentence generator once that PR gets merged
-    generator: new SingleWordGenerator(),
+    generator: new SentenceGenerator(),
     evolution: 2,
   },
 ];
