@@ -25,6 +25,8 @@ type TypingTrackerState = {
 
 type TypingTrackerContextType = TypingTrackerState & {
   getNewContent: () => void;
+  isAllPromptsComplete: boolean;
+  numPromptsToComplete: number;
 };
 
 const DEFAULT_TYPING_TRACKER_STATE = {
@@ -38,20 +40,26 @@ const DEFAULT_TYPING_TRACKER_STATE = {
 const TypingTrackerContext = createContext<TypingTrackerContextType>({
   ...DEFAULT_TYPING_TRACKER_STATE,
   getNewContent: () => {},
+  isAllPromptsComplete: false,
+  numPromptsToComplete: 0,
 });
 
 interface TypingTrackerProviderProps {
   promptGenerator: TypingPromptGenerator;
   children: ReactNode;
   isActive?: boolean;
-  onWordComplete?: (totalCharsTyped: number) => void;
+  numPromptsToComplete: number;
+  onWordTyped?: (totalCharsTyped: number) => void;
+  onLevelComplete?: () => void;
 }
 
 function TypingTrackerProvider({
   promptGenerator,
   children,
   isActive = false,
-  onWordComplete,
+  numPromptsToComplete,
+  onWordTyped,
+  onLevelComplete,
 }: TypingTrackerProviderProps) {
   const [typingTrackerState, setTypingTrackerState] =
     useState<TypingTrackerState>(DEFAULT_TYPING_TRACKER_STATE);
@@ -128,9 +136,13 @@ function TypingTrackerProvider({
         ) {
           const wordLength = typingTrackerState.content.length;
           const newTotalChars = typingTrackerState.totalCharsTyped + wordLength;
+          const newCompletedWords = typingTrackerState.completedWords + 1;
           incrementCompletedWords(wordLength);
           updateState(TypingTrackerProgress.Complete);
-          onWordComplete?.(newTotalChars);
+          onWordTyped?.(newTotalChars);
+          if (newCompletedWords >= numPromptsToComplete) {
+            onLevelComplete?.();
+          }
         }
       } else {
         if (!VALID_KEYS_PATTERN.test(event.key)) return; // if key is invalid, don't do anything
@@ -145,16 +157,20 @@ function TypingTrackerProvider({
   }, [
     typingTrackerState,
     isActive,
+    numPromptsToComplete,
     decrementCursor,
     incrementCompletedWords,
     incrementCursor,
     updateState,
-    onWordComplete,
+    onWordTyped,
+    onLevelComplete,
   ]);
+
+  const isAllPromptsComplete = typingTrackerState.completedWords >= numPromptsToComplete;
 
   return (
     <TypingTrackerContext.Provider
-      value={{ ...typingTrackerState, getNewContent }}
+      value={{ ...typingTrackerState, getNewContent, isAllPromptsComplete, numPromptsToComplete }}
     >
       {children}
     </TypingTrackerContext.Provider>
