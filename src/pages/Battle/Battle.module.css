@@ -43,14 +43,13 @@
 .wildPokemonContainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   height: 100%;
+  gap: 10%;
 }
 
 .imagesContainer {
   position: relative;
-  height: 20rem;
 }
 
 .playerPokemon,
@@ -58,7 +57,7 @@
   width: 200px;
   image-rendering: pixelated;
   position: absolute;
-  top: -45%;
+  bottom: 20%;
   left: 20%;
   z-index: 1;
 }
