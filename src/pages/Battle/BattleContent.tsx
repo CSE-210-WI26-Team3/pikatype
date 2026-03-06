@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { TypingTrackerContext } from "../../components/TypingTracker";
 import TypingTrackerView from "../../components/TypingTracker/TypingTrackerView";
 import { OpponentHealthBar, PlayerHealthBar } from "./HealthBar/HealthBar";
@@ -11,6 +11,31 @@ export function BattleContent({starterPokemon, enemyMaxHp,}: {starterPokemon: st
 
   const enemyCurrentHp = Math.max(0, enemyMaxHp - completedWords);
 
+  const prevCompletedWords = useRef(completedWords);
+  const [isEnemyHit, setIsEnemyHit] = useState(false);
+  const [isPlayerAttack, setIsPlayerAttack] = useState(false);
+
+  useEffect(() => {
+    if (completedWords > prevCompletedWords.current) {
+      // Trigger battle animations for player attack and enemy hit reaction
+      setIsEnemyHit(true);
+      setIsPlayerAttack(true);
+
+      // Reset animation state after animation duration
+      const timeout = setTimeout(() => {
+        setIsEnemyHit(false);
+        setIsPlayerAttack(false);
+      }, 600);
+
+      // Update previous word count so we only trigger on new completions
+      prevCompletedWords.current = completedWords;
+
+      return () => clearTimeout(timeout);
+    }
+
+    prevCompletedWords.current = completedWords;
+  }, [completedWords]);
+
   return (
     <>
       <BattleTimer />
@@ -22,7 +47,9 @@ export function BattleContent({starterPokemon, enemyMaxHp,}: {starterPokemon: st
 
           <div className={styles.imagesContainer}>
             <img
-              className={styles.playerPokemon}
+              className={`${styles.playerPokemon} ${
+                isEnemyHit ? styles.playerAttackAnimation : ""
+              }`}
               src={process.env.PUBLIC_URL +`/img/pokemon/${starterPokemon}.png`}
               alt="player pokemon sprite"
             />
@@ -41,7 +68,9 @@ export function BattleContent({starterPokemon, enemyMaxHp,}: {starterPokemon: st
 
           <div className={styles.imagesContainer}>
             <img
-              className={styles.wildPokemon}
+              className={`${styles.wildPokemon} ${
+                isPlayerAttack ? styles.enemyHitAnimation : ""
+              }`}
               src={process.env.PUBLIC_URL + "/img/pokemon/bidoof.png"}
               alt="wild pokemon sprite"
             />
