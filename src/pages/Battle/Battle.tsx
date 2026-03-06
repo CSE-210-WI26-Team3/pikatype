@@ -10,8 +10,6 @@ import { useParams } from "react-router";
 import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
 import { getPokemonByLevel } from "../../data/pokemon";
 
-const NUM_LEVELS = 3;
-
 function Battle() {
   const save = useMemo(() => new Save(NUM_LEVELS), []);
   const params = useParams();
