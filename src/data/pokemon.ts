@@ -1,3 +1,7 @@
+import { Save } from "../components/Storage/Save";
+import { EVOLUTIONS } from "../Constants";
+import { LevelConfig } from "../pages/Levels/LevelConfigs";
+
 export const POKEMON_DATA: Record<
   string,
   { name: string; type: string; typeColor: string }
@@ -18,3 +22,12 @@ export const POKEMON_DATA: Record<
     typeColor: "#6890f0",
   },
 };
+
+export function getPokemonByLevel(save: Save, level: LevelConfig) {
+  const starter = save.getStarter();
+  if (starter === null) {
+    return "bulbasaur";
+  }
+
+  return EVOLUTIONS[starter][level.evolution];
+}
