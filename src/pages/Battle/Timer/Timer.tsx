@@ -26,7 +26,7 @@ function Timer() {
       <p id="timer-duration">
         Time Left: {minutes}:{seconds}
       </p>
-      {timerState.status !== TimerStatus.Ongoing && (
+      {timerState.status !== TimerStatus.Ongoing && timerState.status !== TimerStatus.Stopped && (
         <Button
           id="start-button"
           className={styles.timer}
