@@ -6,7 +6,7 @@ import styles from "./Battle.module.css";
 
 import BattleTimer from "./Timer";
 
-export function BattleContent({starterPokemon, enemyMaxHp,}: {starterPokemon: string;enemyMaxHp: number;}) {
+export function BattleContent({starterPokemon, enemyPokemon, enemyMaxHp,}: {starterPokemon: string; enemyPokemon: string; enemyMaxHp: number;}) {
   const { completedWords } = useContext(TypingTrackerContext);
 
   const HEALTH_UPDATE_DELAY_MS = 300;
@@ -87,7 +87,7 @@ export function BattleContent({starterPokemon, enemyMaxHp,}: {starterPokemon: st
               className={`${styles.wildPokemon} ${
                 isPlayerAttack ? styles.enemyHitAnimation : ""
               }`}
-              src={process.env.PUBLIC_URL + "/img/pokemon/bidoof.png"}
+              src={process.env.PUBLIC_URL + `/img/pokemon/${enemyPokemon}.png`}
               alt="wild pokemon sprite"
             />
             <img

@@ -41,7 +41,7 @@ function renderBattleWithCompletedWords(
           dispatch: () => {},
         } as any}
       >
-        <BattleContent starterPokemon="bulbasaur" enemyMaxHp={enemyMaxHp} />
+        <BattleContent starterPokemon="bulbasaur" enemyPokemon="bidoof" enemyMaxHp={enemyMaxHp} />
       </TimerContext.Provider>
     </TypingTrackerContext.Provider>,
   );
@@ -92,7 +92,7 @@ describe("battle opponent hp derivation", () => {
             dispatch: () => {},
           } as any}
         >
-          <BattleContent starterPokemon="bulbasaur" enemyMaxHp={20} />
+          <BattleContent starterPokemon="bulbasaur" enemyPokemon="bidoof" enemyMaxHp={20} />
         </TimerContext.Provider>
       </TypingTrackerContext.Provider>,
     );
