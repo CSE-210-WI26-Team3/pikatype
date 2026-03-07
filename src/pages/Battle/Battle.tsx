@@ -23,13 +23,14 @@ function Battle() {
   const currentLevel = LEVEL_CONFIGS[parseInt(params.levelId!) - 1];
   const chosenPokemon = getPokemonByLevel(save, currentLevel);
   const enemyMaxHp = currentLevel.battle.numPromptsToComplete;
+  const enemyPokemon = currentLevel.enemyPokemon;
 
   return (
     <div className={styles.battleContainer}>
       <h1 className={styles.battleTitle}>{currentLevel.battle.title}</h1>
       <TypingTrackerProvider promptGenerator={currentLevel.generator}>
         <TimerProvider time={60}>
-          <BattleContent starterPokemon={chosenPokemon} enemyMaxHp={enemyMaxHp} />
+          <BattleContent starterPokemon={chosenPokemon} enemyPokemon={enemyPokemon} enemyMaxHp={enemyMaxHp} />
         </TimerProvider>
       </TypingTrackerProvider>
     </div>
