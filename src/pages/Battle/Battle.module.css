@@ -12,6 +12,19 @@
   background-color: var(--battle-background);
 }
 
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  color: var(--text-color);
+  background-color: var(--box-color);
+  border: 4px solid var(--border-color);
+  border-radius: 2rem;
+  padding: 2rem;
+}
+
 .grassPatch {
   image-rendering: pixelated;
   width: 20rem;
@@ -30,14 +43,13 @@
 .wildPokemonContainer {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   height: 100%;
+  gap: 10%;
 }
 
 .imagesContainer {
   position: relative;
-  height: 20rem;
 }
 
 .playerPokemon,
@@ -45,7 +57,7 @@
   width: 200px;
   image-rendering: pixelated;
   position: absolute;
-  top: -15%;
+  bottom: 20%;
   left: 20%;
   z-index: 1;
 }

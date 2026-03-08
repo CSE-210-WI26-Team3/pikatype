@@ -35,3 +35,17 @@ export function PlayerHealthBar() {
 
   return <HealthBar percentValue={playerHealth} />;
 }
+
+type OpponentHealthBarProps = {
+  currentHp: number;
+  maxHp: number;
+};
+
+function toPercent(current: number, max: number) {
+  if (max <= 0) return 0;
+  return Math.floor((current / max) * 100);
+}
+
+export function OpponentHealthBar({ currentHp, maxHp }: OpponentHealthBarProps) {
+  return <HealthBar percentValue={toPercent(currentHp, maxHp)} />;
+}

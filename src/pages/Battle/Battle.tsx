@@ -1,50 +1,35 @@
-import TypingTrackerProvider from "../../components/TypingTracker/TypingTrackerProvider";
-import TypingTrackerView from "../../components/TypingTracker/TypingTrackerView";
-import BattleTimer from "./Timer";
+import { BattleContent } from "./BattleContent";
+import { useParams } from "react-router";
+import { useMemo } from "react";
+import TypingTrackerProvider  from "../../components/TypingTracker/TypingTrackerProvider";
+
 import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
-import { PlayerHealthBar } from "./HealthBar/HealthBar";
+
+import { Save } from "../../components/Storage/Save";
+import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
+import { getPokemonByLevel } from "../../data/pokemon";
 
 function Battle() {
+  const save = useMemo(() => new Save(NUM_LEVELS), []);
+  const params = useParams();
+
+  const levelId = parseInt(params.levelId!);
+
+  if (Number.isNaN(levelId) || levelId < 1 || levelId > NUM_LEVELS) {
+    throw new Error(`Level ID must be between 1 and ${NUM_LEVELS}`);
+  }
+
+  const currentLevel = LEVEL_CONFIGS[parseInt(params.levelId!) - 1];
+  const chosenPokemon = getPokemonByLevel(save, currentLevel);
+  const enemyMaxHp = currentLevel.battle.numPromptsToComplete;
+
   return (
     <div className={styles.battleContainer}>
-      <h1 className={styles.battleTitle}>Battle</h1>
-      <TypingTrackerProvider>
+      <h1 className={styles.battleTitle}>{currentLevel.battle.title}</h1>
+      <TypingTrackerProvider promptGenerator={currentLevel.generator}>
         <TimerProvider time={60}>
-          <BattleTimer />
-
-          <TypingTrackerView />
-          <div className={styles.battleScene}>
-            <div className={styles.playerPokemonContainer}>
-              <PlayerHealthBar />
-              <div className={styles.imagesContainer}>
-                <img
-                  className={styles.playerPokemon}
-                  src={process.env.PUBLIC_URL + "/img/pokemon/piplup.png"}
-                  alt="player pokemon sprite"
-                />
-                <img
-                  className={styles.grassPatch}
-                  src={process.env.PUBLIC_URL + "/img/grass_patch.png"}
-                  alt="grass patch"
-                />
-              </div>
-            </div>
-            <div className={styles.wildPokemonContainer}>
-              <div className={styles.imagesContainer}>
-                <img
-                  className={styles.wildPokemon}
-                  src={process.env.PUBLIC_URL + "/img/pokemon/bidoof.png"}
-                  alt="wild pokemon sprite"
-                />
-                <img
-                  className={styles.grassPatch}
-                  src={process.env.PUBLIC_URL + "/img/grass_patch.png"}
-                  alt="grass patch"
-                />
-              </div>
-            </div>
-          </div>
+          <BattleContent starterPokemon={chosenPokemon} enemyMaxHp={enemyMaxHp} />
         </TimerProvider>
       </TypingTrackerProvider>
     </div>
