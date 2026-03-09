@@ -50,6 +50,7 @@ describe("audio player tests", () => {
 
   afterAll(() => {
     jest.useRealTimers();
+    jest.clearAllMocks();
   });
 
   it("audio player should initialize but not play audio", () => {

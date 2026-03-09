@@ -112,7 +112,7 @@ describe("Save", () => {
 
     expect(save.isCompleted(1)).toBe(false);
     expect(save.getStarter()).toBeNull();
-    expect(save.getAudioMuted).toBe(false);
+    expect(save.getAudioMuted()).toBe(false);
     expect(save.getVolume()).toBe(0.5);
   });
 
@@ -123,7 +123,7 @@ describe("Save", () => {
 
     expect(save.isCompleted(1)).toBe(false);
     expect(save.getStarter()).toBeNull();
-    expect(save.getAudioMuted).toBe(false);
+    expect(save.getAudioMuted()).toBe(false);
     expect(save.getVolume()).toBe(0.5);
   });
 
@@ -193,7 +193,7 @@ describe("Save", () => {
 
     expect(save.isCompleted(1)).toBe(false);
     expect(save.getStarter()).toBeNull();
-    expect(save.getAudioMuted).toBe(false);
+    expect(save.getAudioMuted()).toBe(false);
     expect(save.getVolume()).toBe(0.5);
   });
 
