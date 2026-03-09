@@ -5,7 +5,11 @@ a random string given a list of characters
  */
 
 //Imports
-import { GibberishGenerator, GibberishData } from "./GibberishGenerator";
+import {
+  GibberishGenerator,
+  GibberishData,
+  BANNED_SUBSTRINGS,
+} from "./GibberishGenerator";
 import * as fs from "fs";
 
 afterEach(() => {
@@ -78,6 +82,28 @@ describe("Testing gibberishGenerator Suite", () => {
     mockRandom.mockReturnValueOnce(0);
     const inBetweenWord = await testObj.getTypingPrompt();
     expect(inBetweenWord).toBe("asdfga");
+  });
+
+  it("Never generates a word containing a banned substring", async () => {
+    const generator = new GibberishGenerator(3, 5, "asdfg".split(""));
+
+    for (let i = 0; i < 200; i++) {
+      const word = await generator.getTypingPrompt();
+      const lowerWord = word.toLowerCase();
+      for (const banned of BANNED_SUBSTRINGS) {
+        expect(lowerWord).not.toContain(banned);
+      }
+    }
+  });
+
+  it("BANNED_SUBSTRINGS contains expected entries", () => {
+    expect(BANNED_SUBSTRINGS).toContain("ass");
+    expect(BANNED_SUBSTRINGS).toContain("fag");
+    expect(BANNED_SUBSTRINGS).toContain("gash");
+    expect(BANNED_SUBSTRINGS).toContain("shag");
+    expect(BANNED_SUBSTRINGS).toContain("slag");
+    expect(BANNED_SUBSTRINGS).toContain("tit");
+    expect(BANNED_SUBSTRINGS).toContain("wop");
   });
 
   it("Testing if constructor checks if json object passed is correct", () => {
