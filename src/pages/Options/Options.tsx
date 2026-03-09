@@ -13,6 +13,7 @@ function Options() {
   function saveSettings() {
     save.setAudioMuted(audioMuted);
     save.setVolume(volume);
+    navigate("/");
   }
 
   return (
@@ -32,7 +33,6 @@ function Options() {
             step="0.01"
             defaultValue={volume}
             onChange={(e) => {
-              console.log(e.target.value);
               setVolume(parseFloat(e.target.value));
             }}
           />
