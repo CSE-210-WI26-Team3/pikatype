@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 5rem;
 }
 
 .healthBarTrack {
@@ -15,7 +16,22 @@
 }
 
 .healthBarIndicator {
-  background-color: var(--currentHealthBackground);
+  background-color: var(--health-green);
+  transition: 
+    width 0.3s linear,
+    background-color 0.1s ease;
+}
+
+.healthYellow {
+  background-color: var(--health-yellow);
+}
+
+.healthRed {
+  background-color: var(--health-red);
+}
+
+.healthGreen {
+  background-color: var(--health-green);
 }
 
 .healthBarLabel {

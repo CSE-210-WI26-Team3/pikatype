@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 
 import {
   TypingTrackerContext,
@@ -6,6 +6,8 @@ import {
 } from "../../components/TypingTracker/TypingTrackerProvider";
 import { TimerContext, TimerStatus } from "./Timer/TimerProvider";
 import { BattleContent } from "./BattleContent";
+
+const HEALTH_UPDATE_DELAY_MS = 300;
 
 function getProgressValue(el: HTMLElement) {
   const raw = el.getAttribute("aria-valuenow");
@@ -15,7 +17,10 @@ function getProgressValue(el: HTMLElement) {
   return Number(raw);
 }
 
-function renderBattleWithCompletedWords(completedWords: number, enemyMaxHp = 20) {
+function renderBattleWithCompletedWords(
+  completedWords: number,
+  enemyMaxHp = 20,
+) {
   return render(
     <TypingTrackerContext.Provider
       value={{
@@ -36,7 +41,7 @@ function renderBattleWithCompletedWords(completedWords: number, enemyMaxHp = 20)
           dispatch: () => {},
         } as any}
       >
-        <BattleContent starterPokemon="bulbasaur" enemyMaxHp={enemyMaxHp} />
+        <BattleContent starterPokemon="bulbasaur" enemyPokemon="bidoof" enemyMaxHp={enemyMaxHp} />
       </TimerContext.Provider>
     </TypingTrackerContext.Provider>,
   );
@@ -51,6 +56,17 @@ function getAllProgressValues() {
  * from TypingTracker completedWords.
  */
 describe("battle opponent hp derivation", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+    jest.useRealTimers();
+  });
+
   test("opponent health decreases when completedWords increases", () => {
     const { rerender } = renderBattleWithCompletedWords(0, 20);
 
@@ -76,14 +92,17 @@ describe("battle opponent hp derivation", () => {
             dispatch: () => {},
           } as any}
         >
-          <BattleContent starterPokemon="bulbasaur" enemyMaxHp={20} />
+          <BattleContent starterPokemon="bulbasaur" enemyPokemon="bidoof" enemyMaxHp={20} />
         </TimerContext.Provider>
       </TypingTrackerContext.Provider>,
     );
 
+    act(() => {
+      jest.advanceTimersByTime(HEALTH_UPDATE_DELAY_MS);
+    });
+
     const after = getAllProgressValues();
 
-    // Opponent bar is the one that decreased when completedWords increased
     const deltas = before.map((v, i) => after[i] - v);
     expect(deltas.some((d) => d < 0)).toBe(true);
   });
@@ -91,13 +110,20 @@ describe("battle opponent hp derivation", () => {
   test("opponent health is correct percent for maxHp - completedWords", () => {
     renderBattleWithCompletedWords(3, 20);
 
-    // currentHp = 17, maxHp = 20 => 85%
+    act(() => {
+      jest.advanceTimersByTime(HEALTH_UPDATE_DELAY_MS);
+    });
+
     const values = getAllProgressValues();
     expect(values).toContain(85);
   });
 
   test("opponent health clamps at 0 when completedWords exceeds maxHp", () => {
     renderBattleWithCompletedWords(999, 20);
+
+    act(() => {
+      jest.advanceTimersByTime(HEALTH_UPDATE_DELAY_MS);
+    });
 
     const values = getAllProgressValues();
     expect(values).toContain(0);
