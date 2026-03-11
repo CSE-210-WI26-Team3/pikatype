@@ -1,7 +1,7 @@
 import { BattleContent } from "./BattleContent";
 import { useParams } from "react-router";
 import { useMemo } from "react";
-import TypingTrackerProvider  from "../../components/TypingTracker/TypingTrackerProvider";
+import TypingTrackerProvider from "../../components/TypingTracker/TypingTrackerProvider";
 
 import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
@@ -9,6 +9,7 @@ import styles from "./Battle.module.css";
 import { Save } from "../../components/Storage/Save";
 import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
 import { getPokemonByLevel } from "../../data/pokemon";
+import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
 function Battle() {
   const save = useMemo(() => new Save(NUM_LEVELS), []);
@@ -30,7 +31,12 @@ function Battle() {
       <h1 className={styles.battleTitle}>{currentLevel.battle.title}</h1>
       <TypingTrackerProvider promptGenerator={currentLevel.generator}>
         <TimerProvider time={60}>
-          <BattleContent starterPokemon={chosenPokemon} enemyPokemon={enemyPokemon} enemyMaxHp={enemyMaxHp} />
+          <BattleContent
+            starterPokemon={chosenPokemon}
+            enemyPokemon={enemyPokemon}
+            enemyMaxHp={enemyMaxHp}
+          />
+          <AudioPlayer src={process.env.PUBLIC_URL + currentLevel.audio} />
         </TimerProvider>
       </TypingTrackerProvider>
     </div>
