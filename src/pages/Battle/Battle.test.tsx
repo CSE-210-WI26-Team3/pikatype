@@ -28,7 +28,10 @@ function renderBattleWithCompletedWords(
         cursor: 0,
         state: TypingTrackerProgress.Valid,
         completedWords,
+        totalCharsTyped: 0,
         getNewContent: () => {},
+        isAllPromptsComplete: false,
+        numPromptsToComplete: enemyMaxHp,
       }}
     >
       <TimerContext.Provider
@@ -79,7 +82,10 @@ describe("battle opponent hp derivation", () => {
           cursor: 0,
           state: TypingTrackerProgress.Valid,
           completedWords: 1,
+          totalCharsTyped: 0,
           getNewContent: () => {},
+          isAllPromptsComplete: false,
+          numPromptsToComplete: 20,
         }}
       >
         <TimerContext.Provider
