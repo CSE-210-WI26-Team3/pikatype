@@ -1,15 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import TypingTrackerProvider from "../../components/TypingTracker/TypingTrackerProvider";
-import TypingTrackerView from "../../components/TypingTracker/TypingTrackerView";
-import BattleTimer from "./Timer";
 import TimerProvider from "./Timer/TimerProvider";
 import styles from "./Battle.module.css";
-import { PlayerHealthBar } from "./HealthBar/HealthBar";
 import LevelCompleteModal from "./LevelCompleteModal/LevelCompleteModal";
 import LevelFailedModal from "./LevelFailedModal/LevelFailedModal";
 import { Save } from "../../components/Storage/Save";
 import { useNavigate, useParams } from "react-router";
 import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
+import { getPokemonByLevel } from "../../data/pokemon";
+import { BattleContent } from "./BattleContent";
 
 const BATTLE_DURATION = 60;
 
@@ -41,13 +40,16 @@ function Battle() {
     }
     prevLevelIdRef.current = levelId;
   }, [levelId]);
+
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [wpm, setWpm] = useState(0);
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [isLevelComplete, setIsLevelComplete] = useState(false);
 
   const save = useMemo(() => new Save(NUM_LEVELS), []);
-  const starterPokemon = save.getStarter() || "bulbasaur";
+  const chosenPokemon = getPokemonByLevel(save, currentLevel);
+  const enemyMaxHp = currentLevel.battle.numPromptsToComplete;
+  const enemyPokemon = currentLevel.enemyPokemon;
 
   const handleWordTyped = useCallback((totalChars: number) => {
     totalCharsRef.current = totalChars;
@@ -98,7 +100,7 @@ function Battle() {
 
   return (
     <div className={styles.battleContainer}>
-      <h1 className={styles.battleTitle}>Battle</h1>
+      <h1 className={styles.battleTitle}>{currentLevel.battle.title}</h1>
       <TypingTrackerProvider
         key={battleKey}
         promptGenerator={currentLevel.generator}
@@ -108,39 +110,7 @@ function Battle() {
         onLevelComplete={handleLevelComplete}
       >
         <TimerProvider time={BATTLE_DURATION} onStart={handleTimerStart} onPause={handleTimerPause} onDone={handleTimerDone} isStopped={isLevelComplete}>
-          <BattleTimer />
-          <TypingTrackerView />
-          <div className={styles.battleScene}>
-            <div className={styles.playerPokemonContainer}>
-              <PlayerHealthBar />
-              <div className={styles.imagesContainer}>
-                <img
-                  className={styles.playerPokemon}
-                  src={process.env.PUBLIC_URL + `/img/pokemon/${starterPokemon}.png`}
-                  alt="player pokemon sprite"
-                />
-                <img
-                  className={styles.grassPatch}
-                  src={process.env.PUBLIC_URL + "/img/grass_patch.png"}
-                  alt="grass patch"
-                />
-              </div>
-            </div>
-            <div className={styles.wildPokemonContainer}>
-              <div className={styles.imagesContainer}>
-                <img
-                  className={styles.wildPokemon}
-                  src={process.env.PUBLIC_URL + "/img/pokemon/bidoof.png"}
-                  alt="wild pokemon sprite"
-                />
-                <img
-                  className={styles.grassPatch}
-                  src={process.env.PUBLIC_URL + "/img/grass_patch.png"}
-                  alt="grass patch"
-                />
-              </div>
-            </div>
-          </div>
+          <BattleContent starterPokemon={chosenPokemon} enemyPokemon={enemyPokemon} enemyMaxHp={enemyMaxHp} />
         </TimerProvider>
       </TypingTrackerProvider>
       {isTimeUp && <LevelFailedModal wpm={wpm} onPlayAgain={handlePlayAgain} />}

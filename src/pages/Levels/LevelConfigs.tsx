@@ -10,6 +10,8 @@ import { BattleConfig } from "../Battle/index";
 export type LevelConfig = {
   battle: BattleConfig;
   generator: TypingPromptGenerator;
+  evolution: number;
+  enemyPokemon: string;
 };
 
 export const LEVEL_CONFIGS: LevelConfig[] = [
@@ -19,6 +21,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 20,
     },
     generator: new GibberishGenerator(3, 5, "asdfg".split("")),
+    evolution: 0,
+    enemyPokemon: "bidoof",
   },
   {
     battle: {
@@ -26,6 +30,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 20,
     },
     generator: new GibberishGenerator(3, 5, "hjkl".split("")),
+    evolution: 0,
+    enemyPokemon: "psyduck",
   },
   {
     battle: {
@@ -34,22 +40,26 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     },
 
     generator: new GibberishGenerator(3, 5, "asdfghjkl".split("")),
+    evolution: 0,
+    enemyPokemon: "pikachu",
   },
   {
     battle: {
       title: "Top Row",
       numPromptsToComplete: 20,
     },
-
     generator: new GibberishGenerator(3, 5, "qwertyuiop".split("")),
+    evolution: 1,
+    enemyPokemon: "luxray",
   },
   {
     battle: {
       title: "Bottom Row",
       numPromptsToComplete: 20,
     },
-
     generator: new GibberishGenerator(3, 5, "zxcvbnm".split("")),
+    evolution: 1,
+    enemyPokemon: "umbreon",
   },
   {
     battle: {
@@ -57,6 +67,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 15,
     },
     generator: new SingleWordGenerator(),
+    evolution: 1,
+    enemyPokemon: "snorlax",
   },
   {
     battle: {
@@ -64,31 +76,35 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
       numPromptsToComplete: 10,
     },
     generator: new MultiWordGenerator(3, 5),
+    evolution: 2,
+    enemyPokemon: "lucario",
   },
   {
     battle: {
       title: "Punctuation (Top Row)",
       numPromptsToComplete: 10,
     },
-
     generator: new GibberishGenerator(3, 5, "!@#$%&*()-=_+".split("")),
+    evolution: 2,
+    enemyPokemon: "garchomp",
   },
   {
     battle: {
       title: "Punctuation (Right Side)",
       numPromptsToComplete: 10,
     },
-
     generator: new GibberishGenerator(3, 5, "[]{};':\",./<>?".split("")),
+    evolution: 2,
+    enemyPokemon: "dragonite",
   },
   {
     battle: {
       title: "Short Sentences",
       numPromptsToComplete: 5,
     },
-
-    // TODO: replace with sentence generator once that PR gets merged
     generator: new SentenceGenerator(),
+    evolution: 2,
+    enemyPokemon: "lugia",
   },
 ];
 

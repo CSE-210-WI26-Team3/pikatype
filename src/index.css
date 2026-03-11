@@ -12,6 +12,9 @@
   --healthbarBackground: #b5b0b0;
   --healthbarContainerBackground: #504949;
   --currentHealthBackground: #1f9823;
+  --health-green: #1f9823;
+  --health-yellow: #f0c419;
+  --health-red: #e53935;
 }
 
 @font-face {

@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { HealthBar } from "./HealthBar";
+import { OpponentHealthBar } from "./HealthBar";
 import {
   TimerContext,
   TimerModel,
@@ -100,5 +101,65 @@ describe("player health bar tests", () => {
     expect(healthBar).toBeVisible();
     const healthBarWidth = getComputedStyle(healthBar!).width;
     expect(healthBarWidth).toMatch(/0%/);
+  });
+});
+
+
+
+/**
+ * Mocking opponent health bar behavior and testing that
+ * percent values are computed and rendered correctly
+ * based on currentHp and maxHp props.
+ *
+ * This ensures that opponent HP rendering logic works
+ * independently of TypingTracker and Battle logic.
+ */
+function getProgressValue(el: HTMLElement) {
+  const raw = el.getAttribute("aria-valuenow");
+  if (raw == null) {
+    throw new Error(
+      "Progress element missing aria-valuenow. If Base UI Progress doesn't set this in tests, paste screen.debug() and we’ll assert differently.",
+    );
+  }
+  return Number(raw);
+}
+
+describe("opponent health bar tests", () => {
+  test("loads and displays opponent healthbar at full health", () => {
+    render(<OpponentHealthBar currentHp={100} maxHp={100} />);
+
+    const progress = screen.getByRole("progressbar");
+    expect(progress).toBeVisible();
+    expect(getProgressValue(progress)).toBe(100);
+  });
+
+  test("opponent healthbar decreases when currentHp decreases", () => {
+    const { rerender } = render(<OpponentHealthBar currentHp={100} maxHp={100} />);
+
+    const progress = screen.getByRole("progressbar");
+    const initial = getProgressValue(progress);
+    expect(initial).toBe(100);
+
+    rerender(<OpponentHealthBar currentHp={90} maxHp={100} />);
+    const next = getProgressValue(screen.getByRole("progressbar"));
+    expect(next).toBe(90);
+  });
+
+  test("maxHp = 0 renders 0%", () => {
+    render(<OpponentHealthBar currentHp={50} maxHp={0} />);
+
+    const progress = screen.getByRole("progressbar");
+    expect(progress).toBeVisible();
+    expect(getProgressValue(progress)).toBe(0);
+  });
+
+  test("toPercent returns 0 when maxHp is 0", () => {
+    render(<OpponentHealthBar currentHp={50} maxHp={0} />);
+
+    const progress = screen.getByRole("progressbar");
+    expect(progress).toBeVisible();
+
+    const progressValue = getProgressValue(progress);
+    expect(progressValue).toBe(0);
   });
 });
