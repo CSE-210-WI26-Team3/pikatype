@@ -1,0 +1,12 @@
+{
+    "tutorial" : [
+        {
+            "ImgFilePath": "./images/image1.png", 
+            "Description": "Description 1"
+        },
+        {
+            "imgFilePath": "./images/image2.png", 
+            "Description": "Description 2"
+        }
+    ]
+}
