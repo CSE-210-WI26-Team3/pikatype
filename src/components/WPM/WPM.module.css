@@ -1,0 +1,16 @@
+.wpmContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wpmValue {
+  font-size: 6rem;
+  color: var(--yellow);
+}
+
+.wpmLabel {
+  font-size: 2rem;
+  color: var(--text-color);
+}

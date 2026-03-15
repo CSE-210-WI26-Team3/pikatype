@@ -4,18 +4,18 @@ import TypingTrackerViewBox from "./TypingTrackerViewBox";
 import styles from "./TypingTracker.module.css";
 
 function TypingTrackerView() {
-  const { state, getNewContent } = useContext(TypingTrackerContext);
+  const { state, getNewContent, isAllPromptsComplete } = useContext(TypingTrackerContext);
   const fadeInTime = 600;
 
   useEffect(() => {
-    if (state === TypingTrackerProgress.Complete) {
+    if (state === TypingTrackerProgress.Complete && !isAllPromptsComplete) {
       const timer = setTimeout(() => {
         getNewContent();
       }, fadeInTime);
     
       return () => clearTimeout(timer);
     }
-  }, [state, getNewContent]);
+  }, [state, getNewContent, isAllPromptsComplete]);
 
   return (
     <div className={styles.typingBoxWrapper}>
