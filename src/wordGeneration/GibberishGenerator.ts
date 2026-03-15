@@ -67,23 +67,23 @@ class GibberishGenerator implements TypingPromptGenerator {
   }
 
   async getTypingPrompt(): Promise<string> {
-    let GeneratedWord: string;
+    let generatedWord: string;
 
     do {
-      const WordLen = Math.floor(
+      const wordLen = Math.floor(
         Math.random() * (this.maxLen - this.minLen + 1) + this.minLen,
       );
 
-      GeneratedWord = "";
-      for (let i = 0; i < WordLen; i++) {
-        const ChosenChar =
+      generatedWord = "";
+      for (let i = 0; i < wordLen; i++) {
+        const chosenChar =
           this.characters[Math.floor(Math.random() * this.characters.length)];
 
-        GeneratedWord = GeneratedWord + ChosenChar;
+        generatedWord = generatedWord + chosenChar;
       }
-    } while (this.containsBannedSubstring(GeneratedWord));
+    } while (this.containsBannedSubstring(generatedWord));
 
-    return GeneratedWord;
+    return generatedWord;
   }
 }
 
