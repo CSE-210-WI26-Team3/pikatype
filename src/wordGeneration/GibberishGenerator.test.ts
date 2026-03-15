@@ -41,7 +41,7 @@ describe("Testing gibberishGenerator Suite", () => {
       minLen: 5,
       maxLen: 7,
       characters: ["a", "s", "d", "f", "g"],
-      Type: "gibberish",
+      type: "gibberish",
     };
     const testObj = new GibberishGenerator(
       testParams.minLen,
