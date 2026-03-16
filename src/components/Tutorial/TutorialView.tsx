@@ -30,7 +30,7 @@ function TutorialView(Config: TutorialConfig){
 
   return (
     <div>
-       <Dialog.Root defaultOpen={true}>
+       <Dialog.Root defaultOpen={Config.TutorialImages.length > 0}>
       <Dialog.Portal>
         <Dialog.Backdrop className="Backdrop" />
         <Dialog.Popup className="Popup">
