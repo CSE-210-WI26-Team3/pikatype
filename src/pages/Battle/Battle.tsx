@@ -8,6 +8,8 @@ import { Save } from "../../components/Storage/Save";
 import { useNavigate, useParams } from "react-router";
 import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
 import { getPokemonByLevel } from "../../data/pokemon";
+import TutorialView from "../../components/Tutorial/TutorialView";
+
 import { BattleContent } from "./BattleContent";
 import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
@@ -50,6 +52,7 @@ function Battle() {
   const save = useMemo(() => new Save(NUM_LEVELS), []);
   const chosenPokemon = getPokemonByLevel(save, currentLevel);
   const enemyMaxHp = currentLevel.battle.numPromptsToComplete;
+  const images = currentLevel.tutorials;
   const enemyPokemon = currentLevel.enemyPokemon;
 
   const handleWordTyped = useCallback((totalChars: number) => {
@@ -122,6 +125,7 @@ function Battle() {
             enemyPokemon={enemyPokemon}
             enemyMaxHp={enemyMaxHp}
           />
+          <TutorialView TutorialImages={images}></TutorialView>
           <AudioPlayer src={process.env.PUBLIC_URL + currentLevel.audio} />
         </TimerProvider>
       </TypingTrackerProvider>

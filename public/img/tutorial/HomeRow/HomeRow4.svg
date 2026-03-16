@@ -1,0 +1,367 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="kbd-svg kbd--md fc" role="img" aria-label="US QWERTY keyboard diagram with G highlighted" viewBox="0 0 830 318" width="490" height="187"><style>.kbd-svg { display: inline-block; max-width: 100%; height: auto; }
+
+/* Size presets (can be overridden in themes) */
+.kbd--xs { width: 300px; }
+.kbd--sm { width: 380px; }
+.kbd--md { width: 490px; }
+.kbd--lg { width: 660px; }
+.kbd--xl { width: 760px; }
+
+/* Placement helpers */
+.kbd-right { float: right; margin: 0 0 .5em .75em; }
+
+/* Figure wrapper and caption styling */
+.kbd-figure { text-align: center; margin: .5em 0; }
+.kbd-figure figcaption { margin: .25em 0 2em; font-size: .9em; color: #444; }
+
+/* Exercise intro/content: two-column layout with text on left, keyboard on right */
+.exercise-intro,
+.exercise-content { display: flex; gap: 1.5rem; align-items: flex-start; }
+.exercise-intro .intro-text,
+.exercise-content .intro-text { flex: 1; min-width: 0; }
+.exercise-intro .intro-keyboard,
+.exercise-content .intro-keyboard { flex-shrink: 0; }
+@media (max-width: 768px) {
+  .exercise-intro,
+  .exercise-content { flex-direction: column; }
+  .exercise-intro .intro-keyboard,
+  .exercise-content .intro-keyboard { align-self: center; }
+}
+
+/* Base colors via CSS variables (theme can override) */
+.kbd-svg .kr { fill: var(--kbd-bg, #f4f6f8); stroke: var(--kbd-stroke, #c7cdd3); stroke-width: 1; }
+.kbd-svg .kt { fill: var(--kbd-fg, #111); font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+
+/* Hide alternate (shifted) labels when not showing alternates - but keep in DOM for JavaScript search */
+.kbd-svg .kt-alt-hidden { display: none; }
+
+/* Highlighted keys: bright background + readable foreground */
+.kbd-svg .kh .kr { fill: var(--kbd-hl-bg, #ffd54f); stroke: var(--kbd-hl-border, #c49a00); stroke-width: 3; }
+.kbd-svg .kh .kt { fill: var(--kbd-hl-fg, #111); }
+/* Emphasized highlighted keys: extra bright for special emphasis */
+.kbd-svg .khe .kr { fill: var(--kbd-hl-emphasis-bg, rgba(255, 235, 59, 1)) !important; stroke: var(--kbd-hl-emphasis-border, rgba(251, 192, 45, 1)) !important; stroke-width: 4; }
+.kbd-svg .khe .kt { fill: var(--kbd-hl-emphasis-fg, #111) !important; }
+/* Wrong-key full key flash */
+.kbd-svg .k.ke .kr { fill: var(--kbd-err-bg, #ffb3b3) !important; stroke: var(--kbd-err-border, #cc3b3b) !important; stroke-width: 3; }
+.kbd-svg .k.ke .kt { fill: var(--kbd-err-fg, #111) !important; }
+
+/* Base finger colors - single source of truth (fully bright/saturated) */
+.kbd-svg {
+  --lpinky-base: rgba(255, 80, 80, 1);
+  --lring-base: rgba(255, 180, 60, 1);
+  --lmiddle-base: rgba(255, 240, 60, 1);
+  --lindex-base: rgba(120, 255, 60, 1);
+  --rindex-base: rgb(40, 230, 255);
+  --rmiddle-base: rgb(9, 131, 255);
+  --rring-base: rgb(179, 69, 255);
+  --rpinky-base: rgb(255, 255, 255);
+  --thumb-base: rgb(119, 119, 119);
+}
+/* Finger zone colors: base, border (darkened), highlight bg, highlight border */
+.kbd-svg .lpinky { --finger-base: var(--lpinky-base); --finger-border: #b33838; --kbd-hl-bg: rgba(255, 80, 80, 1);  --kbd-hl-border: #b33838; }
+.kbd-svg .lring  { --finger-base: var(--lring-base);  --finger-border: #b37e2a; --kbd-hl-bg: rgba(255, 180, 60, 1); --kbd-hl-border: #b37e2a; }
+.kbd-svg .lmiddle{ --finger-base: var(--lmiddle-base); --finger-border: #b3a82a; --kbd-hl-bg: rgba(255, 240, 60, 1); --kbd-hl-border: #b3a82a; }
+.kbd-svg .lindex { --finger-base: var(--lindex-base); --finger-border: #54b32a; --kbd-hl-bg: rgba(120, 255, 60, 1); --kbd-hl-border: #54b32a; }
+.kbd-svg .rindex { --finger-base: var(--rindex-base); --finger-border: #1ca1b3; --kbd-hl-bg: rgb(40, 230, 255);     --kbd-hl-border: #1ca1b3; }
+.kbd-svg .rmiddle{ --finger-base: var(--rmiddle-base); --finger-border: #065cb3; --kbd-hl-bg: rgb(9, 131, 255);     --kbd-hl-border: #065cb3; }
+.kbd-svg .rring  { --finger-base: var(--rring-base);  --finger-border: #7d30b3; --kbd-hl-bg: rgb(179, 69, 255);    --kbd-hl-border: #7d30b3; }
+.kbd-svg .rpinky { --finger-base: var(--rpinky-base); --finger-border: #b3b3b3; --kbd-hl-bg: rgb(255, 255, 255);   --kbd-hl-border: #b3b3b3; }
+.kbd-svg .thumb  { --finger-base: var(--thumb-base);  --finger-border: #535353; --kbd-hl-bg: rgb(119, 119, 119);    --kbd-hl-border: #535353; }
+
+/* Non-highlighted: lightest tint */
+.kbd-svg.fc .k.lpinky:not(.kh):not(.ke) .kr  { fill: #ffc2c2; }
+.kbd-svg.fc .k.lring:not(.kh):not(.ke) .kr   { fill: #ffe5bb; }
+.kbd-svg.fc .k.lmiddle:not(.kh):not(.ke) .kr { fill: #fffabb; }
+.kbd-svg.fc .k.lindex:not(.kh):not(.ke) .kr  { fill: #d0ffbb; }
+.kbd-svg.fc .k.rindex:not(.kh):not(.ke) .kr  { fill: #b4f6ff; }
+.kbd-svg.fc .k.rmiddle:not(.kh):not(.ke) .kr { fill: #a9d4ff; }
+.kbd-svg.fc .k.rring:not(.kh):not(.ke) .kr   { fill: #e4beff; }
+.kbd-svg.fc .k.rpinky:not(.kh):not(.ke) .kr  { fill: #e0e0e0; }
+.kbd-svg.fc .k.thumb:not(.kh):not(.ke) .kr   { fill: #c2c2c2; }
+
+/* Highlighted: medium brightness (uses --kbd-hl-bg set above, which is var(--finger-base)) */
+/* This is already handled by line 21: .kbd-svg .kh .kr { fill: var(--kbd-hl-bg, #ffd54f); ... } */
+
+/* Emphasized: full bright color (same as base) */
+.kbd-svg .lpinky.khe .kr,
+.kbd-svg .lring.khe .kr,
+.kbd-svg .lmiddle.khe .kr,
+.kbd-svg .lindex.khe .kr,
+.kbd-svg .rindex.khe .kr,
+.kbd-svg .rmiddle.khe .kr,
+.kbd-svg .rring.khe .kr,
+.kbd-svg .rpinky.khe .kr,
+.kbd-svg .thumb.khe .kr {
+  fill: var(--finger-base) !important;
+  stroke: var(--finger-border) !important;
+  stroke-width: 4;
+}
+
+/* Hand overlays - matches keyboard spacebar gray (neutral/educational) */
+.kbd-svg .hand { fill: rgba(232, 232, 232, 0.08); }
+.kbd-svg .hand-side { opacity: 0.8; }
+.kbd-svg .hand-outline { fill: #e8e8e8; stroke: #999999; stroke-opacity: 0.8; }
+.kbd-overlay .hand-outline { fill: #f0f0f0; stroke: #888888; stroke-opacity: 1; }
+
+/* Hand finger overlays use the same colors as highlighted keys */
+.kbd-svg .hand path.finger.lpinky,
+.kbd-svg .hand path.finger.lring,
+.kbd-svg .hand path.finger.lmiddle,
+.kbd-svg .hand path.finger.lindex,
+.kbd-svg .hand path.finger.rindex,
+.kbd-svg .hand path.finger.rmiddle,
+.kbd-svg .hand path.finger.rring,
+.kbd-svg .hand path.finger.rpinky { fill: var(--kbd-hl-bg); opacity: 0.95; }
+.kbd-svg .hand path.finger.lthumb,
+.kbd-svg .hand path.finger.rthumb { fill: rgb(119, 119, 119); opacity: 0.95; }
+
+/* Slideout keyboard panel */
+.kbd-slideout { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1050; transform: translateY(100%); transition: transform 180ms ease-out; height: var(--kbd-slideout-height, auto); max-height: 50vh; display: flex; flex-direction: column; }
+.kbd-slideout--visible { transform: translateY(0); }
+.kbd-slideout--dragging { transition: none; user-select: none; }
+.kbd-slideout__drag-handle { flex-shrink: 0; height: 12px; cursor: ns-resize; border-radius:.5rem .5rem 0 .0em; background: rgba(121, 186, 214, 0.65); display: flex; align-items: center; justify-content: center; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; position: relative; z-index: 1; }
+.kbd-slideout__drag-handle:hover { background: var(--kbd-slideout-bg-hover, rgba(237, 250, 255, 0.82)); }
+.kbd-slideout__drag-bar { width: 50%; height: 4px; border-radius: 1px; border: 1px solid #fdfeff; background: #eff6ff; pointer-events: none; }
+.kbd-slideout__inner { flex: 1; min-height: 0; padding: .5rem .75rem; display: flex; align-items: center; justify-content: center; overflow-y: auto; flex-direction: column; }
+.kbd-center { display: flex; justify-content: center; min-width: fit-content; flex-direction: column; border-radius: 3px;}
+.kbd-slideout--custom-size .kbd-center { height: 100%; }
+.kbd-controls { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .35rem; align-items: flex-end; }
+.kbd-controls label { font-size: .85rem; color: #333; margin: .15rem 0 0; }
+.kbd-controls .kbd-select { min-width: 160px; }
+.kbd-controls .kbd-btn { align-self: flex-end; margin-top: .35rem; }
+.kbd-slideout__bar { display: flex; align-items: center; justify-content: space-between; padding: .25rem .5rem; border-bottom: 1px solid var(--kbd-stroke, #c7cdd3); background: var(--kbd-slideout-bar, #eef3f7); }
+.kbd-slideout__title { font-size: .9rem; color: #333; }
+.kbd-slideout__controls { display: flex; gap: .5rem; }
+.kbd-btn { font: inherit; font-size: .85rem; padding: .25rem .5rem; border: 1px solid #bbb; background: white; color: #333; border-radius: .25rem; cursor: pointer; }
+.kbd-btn[aria-pressed="true"], .kbd-btn:hover { background: #f1f5f9; }
+@media (prefers-reduced-motion: reduce) {
+  .kbd-slideout { transition: none; }
+}
+
+.kbd-variant { background: var(--kbd-backdrop, rgba(255,255,255,0.90)); padding: .5rem .75rem; border-radius: 0 0 .5rem .5rem; border: 1px solid rgba(0,0,0,0.05); }
+
+
+/* Custom size mode: scale keyboard to fit container when manually resized */
+.kbd-slideout--custom-size .kbd-variant {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.kbd-slideout--custom-size .kbd-svg {
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Bottom fixed toggle button (lessons only) */
+.kbd-fab { position: fixed; right: 16px; bottom: 16px; z-index: 1060; padding: .5rem .75rem; border: 1px solid #bbb; background: white; color: #333; border-radius: .5rem; box-shadow: 0 3px 10px rgba(0,0,0,0.12); cursor: pointer; }
+.kbd-fab:hover { background: #f7f9fc; }
+#kbd-toggle, #kbd-hide { display: inline-flex; align-items: center; gap: .35rem; z-index: 1060;}
+#kbd-hide { display: none; }
+#kbd-slideout.kbd-slideout--visible ~ #kbd-toggle { display: none; }
+#kbd-slideout.kbd-slideout--visible ~ #kbd-hide { display: inline-flex; }
+</style><g class="k lpinky" data-code="Backquote"><rect class="kr" x="14" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="39.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">~</text><text class="kt" x="39.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">`</text></g><g class="k lpinky" data-code="Digit1"><rect class="kr" x="68" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="93.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">!</text><text class="kt" x="93.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">1</text></g><g class="k lring" data-code="Digit2"><rect class="kr" x="122" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="147.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">@</text><text class="kt" x="147.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">2</text></g><g class="k lmiddle" data-code="Digit3"><rect class="kr" x="176" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="201.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">#</text><text class="kt" x="201.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">3</text></g><g class="k lindex" data-code="Digit4"><rect class="kr" x="230" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="255.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">$</text><text class="kt" x="255.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">4</text></g><g class="k lindex" data-code="Digit5"><rect class="kr" x="284" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="309.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">%</text><text class="kt" x="309.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">5</text></g><g class="k rindex" data-code="Digit6"><rect class="kr" x="338" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="363.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">^</text><text class="kt" x="363.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">6</text></g><g class="k rindex" data-code="Digit7"><rect class="kr" x="392" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="417.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">&amp;</text><text class="kt" x="417.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">7</text></g><g class="k rmiddle" data-code="Digit8"><rect class="kr" x="446" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="471.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">*</text><text class="kt" x="471.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">8</text></g><g class="k rring" data-code="Digit9"><rect class="kr" x="500" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="525.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">(</text><text class="kt" x="525.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">9</text></g><g class="k rpinky" data-code="Digit0"><rect class="kr" x="554" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="579.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">)</text><text class="kt" x="579.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">0</text></g><g class="k rpinky" data-code="Minus"><rect class="kr" x="608" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="633.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">_</text><text class="kt" x="633.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">-</text></g><g class="k rpinky" data-code="Equal"><rect class="kr" x="662" y="14" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="687.0" y="29.0" font-size="27" dominant-baseline="middle" text-anchor="middle">+</text><text class="kt" x="687.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">=</text></g><g class="k rpinky" data-code="Backspace"><rect class="kr" x="716" y="14" width="100" height="50" /><text class="kt" x="766.0" y="44.0" font-size="39" dominant-baseline="middle" text-anchor="middle">⌫</text></g><g class="k lpinky" data-code="Tab"><rect class="kr" x="14" y="74" width="75" height="50" /><text class="kt" x="51.5" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">⇥</text></g><g class="k lpinky" data-code="KeyQ"><rect class="kr" x="93" y="74" width="50" height="50" /><text class="kt" x="118.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">Q</text></g><g class="k lring" data-code="KeyW"><rect class="kr" x="147" y="74" width="50" height="50" /><text class="kt" x="172.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">W</text></g><g class="k lmiddle" data-code="KeyE"><rect class="kr" x="201" y="74" width="50" height="50" /><text class="kt" x="226.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">E</text></g><g class="k lindex" data-code="KeyR"><rect class="kr" x="255" y="74" width="50" height="50" /><text class="kt" x="280.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">R</text></g><g class="k lindex" data-code="KeyT"><rect class="kr" x="309" y="74" width="50" height="50" /><text class="kt" x="334.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">T</text></g><g class="k rindex" data-code="KeyY"><rect class="kr" x="363" y="74" width="50" height="50" /><text class="kt" x="388.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">Y</text></g><g class="k rindex" data-code="KeyU"><rect class="kr" x="417" y="74" width="50" height="50" /><text class="kt" x="442.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">U</text></g><g class="k rmiddle" data-code="KeyI"><rect class="kr" x="471" y="74" width="50" height="50" /><text class="kt" x="496.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">I</text></g><g class="k rring" data-code="KeyO"><rect class="kr" x="525" y="74" width="50" height="50" /><text class="kt" x="550.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">O</text></g><g class="k rpinky" data-code="KeyP"><rect class="kr" x="579" y="74" width="50" height="50" /><text class="kt" x="604.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">P</text></g><g class="k rpinky" data-code="BracketLeft"><rect class="kr" x="633" y="74" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="658.0" y="89.0" font-size="27" dominant-baseline="middle" text-anchor="middle">{</text><text class="kt" x="658.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">[</text></g><g class="k rpinky" data-code="BracketRight"><rect class="kr" x="687" y="74" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="712.0" y="89.0" font-size="27" dominant-baseline="middle" text-anchor="middle">}</text><text class="kt" x="712.0" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">]</text></g><g class="k rpinky" data-code="Backslash"><rect class="kr" x="741" y="74" width="75" height="50" /><text class="kt kt-alt kt-alt-hidden" x="778.5" y="89.0" font-size="27" dominant-baseline="middle" text-anchor="middle">|</text><text class="kt" x="778.5" y="104.0" font-size="39" dominant-baseline="middle" text-anchor="middle">\</text></g><g class="k lpinky" data-code="CapsLock"><rect class="kr" x="14" y="134" width="90" height="50" /><text class="kt" x="59.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">⇪</text></g><g class="k lpinky" data-code="KeyA"><rect class="kr" x="108" y="134" width="50" height="50" /><text class="kt" x="133.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">A</text></g><g class="k lring" data-code="KeyS"><rect class="kr" x="162" y="134" width="50" height="50" /><text class="kt" x="187.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">S</text></g><g class="k lmiddle" data-code="KeyD"><rect class="kr" x="216" y="134" width="50" height="50" /><text class="kt" x="241.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">D</text></g><g class="k lindex" data-code="KeyF"><rect class="kr" x="270" y="134" width="50" height="50" /><text class="kt" x="295.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">F</text></g><g class="k lindex kh" data-code="KeyG"><rect class="kr" x="324" y="134" width="50" height="50" /><text class="kt" x="349.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">G</text></g><g class="k rindex" data-code="KeyH"><rect class="kr" x="378" y="134" width="50" height="50" /><text class="kt" x="403.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">H</text></g><g class="k rindex" data-code="KeyJ"><rect class="kr" x="432" y="134" width="50" height="50" /><text class="kt" x="457.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">J</text></g><g class="k rmiddle" data-code="KeyK"><rect class="kr" x="486" y="134" width="50" height="50" /><text class="kt" x="511.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">K</text></g><g class="k rring" data-code="KeyL"><rect class="kr" x="540" y="134" width="50" height="50" /><text class="kt" x="565.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">L</text></g><g class="k rpinky" data-code="Semicolon"><rect class="kr" x="594" y="134" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="619.0" y="149.0" font-size="27" dominant-baseline="middle" text-anchor="middle">:</text><text class="kt" x="619.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">;</text></g><g class="k rpinky" data-code="Quote"><rect class="kr" x="648" y="134" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="673.0" y="149.0" font-size="27" dominant-baseline="middle" text-anchor="middle">&quot;</text><text class="kt" x="673.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">&#x27;</text></g><g class="k rpinky" data-code="Enter"><rect class="kr" x="702" y="134" width="110" height="50" /><text class="kt" x="757.0" y="164.0" font-size="39" dominant-baseline="middle" text-anchor="middle">⏎</text></g><g class="k lpinky" data-code="ShiftLeft"><rect class="kr" x="14" y="194" width="114" height="50" /><text class="kt" x="71.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">⇧</text></g><g class="k lpinky" data-code="KeyZ"><rect class="kr" x="132" y="194" width="50" height="50" /><text class="kt" x="157.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">Z</text></g><g class="k lring" data-code="KeyX"><rect class="kr" x="186" y="194" width="50" height="50" /><text class="kt" x="211.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">X</text></g><g class="k lmiddle" data-code="KeyC"><rect class="kr" x="240" y="194" width="50" height="50" /><text class="kt" x="265.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">C</text></g><g class="k lindex" data-code="KeyV"><rect class="kr" x="294" y="194" width="50" height="50" /><text class="kt" x="319.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">V</text></g><g class="k lindex" data-code="KeyB"><rect class="kr" x="348" y="194" width="50" height="50" /><text class="kt" x="373.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">B</text></g><g class="k rindex" data-code="KeyN"><rect class="kr" x="402" y="194" width="50" height="50" /><text class="kt" x="427.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">N</text></g><g class="k rindex" data-code="KeyM"><rect class="kr" x="456" y="194" width="50" height="50" /><text class="kt" x="481.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">M</text></g><g class="k rmiddle" data-code="Comma"><rect class="kr" x="510" y="194" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="535.0" y="209.0" font-size="27" dominant-baseline="middle" text-anchor="middle">&lt;</text><text class="kt" x="535.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">,</text></g><g class="k rring" data-code="Period"><rect class="kr" x="564" y="194" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="589.0" y="209.0" font-size="27" dominant-baseline="middle" text-anchor="middle">&gt;</text><text class="kt" x="589.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">.</text></g><g class="k rpinky" data-code="Slash"><rect class="kr" x="618" y="194" width="50" height="50" /><text class="kt kt-alt kt-alt-hidden" x="643.0" y="209.0" font-size="27" dominant-baseline="middle" text-anchor="middle">?</text><text class="kt" x="643.0" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">/</text></g><g class="k rpinky" data-code="ShiftRight"><rect class="kr" x="672" y="194" width="135" height="50" /><text class="kt" x="739.5" y="224.0" font-size="39" dominant-baseline="middle" text-anchor="middle">⇧</text></g><g class="k thumb" data-code="Space"><rect class="kr" x="265" y="254" width="300" height="50" /><text class="kt" x="415.0" y="284.0" font-size="39" dominant-baseline="middle" text-anchor="middle"></text></g><!-- Attempting to add overlay: lessons/realhand_left_index_home.svg, keys: KeyG --><g class="kbd-overlay" transform="translate(-18.5,114.61116517721524) scale(8.203250381555051)" style="pointer-events:none">
+
+  <g transform="scale(-1,1) translate(-45.713587,0)">
+
+  
+  
+  
+  <g
+     id="layer2"
+     style="display:inline"
+     transform="translate(-30.610532,-39.838191)">
+    <g
+       id="g4006"
+       transform="translate(127.96891,-245.7953)"
+       style="display:inline;fill:#33c0d4;fill-opacity:1;stroke:#bbd7e1;stroke-opacity:1" />
+    <g
+       id="layer4"
+       style="display:inline" />
+  </g>
+  <g
+     id="layer5"
+     style="display:inline"
+     transform="translate(-30.610532,-39.838191)">
+    <g
+       transform="translate(14.687196,-13.65399)"
+       id="g1074"
+       class="hand-outline"
+       style="opacity:0.713">
+      <path
+         style="stroke-width:2.13803;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none"
+         d="m 116.8125,321.69727 c -18.508082,-32.06331 -16.29076,-17.33346 -19.158203,-25.02344 -2.867452,-7.68998 -8.081514,-12.38268 -15.771485,-19.68164 -7.279975,-6.9098 -22.742608,-6.36347 -20.414062,1.66601 0.265512,-0.34108 0.882743,-1.21478 2.427734,-2.31836 1.824737,-1.30337 5.994141,0.91211 5.994141,0.91211 l 6.257813,8.3418 c 0,0 0.651041,3.65025 -0.652344,5.08398 -1.303385,1.43372 -4.822266,3.51954 -4.822266,3.51954 l -0.818359,-1.28321 c 0.396237,0.75571 0.782773,1.3997 1.208984,2.45508 2.737111,6.77761 0.822845,0.52045 6.125,13.16406 l 3.390625,8.08203 c 1.283592,3.06088 6.344505,10.6318 11.154297,17.54102"
+         id="path1058"
+         transform="scale(0.26458333)" />
+      <g
+         id="g1067"
+         class="hand-outline"
+         style="">
+        <path
+           transform="scale(0.26458333)"
+           id="path1062"
+           d="m 71.976562,235.41406 11.339844,-4.30078 c 0,0 -3.128774,-1.95482 -6.517578,-0.91211 -3.388804,1.04271 -4.822266,5.21289 -4.822266,5.21289 z"
+           style="stroke-width:2.13803;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
+        <path
+           transform="scale(0.26458333)"
+           id="path1060"
+           d="m 61.810547,279.99023 c -0.250173,-0.50034 -0.210654,-0.87981 -0.341797,-1.33203 3.916718,-11.04862 12.526769,2.43905 15.367797,8.83744 1.994686,4.49231 -3.059602,6.75185 -6.834693,5.65488 -2.265563,-0.65833 -3.736616,-6.07003 -8.191307,-13.16029 z"
+           style="stroke-width:2.13803;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
+        <path
+           transform="scale(0.26458333)"
+           id="path1013"
+           d="m 173.29366,266.73938 c -10.10138,-2.56403 -13.01324,-15.24855 -15.9898,-18.74726 -2.12134,-2.49347 -6.1837,-10.40062 -7.75905,-15.02141 -2.20627,-6.47139 -3.311,-10.9648 -5.89399,-14.63807 m 86.14801,115.82361 h 1.64844 c -3.9822,-11.27699 -8.70048,-29.58886 -8.92969,-34.74609 -0.26068,-5.86524 -5.34375,-15.77149 -5.34375,-15.77149 -2.34609,-3.51914 -7.8194,-10.55755 -10.03516,-14.20703 -2.21575,-3.64948 -3.51953,-7.68945 -3.51953,-7.68945 -1.43373,-3.77982 -7.03881,-12.25221 -7.95117,-13.29492 -0.91238,-1.04271 -1.8237,-5.99505 -3.64844,-7.68946 -1.82474,-1.6944 -6.38698,-3.77917 -9.38476,-5.21289 -2.99779,-1.43372 -10.6875,-7.03906 -10.6875,-7.03906 l 1.78125,3.25391 c -1.77446,-3.0558 -4.48978,-6.92895 -7.77735,-8.33789 -3.64948,-1.56407 -10.84104,-7.14464 -13.70849,-8.05701 -2.86745,-0.91237 -2.1936,-0.17556 -7.40714,-2.39132 -5.21355,-2.21576 -9.91347,-0.71207 -9.91347,-0.71207 l 8.74481,5.67641 c -2.56497,-0.67695 -10.47476,-7.72124 -10.47476,-7.72124 0,0 -10.53789,-6.97246 -12.88398,-6.97246 -2.3461,0 -9.12305,3.51758 -9.12305,3.51758 0,0 -2.73646,1.69571 -5.21289,3.25976 -2.47644,1.56407 -2.6082,6.77657 -1.82617,9.51368 0.78203,2.73711 11.99154,6.25703 13.29493,7.03906 1.30338,0.78202 3.80276,11.62069 4.32412,13.3151 0.52136,1.6944 3.17245,8.53627 6.0399,12.7071 2.86745,4.17083 4.03985,6.53972 6.64662,14.2297 2.60677,7.68998 -4.47504,7.42774 -4.47504,7.42774 0,0 -24.24061,-23.22228 -25.60904,-25.41602 0.54286,0.91211 -4.452876,-1.73769 -7.059646,-3.82309 -2.606767,-2.08543 -7.385751,-7.29829 -12.729631,-13.16352 -5.343883,-5.86524 -6.229684,-8.30971 -8.668039,-8.1442 -2.438355,0.16551 -2.626096,-2.22643 -4.714079,-0.99904 -2.93614,1.72596 -2.435141,-1.04457 -4.953397,3.38854 -2.64283,4.65241 -1.638477,8.01027 -0.49881,12.40299 1.116597,3.12862 7.678782,16.03138 12.945874,24.41645 1.042714,1.82474 2.737891,2.0853 3.128906,3.38867 0.391018,1.30339 1.563802,3.12669 2.867187,4.03906 1.303385,0.91237 16.355525,17.7259 17.919585,19.0293 1.56406,1.30339 2.99843,5.8668 6.51758,12.12304 3.51914,6.25626 4.04152,2.21418 4.17187,5.47266 0.13034,3.25846 3.38722,6.38841 3.51758,9.25586 0.13032,2.86743 0,5.47266 0,5.47266 m 56.56842,-90.16396 19.87103,35.8788 c -2.82809,-4.44428 -5.85261,-9.2175 -6.44726,-10.62305 -1.20162,-2.84019 -10.29008,-19.36753 -13.42377,-25.25575 z"
+           style="stroke-width:2.13803;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
+        <path
+           id="path4550"
+           d="m 17.507794,59.844462 c 2.053702,-2.578171 4.281434,0.64639 3.715506,0.702302 -1.081454,0.106844 -2.178249,0.136976 -2.509464,0.32766 -1.172525,-0.478037 -1.189858,-0.44236 -1.206042,-1.029962 z"
+           style="stroke-width:0.565687;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none" />
+      </g>
+    </g>
+  </g>
+  <g
+     id="layer1"
+     transform="translate(97.358367,-285.63349)"
+     style="display:inline" />
+  <g
+     id="layer3"
+     style="display:none"
+     transform="translate(-30.610532,-39.838191)">
+    <rect
+       style="display:inline;fill:#33c0d4;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1"
+       id="rect5919"
+       width="7.8773117"
+       height="9.190196"
+       x="79.823433"
+       y="-26.071384" />
+    <rect
+       y="-35.261581"
+       x="79.823433"
+       height="9.190196"
+       width="7.8773117"
+       id="rect5921"
+       style="display:inline;fill:#ff8224;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1" />
+    <rect
+       style="display:inline;fill:#64fff9;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1"
+       id="rect5923"
+       width="7.8773117"
+       height="9.190196"
+       x="87.700745"
+       y="-26.071384" />
+    <rect
+       y="-26.071384"
+       x="64.06881"
+       height="9.190196"
+       width="7.8773117"
+       id="rect5925"
+       style="display:inline;fill:#1a69b8;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1" />
+    <rect
+       style="display:inline;fill:#239ac7;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1"
+       id="rect5927"
+       width="7.8773117"
+       height="9.190196"
+       x="71.946121"
+       y="-26.071384" />
+    <rect
+       y="-35.261581"
+       x="95.578056"
+       height="9.190196"
+       width="7.8773117"
+       id="rect6171"
+       style="display:inline;fill:#fac095;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1" />
+    <rect
+       y="-35.261581"
+       x="103.45537"
+       height="9.190196"
+       width="7.8773117"
+       id="rect6173"
+       style="display:inline;fill:#fdde94;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1" />
+    <rect
+       y="-35.261581"
+       x="111.33268"
+       height="9.190196"
+       width="7.8773117"
+       id="rect6175"
+       style="display:inline;fill:#fffb94;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1" />
+    <rect
+       y="-35.261581"
+       x="119.20999"
+       height="9.190196"
+       width="7.8773117"
+       id="rect6177"
+       style="display:inline;fill:#ff8224;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1" />
+    <rect
+       style="display:inline;fill:#ffffdd;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1"
+       id="rect6158"
+       width="7.8773117"
+       height="9.190196"
+       x="119.20999"
+       y="-35.261581" />
+    <rect
+       style="display:inline;fill:#4dffe9;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1"
+       id="rect6179"
+       width="7.8773117"
+       height="9.190196"
+       x="95.578056"
+       y="-26.071384" />
+    <rect
+       style="display:inline;fill:#f5fcdc;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1"
+       id="rect6181"
+       width="7.8773117"
+       height="9.190196"
+       x="103.45537"
+       y="-26.071384" />
+    <rect
+       style="display:inline;fill:#dff8e3;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1"
+       id="rect6183"
+       width="7.8773117"
+       height="9.190196"
+       x="111.33268"
+       y="-26.071384" />
+    <rect
+       style="display:inline;fill:#e5ce9d;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1"
+       id="rect6185"
+       width="7.8773117"
+       height="9.190196"
+       x="119.20999"
+       y="-26.071384" />
+    <rect
+       y="-35.261581"
+       x="87.700745"
+       height="9.190196"
+       width="7.8773117"
+       id="rect6187"
+       style="display:inline;fill:#ff702a;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1" />
+    <rect
+       y="-16.881187"
+       x="79.823433"
+       height="9.190196"
+       width="7.8773117"
+       id="rect6189"
+       style="display:inline;fill:#90dde8;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1" />
+    <rect
+       y="-16.881187"
+       x="87.700745"
+       height="9.190196"
+       width="7.8773117"
+       id="rect6191"
+       style="display:inline;fill:#cbfffd;fill-opacity:1;stroke:#ddebf0;stroke-width:0.264583;stroke-opacity:1" />
+    <rect
+       style="display:inline;fill:#97c4f0;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1"
+       id="rect6193"
+       width="7.8773117"
+       height="9.190196"
+       x="64.06881"
+       y="-16.881187" />
+    <rect
+       y="-16.881187"
+       x="71.946121"
+       height="9.190196"
+       width="7.8773117"
+       id="rect6195"
+       style="display:inline;fill:#94d4ec;fill-opacity:1;stroke:#bbd7e1;stroke-width:0.264583;stroke-opacity:1" />
+  </g>
+  </g>
+</g><!-- Attempting to add overlay: None, keys: None --><!-- Overlay skipped: path=None, keys=None --></svg>
