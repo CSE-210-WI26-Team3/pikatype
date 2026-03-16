@@ -1,4 +1,4 @@
-import { PropsWithChildren, useReducer, createContext, Dispatch } from "react";
+import { PropsWithChildren, useReducer, useEffect, createContext, Dispatch } from "react";
 
 export type TimerModel = {
   timerState: TimerState;
@@ -10,6 +10,7 @@ export enum TimerStatus {
   Ongoing,
   Done,
   Paused,
+  Stopped,
 }
 
 export type TimerState = {
@@ -22,6 +23,7 @@ export enum TimerStateAction {
   Decrement,
   Start,
   Pause,
+  Stop,
 }
 
 const DEFAULT_TIMER_MODEL = {
@@ -53,14 +55,20 @@ export function timerReducer(
 
     case TimerStateAction.Start:
       return { ...state, status: TimerStatus.Ongoing };
+    case TimerStateAction.Stop:
+      return { ...state, status: TimerStatus.Stopped };
   }
 }
 
 interface TimerProps extends PropsWithChildren {
   time: number;
+  onStart?: () => void;
+  onPause?: () => void;
+  onDone?: () => void;
+  isStopped?: boolean;
 }
 
-function TimerProvider({ children, time }: TimerProps) {
+function TimerProvider({ children, time, onStart, onPause, onDone, isStopped }: TimerProps) {
   const initialTimerState: TimerState = {
     currentTime: time,
     maxTime: time,
@@ -68,6 +76,30 @@ function TimerProvider({ children, time }: TimerProps) {
   };
 
   const [timerState, dispatch] = useReducer(timerReducer, initialTimerState);
+
+  useEffect(() => {
+    if (isStopped) {
+      dispatch(TimerStateAction.Stop);
+    }
+  }, [isStopped]);
+
+  useEffect(() => {
+    if (timerState.status === TimerStatus.Ongoing) {
+      onStart?.();
+    }
+  }, [timerState.status, onStart]);
+
+  useEffect(() => {
+    if (timerState.status === TimerStatus.Paused) {
+      onPause?.();
+    }
+  }, [timerState.status, onPause]);
+
+  useEffect(() => {
+    if (timerState.status === TimerStatus.Done) {
+      onDone?.();
+    }
+  }, [timerState.status, onDone]);
 
   const timerModel: TimerModel = {
     timerState,

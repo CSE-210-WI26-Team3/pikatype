@@ -14,6 +14,8 @@ export type LevelConfig = {
   generator: TypingPromptGenerator;
   evolution: number;
   tutorials: TutorialImage[];
+  enemyPokemon: string;
+  audio: string;
 };
 
 
@@ -26,6 +28,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new GibberishGenerator(3, 5, "asdfg".split("")),
     evolution: 0,
     tutorials: HomeRowTutorial,
+    enemyPokemon: "bidoof",
+    audio: "/audio/wild.mp3",
   },
   {
     battle: {
@@ -35,6 +39,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new GibberishGenerator(3, 5, "hjkl".split("")),
     evolution: 0,
     tutorials: PlaceHolderImages,
+    enemyPokemon: "psyduck",
+    audio: "/audio/wild.mp3",
   },
   {
     battle: {
@@ -45,6 +51,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new GibberishGenerator(3, 5, "asdfghjkl".split("")),
     evolution: 0,
     tutorials: PlaceHolderImages,
+    enemyPokemon: "pikachu",
+    audio: "/audio/wild.mp3",
   },
   {
     battle: {
@@ -54,6 +62,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new GibberishGenerator(3, 5, "qwertyuiop".split("")),
     evolution: 1,
     tutorials: PlaceHolderImages,
+    enemyPokemon: "luxray",
+    audio: "/audio/miniboss.mp3",
   },
   {
     battle: {
@@ -63,6 +73,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new GibberishGenerator(3, 5, "zxcvbnm".split("")),
     evolution: 1,
     tutorials: PlaceHolderImages,
+    enemyPokemon: "umbreon",
+    audio: "/audio/miniboss.mp3",
   },
   {
     battle: {
@@ -72,6 +84,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new SingleWordGenerator(),
     evolution: 1,
     tutorials: PlaceHolderImages,
+    enemyPokemon: "snorlax",
+    audio: "/audio/miniboss.mp3",
   },
   {
     battle: {
@@ -81,6 +95,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new MultiWordGenerator(3, 5),
     evolution: 2,
     tutorials: PlaceHolderImages,
+    enemyPokemon: "lucario",
+    audio: "/audio/neo_team_plasma_theme.mp3",
   },
   {
     battle: {
@@ -90,6 +106,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new GibberishGenerator(3, 5, "!@#$%&*()-=_+".split("")),
     evolution: 2,
     tutorials: PlaceHolderImages,
+    enemyPokemon: "garchomp",
+    audio: "/audio/cynthia_theme.mp3",
   },
   {
     battle: {
@@ -99,6 +117,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new GibberishGenerator(3, 5, "[]{};':\",./<>?".split("")),
     evolution: 2,
     tutorials: PlaceHolderImages,
+    enemyPokemon: "dragonite",
+    audio: "/audio/n_theme.mp3",
   },
   {
     battle: {
@@ -108,6 +128,8 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     generator: new SentenceGenerator(),
     evolution: 2,
     tutorials: PlaceHolderImages,
+    enemyPokemon: "lugia",
+    audio: "/audio/final.mp3",
   },
 ];
 
