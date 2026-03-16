@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router";
 import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
 import { getPokemonByLevel } from "../../data/pokemon";
 import { BattleContent } from "./BattleContent";
+import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
 const BATTLE_DURATION = 60;
 
@@ -36,7 +37,7 @@ function Battle() {
       setWpm(0);
       setIsTimeUp(false);
       setIsLevelComplete(false);
-      setBattleKey(prev => prev + 1);
+      setBattleKey((prev) => prev + 1);
     }
     prevLevelIdRef.current = levelId;
   }, [levelId]);
@@ -66,14 +67,14 @@ function Battle() {
 
   const handleTimerDone = useCallback(() => {
     const minutes = BATTLE_DURATION / 60;
-    const finalWpm = Math.round((totalCharsRef.current / 5) / minutes);
+    const finalWpm = Math.round(totalCharsRef.current / 5 / minutes);
     setWpm(finalWpm);
     setIsTimeUp(true);
   }, []);
 
   const handleLevelComplete = useCallback(() => {
     const elapsedMinutes = (Date.now() - startTimeRef.current) / 60000;
-    const finalWpm = Math.round((totalCharsRef.current / 5) / elapsedMinutes);
+    const finalWpm = Math.round(totalCharsRef.current / 5 / elapsedMinutes);
     save.complete(levelId);
     setWpm(finalWpm);
     setIsTimerActive(false);
@@ -95,7 +96,7 @@ function Battle() {
     setWpm(0);
     setIsTimeUp(false);
     setIsLevelComplete(false);
-    setBattleKey(prev => prev + 1);
+    setBattleKey((prev) => prev + 1);
   }, []);
 
   return (
@@ -109,12 +110,25 @@ function Battle() {
         onWordTyped={handleWordTyped}
         onLevelComplete={handleLevelComplete}
       >
-        <TimerProvider time={BATTLE_DURATION} onStart={handleTimerStart} onPause={handleTimerPause} onDone={handleTimerDone} isStopped={isLevelComplete}>
-          <BattleContent starterPokemon={chosenPokemon} enemyPokemon={enemyPokemon} enemyMaxHp={enemyMaxHp} />
+        <TimerProvider
+          time={BATTLE_DURATION}
+          onStart={handleTimerStart}
+          onPause={handleTimerPause}
+          onDone={handleTimerDone}
+          isStopped={isLevelComplete}
+        >
+          <BattleContent
+            starterPokemon={chosenPokemon}
+            enemyPokemon={enemyPokemon}
+            enemyMaxHp={enemyMaxHp}
+          />
+          <AudioPlayer src={process.env.PUBLIC_URL + currentLevel.audio} />
         </TimerProvider>
       </TypingTrackerProvider>
       {isTimeUp && <LevelFailedModal wpm={wpm} onPlayAgain={handlePlayAgain} />}
-      {isLevelComplete && <LevelCompleteModal wpm={wpm} onNextLevel={handleNextLevel} />}
+      {isLevelComplete && (
+        <LevelCompleteModal wpm={wpm} onNextLevel={handleNextLevel} />
+      )}
     </div>
   );
 }
