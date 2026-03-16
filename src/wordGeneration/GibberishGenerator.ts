@@ -7,6 +7,20 @@ We can control the range of letters and the characters as well
 
 import { TypingPromptGenerator } from ".";
 
+/**
+ * Substrings that must not appear in generated gibberish words.
+ * Checked case-insensitively. Add entries in lowercase.
+ */
+export const BANNED_SUBSTRINGS: string[] = [
+  "ass",
+  "fag",
+  "gash",
+  "shag",
+  "slag",
+  "tit",
+  "wop",
+];
+
 type GibberishData = {
   characters: string[];
   minLen: number;
@@ -47,20 +61,29 @@ class GibberishGenerator implements TypingPromptGenerator {
     this.maxLen = maxLen;
   }
 
+  private containsBannedSubstring(word: string): boolean {
+    const lowerWord = word.toLowerCase();
+    return BANNED_SUBSTRINGS.some((banned) => lowerWord.includes(banned));
+  }
+
   async getTypingPrompt(): Promise<string> {
-    const WordLen = Math.floor(
-      Math.random() * (this.maxLen - this.minLen + 1) + this.minLen,
-    );
+    let generatedWord: string;
 
-    let GeneratedWord = "";
-    for (let i = 0; i < WordLen; i++) {
-      const ChosenChar =
-        this.characters[Math.floor(Math.random() * this.characters.length)];
+    do {
+      const wordLen = Math.floor(
+        Math.random() * (this.maxLen - this.minLen + 1) + this.minLen,
+      );
 
-      GeneratedWord = GeneratedWord + ChosenChar;
-    }
+      generatedWord = "";
+      for (let i = 0; i < wordLen; i++) {
+        const chosenChar =
+          this.characters[Math.floor(Math.random() * this.characters.length)];
 
-    return GeneratedWord;
+        generatedWord = generatedWord + chosenChar;
+      }
+    } while (this.containsBannedSubstring(generatedWord));
+
+    return generatedWord;
   }
 }
 
