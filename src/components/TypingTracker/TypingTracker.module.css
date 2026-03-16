@@ -1,5 +1,5 @@
-
 .typingBoxWrapper {
+  margin: 2rem 0;
   text-align: center;
 }
 
@@ -10,7 +10,7 @@
   padding: 20px 40px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   font-family: "Press Start 2P", monospace;
-  font-size: 20px;
+  font-size: 2rem;
   letter-spacing: 4px;
   display: inline-flex;
   align-items: center;
@@ -19,7 +19,7 @@
 }
 
 .correct {
-  color: var(--correct-color)
+  color: var(--correct-color);
 }
 
 .incorrect {
