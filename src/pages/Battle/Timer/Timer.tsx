@@ -22,23 +22,26 @@ function Timer() {
   const seconds = (timerState.currentTime % 60).toString().padStart(2, "0");
 
   return (
-    <div className={styles.timer}>
-      <p id="timer-duration">
+    <div className={styles.timerContainer}>
+      <p id="timer-duration" className={styles.timer}>
         Time Left: {minutes}:{seconds}
       </p>
-      {timerState.status !== TimerStatus.Ongoing && timerState.status !== TimerStatus.Stopped && (
-        <Button
-          id="start-button"
-          className={styles.timer}
-          label="start"
-          onClick={() => dispatch(TimerStateAction.Start)}
-        />
-      )}
+      {timerState.status !== TimerStatus.Ongoing &&
+        timerState.status !== TimerStatus.Stopped && (
+          <Button
+            id="start-button"
+            className={styles.timerButton}
+            label={
+              timerState.currentTime !== timerState.maxTime ? "Resume" : "Start"
+            }
+            onClick={() => dispatch(TimerStateAction.Start)}
+          />
+        )}
       {timerState.status === TimerStatus.Ongoing && (
         <Button
           id="pause-button"
-          className={styles.timer}
-          label="pause"
+          className={styles.timerButton}
+          label="Pause"
           onClick={() => dispatch(TimerStateAction.Pause)}
         />
       )}

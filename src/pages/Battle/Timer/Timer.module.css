@@ -1,3 +1,38 @@
+.timerContainer {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .timer {
   font-size: 2rem;
+  color: var(--box-color);
+  background-color: var(--text-color);
+  border: 2px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.timerButton {
+  background-color: var(--box-color);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  font-size: 2rem;
+  padding: 0.5rem 0.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  margin-top: 2rem;
+}
+
+.timerButton:hover {
+  background-color: var(--border-color);
+  transform: scale(1.05);
+}
+
+.timerButton:active {
+  transform: scale(0.98);
 }

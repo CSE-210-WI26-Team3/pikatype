@@ -31,7 +31,7 @@ function Home() {
           <Button
             label="Continue"
             className={styles.menuButton}
-            onClick={() => navigate("/battle")}
+            onClick={() => navigate("/levels")}
           />
         )}
         <Button
