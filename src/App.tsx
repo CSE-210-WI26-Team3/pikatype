@@ -2,8 +2,10 @@ import { BrowserRouter } from "react-router";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
+  const basename = process.env.PUBLIC_URL || "/";
+
   return (
-    <BrowserRouter basename={process.env.NODE_ENV === "production" ? process.env.PUBLIC_URL : ""}>
+    <BrowserRouter basename={basename}>
       <AppRoutes />
     </BrowserRouter>
   );

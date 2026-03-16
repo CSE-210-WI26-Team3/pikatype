@@ -3,7 +3,6 @@ import {
   fireEvent,
   act,
   waitFor,
-  screen,
 } from "@testing-library/react";
 import { SingleWordGenerator } from "../../wordGeneration/index";
 import TypingTrackerProvider from "./TypingTrackerProvider";
@@ -11,7 +10,7 @@ import TypingTrackerView from "./TypingTrackerView";
 
 function renderTypingTracker() {
   return render(
-    <TypingTrackerProvider promptGenerator={new SingleWordGenerator()}>
+    <TypingTrackerProvider promptGenerator={new SingleWordGenerator()} isActive={true} numPromptsToComplete={10}>
       <TypingTrackerView />
     </TypingTrackerProvider>,
   );
