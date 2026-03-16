@@ -17,6 +17,7 @@ describe("Testing TutorialView Suite", () => {
                 },]}
         
         render(<TutorialView TutorialImages={testObj.TutorialImages}/>)
+        const  tutorial = screen.getByTestId
         expect(screen.getByText('Description 1')).toBeInTheDocument()
         expect(screen.getByText('Description 2')).toBeInTheDocument()
         

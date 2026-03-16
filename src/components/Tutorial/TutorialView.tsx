@@ -21,12 +21,12 @@ type TutorialConfig = {
 function TutorialView(Config: TutorialConfig){
   const TutorialImage = Config.TutorialImages.map(TutorialImage =>
     <CCarouselItem key={TutorialImage.ImageKey}>
-      <CImage className="d-block CImageContainer" src={process.env.PUBLIC_URL + TutorialImage.ImagePath} alt={TutorialImage.ImageKey}></CImage>
-      <CCarouselCaption className="d-none d-md-block">
+      <CImage className="CImageContainer" src={process.env.PUBLIC_URL + TutorialImage.ImagePath} alt={TutorialImage.ImageKey}></CImage>
+      <CCarouselCaption className="d-none carousel-item d-md-block">
         <h1>{TutorialImage.ImageDescription}</h1>
       </CCarouselCaption>
      </CCarouselItem>
-  )
+  );
 
   return (
     <div>
@@ -46,7 +46,7 @@ function TutorialView(Config: TutorialConfig){
     </Dialog.Root>
     </div>
   );
-}
+};
 
-export default TutorialView
-export type {TutorialImage, TutorialConfig}
+export default TutorialView;
+export type {TutorialImage, TutorialConfig};

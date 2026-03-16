@@ -9,6 +9,8 @@ import styles from "./Battle.module.css";
 import { Save } from "../../components/Storage/Save";
 import { LEVEL_CONFIGS, NUM_LEVELS } from "../Levels/LevelConfigs";
 import { getPokemonByLevel } from "../../data/pokemon";
+import TutorialView from "../../components/Tutorial/TutorialView";
+
 
 function Battle() {
   const save = useMemo(() => new Save(NUM_LEVELS), []);
@@ -23,6 +25,7 @@ function Battle() {
   const currentLevel = LEVEL_CONFIGS[parseInt(params.levelId!) - 1];
   const chosenPokemon = getPokemonByLevel(save, currentLevel);
   const enemyMaxHp = currentLevel.battle.numPromptsToComplete;
+  const images = currentLevel.tutorials;
 
   return (
     <div className={styles.battleContainer}>
@@ -30,6 +33,7 @@ function Battle() {
       <TypingTrackerProvider promptGenerator={currentLevel.generator}>
         <TimerProvider time={60}>
           <BattleContent starterPokemon={chosenPokemon} enemyMaxHp={enemyMaxHp} />
+          <TutorialView TutorialImages={images}></TutorialView>
         </TimerProvider>
       </TypingTrackerProvider>
     </div>
