@@ -80,7 +80,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
   {
     battle: {
       title: "Multiple Words",
-      numPromptsToComplete: 10,
+      numPromptsToComplete: 6,
     },
     generator: new MultiWordGenerator(3, 5),
     evolution: 2,
@@ -90,7 +90,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
   {
     battle: {
       title: "Punctuation (Top Row)",
-      numPromptsToComplete: 10,
+      numPromptsToComplete: 6,
     },
     generator: new GibberishGenerator(3, 5, "!@#$%&*()-=_+".split("")),
     evolution: 2,
@@ -100,7 +100,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
   {
     battle: {
       title: "Punctuation (Right Side)",
-      numPromptsToComplete: 10,
+      numPromptsToComplete: 6,
     },
     generator: new GibberishGenerator(3, 5, "[]{};':\",./<>?".split("")),
     evolution: 2,
