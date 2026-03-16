@@ -1,18 +1,5 @@
 import { TutorialImage } from "./TutorialView";
 
-const PlaceHolderImages: TutorialImage[] = [
-  {
-    ImagePath: "/img/tutorial/PlaceHolders/image1.jpg",
-    ImageDescription: "Position your fingers in this matter on the home row",
-    ImageKey: "img1",
-  },
-  {
-    ImagePath: "/img/tutorial/PlaceHolders/image2.png",
-    ImageDescription: "Position your fingers in this matter on the home row",
-    ImageKey: "img2",
-  },
-];
-
 const HomeRowTutorial: TutorialImage[] = [
   {
     ImagePath: "/img/tutorial/HomeRow/HomeRow1.svg",
@@ -198,7 +185,6 @@ const BottomRowTutorial: TutorialImage[] = [
 
 
 export {
-  PlaceHolderImages,
   HomeRowTutorial,
   PunctuationTopImages,
   PunctuationRightImages,

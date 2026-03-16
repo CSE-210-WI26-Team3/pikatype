@@ -9,7 +9,6 @@ import { BattleConfig } from "../Battle/index";
 import { TutorialImage } from "../../components/Tutorial/TutorialView";
 import {
   HomeRowTutorial,
-  PlaceHolderImages,
   PunctuationRightImages,
   PunctuationTopImages,
   TopRowTutorial,
