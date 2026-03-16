@@ -12,6 +12,9 @@ import {
   PlaceHolderImages,
   PunctuationRightImages,
   PunctuationTopImages,
+  TopRowTutorial,
+  HomeRowRightTutorial, 
+  BottomRowTutorial
 } from "../../components/Tutorial";
 
 export type LevelConfig = {
@@ -42,7 +45,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     },
     generator: new GibberishGenerator(3, 5, "hjkl".split("")),
     evolution: 0,
-    tutorials: PlaceHolderImages,
+    tutorials: HomeRowRightTutorial,
     enemyPokemon: "psyduck",
     audio: "/audio/wild.mp3",
   },
@@ -54,7 +57,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
 
     generator: new GibberishGenerator(3, 5, "asdfghjkl".split("")),
     evolution: 0,
-    tutorials: PlaceHolderImages,
+    tutorials: [],
     enemyPokemon: "pikachu",
     audio: "/audio/wild.mp3",
   },
@@ -65,7 +68,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     },
     generator: new GibberishGenerator(3, 5, "qwertyuiop".split("")),
     evolution: 1,
-    tutorials: PlaceHolderImages,
+    tutorials: TopRowTutorial,
     enemyPokemon: "luxray",
     audio: "/audio/miniboss.mp3",
   },
@@ -76,7 +79,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     },
     generator: new GibberishGenerator(3, 5, "zxcvbnm".split("")),
     evolution: 1,
-    tutorials: PlaceHolderImages,
+    tutorials: BottomRowTutorial,
     enemyPokemon: "umbreon",
     audio: "/audio/miniboss.mp3",
   },
