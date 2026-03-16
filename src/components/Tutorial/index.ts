@@ -1,4 +1,3 @@
-import exp from "constants";
 import { TutorialImage } from "./TutorialView";
 
 const PlaceHolderImages: TutorialImage[] = [
