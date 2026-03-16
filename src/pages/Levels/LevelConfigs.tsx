@@ -7,7 +7,12 @@ import {
 } from "../../wordGeneration/index";
 import { BattleConfig } from "../Battle/index";
 import { TutorialImage } from "../../components/Tutorial/TutorialView";
-import { HomeRowTutorial, PlaceHolderImages } from "../../components/Tutorial";
+import {
+  HomeRowTutorial,
+  PlaceHolderImages,
+  PunctuationRightImages,
+  PunctuationTopImages,
+} from "../../components/Tutorial";
 
 export type LevelConfig = {
   battle: BattleConfig;
@@ -17,7 +22,6 @@ export type LevelConfig = {
   enemyPokemon: string;
   audio: string;
 };
-
 
 export const LEVEL_CONFIGS: LevelConfig[] = [
   {
@@ -105,7 +109,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     },
     generator: new GibberishGenerator(3, 5, "!@#$%&*()-=_+".split("")),
     evolution: 2,
-    tutorials: PlaceHolderImages,
+    tutorials: PunctuationTopImages,
     enemyPokemon: "garchomp",
     audio: "/audio/cynthia_theme.mp3",
   },
@@ -116,7 +120,7 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
     },
     generator: new GibberishGenerator(3, 5, "[]{};':\",./<>?".split("")),
     evolution: 2,
-    tutorials: PlaceHolderImages,
+    tutorials: PunctuationRightImages,
     enemyPokemon: "dragonite",
     audio: "/audio/n_theme.mp3",
   },
