@@ -7,7 +7,7 @@ import {
 } from "react";
 import { TypingPromptGenerator } from "../../wordGeneration";
 
-const VALID_KEYS_PATTERN = /^[a-zA-Z ]$/;
+const VALID_KEYS_PATTERN = /^[a-zA-Z !@#$%&*()-=_+[\]{};':",./<>?]$/;
 
 export enum TypingTrackerProgress {
   Valid = "Valid",
